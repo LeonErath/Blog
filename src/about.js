@@ -10,4 +10,4 @@ class About extends React.Component {
   }
 }
 
-ReactDOM.render(<App name="Leon" />, document.getElementById("app"));
+ReactDOM.render(<About name="About" />, document.getElementById("app"));

@@ -4,24 +4,15 @@ import "./navbar.css";
 export default class Navbar extends React.Component {
   render() {
     return (
-      <div class="navbar">
+      <div className="navbar">
         <ul>
-          <li>
-            <a class="active" href="default.asp">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="news.asp">News</a>
-          </li>
-          <li>
-            <a href="contact.asp">Contact</a>
-          </li>
-          <li>
-            <li>
-              <a href="#about">About</a>
+          {this.props.items.map(item => (
+            <li key={item.id}>
+              <a href={"/" + item.text + ".js".toLocaleLowerCase}>
+                {item.text}
+              </a>
             </li>
-          </li>
+          ))}
         </ul>
       </div>
     );

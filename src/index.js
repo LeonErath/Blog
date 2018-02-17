@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import Navbar from "./navbar.js";
+import Comments from "./comment.js";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Icon, Divider, Label, Segment } from "semantic-ui-react";
@@ -10,9 +11,24 @@ class App extends React.Component {
   render() {
     return (
       <div id="cotainer">
-        <Navbar />
+        <Navbar
+          items={[
+            {
+              text: "Home",
+              id: 1
+            },
+            {
+              text: "Blog",
+              id: 2
+            },
+            {
+              text: "About",
+              id: 3
+            }
+          ]}
+        />
 
-        <div class="article">
+        <div className="article">
           <Segment>
             <h2>Vaultier holt Gold im Snowboard-Cross, Nörl chancenlos</h2>
             Der Gold-Gewinner von Sotschi 2014 ließ am Donnerstag (15.02.18) im
@@ -35,7 +51,7 @@ class App extends React.Component {
             Berg aus Konstanz schied nach einem Crash im Viertelfinale aus. Für
             Schad war bereits in der ersten K.o.-Runde Endstation.
             <p />
-            <div class="labels">
+            <div className="labels">
               <Label as="a" color="blue" attached="bottom right" image>
                 Leon Erath
                 <Label.Detail>Author</Label.Detail>
@@ -44,17 +60,9 @@ class App extends React.Component {
             <p />
           </Segment>
 
-          <Divider horizontal>IMAGES</Divider>
-          <p />
-          <a href="">
-            <img src="/images/bild.png" alt="test" />
-          </a>
-          <p />
+          <Divider horizontal>Comments</Divider>
 
-          <Button href="/about.html" size="small" color="green">
-            <Icon name="download" />
-            Download
-          </Button>
+          <Comments />
         </div>
       </div>
     );
