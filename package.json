@@ -2,11 +2,16 @@
   "name": "webeng",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Leon Erath",
+    "email": "leon-erath@hotmail.de"
+  },
   "dependencies": {
     "normalize.css": "^8.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
     "semantic-ui-css": "^2.2.14",
     "semantic-ui-react": "^0.78.2"

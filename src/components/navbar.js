@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./navbar.css";
 
 export default class Navbar extends React.Component {
@@ -8,9 +9,8 @@ export default class Navbar extends React.Component {
         <ul>
           {this.props.items.map(item => (
             <li key={item.id}>
-              <a href={"/" + item.text + ".js".toLocaleLowerCase}>
-                {item.text}
-              </a>
+              {/* TODO paste Route Link here */}
+              <Link to={"/" + item.text.toLocaleLowerCase}>{item.text}</Link>
             </li>
           ))}
         </ul>
