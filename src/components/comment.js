@@ -1,7 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "normalize.css";
+import axios from "axios";
 import "semantic-ui-css/semantic.min.css";
+import CommentForm from "./commentForm.js";
 import {
   Button,
   Segment,
@@ -11,72 +13,33 @@ import {
   TransitionGroup
 } from "semantic-ui-react";
 
+const url = "http://127.0.0.1:3030/api/comments";
+
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], text: "" };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { data: [] };
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+    this.pollInterval = null;
+  }
+
+  handleCommentSubmit(comment) {
+    comment.id = Date.now();
+
+    axios.post(url, comment).catch(err => {
+      console.error(err);
+    });
+
+    axios.get(url).then(res => {
+      console.log(res.data);
+    });
   }
 
   render() {
     return (
       <div>
-        <CommentList items={this.state.items} />
-        <center>
-          <form onSubmit={this.handleSubmit}>
-            <Input
-              onChange={this.handleChange}
-              value={this.state.text}
-              actionPosition="left"
-              action={{
-                color: "teal",
-                labelPosition: "left",
-                icon: "comment",
-                content: "Submit"
-              }}
-              placeholder="Enter..."
-            />
-          </form>
-        </center>
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
       </div>
-    );
-  }
-
-  handleChange(e) {
-    this.setState({ text: e.target.value });
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    if (!this.state.text.length) {
-      return;
-    }
-    const newItem = {
-      text: this.state.text,
-      id: Date.now()
-    };
-    this.setState(prevState => ({
-      items: prevState.items.concat(newItem),
-      text: ""
-    }));
-  }
-}
-
-class CommentList extends React.Component {
-  render() {
-    return (
-      <Transition.Group
-        as={SegmentGroup}
-        duration={200}
-        divided
-        size="small"
-        verticalAlign="middle"
-      >
-        {this.props.items.map(item => (
-          <Segment key={item.id}>{item.text}</Segment>
-        ))}
-      </Transition.Group>
     );
   }
 }

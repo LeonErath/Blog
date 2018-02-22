@@ -15,13 +15,6 @@ h2 {
   color: gray;
 }
 
-img {
-  width: 300px;
-  position: absolute;
-  left: 50%;
-  margin-left: -150px;
-}
-
 .labels {
   text-align: right;
 }

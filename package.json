@@ -2,11 +2,19 @@
   "name": "webeng",
   "version": "0.1.0",
   "private": true,
+  
   "author": {
     "name": "Leon Erath",
     "email": "leon-erath@hotmail.de"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "foreman": "^2.0.0",
+    "marked": "^0.3.16",
+    "mongoose": "^5.0.6",
+    "nodemon": "^1.15.1",
     "normalize.css": "^8.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -14,10 +22,12 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
     "semantic-ui-css": "^2.2.14",
-    "semantic-ui-react": "^0.78.2"
+    "semantic-ui-react": "^0.78.2",
+    "styled-components": "^3.1.6"
   },
   "scripts": {
     "start": "react-scripts start",
+    "start-dev":"nf start -p 3000",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

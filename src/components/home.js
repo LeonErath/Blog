@@ -1,33 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./home.css";
-import Navbar from "./navbar.js";
 import Comments from "./comment.js";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Icon, Divider, Label, Segment } from "semantic-ui-react";
+import axios from "axios";
 
 export default class Home extends React.Component {
   render() {
     return (
       <div id="container">
-        <Navbar
-          items={[
-            {
-              text: "Home",
-              id: 1
-            },
-            {
-              text: "Blog",
-              id: 2
-            },
-            {
-              text: "About",
-              id: 3
-            }
-          ]}
-        />
-
         <div className="article">
           <Segment>
             <h2>Vaultier holt Gold im Snowboard-Cross, Nörl chancenlos</h2>
