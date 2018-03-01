@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 //object that shows the shape of your database entries.
 var CommentSchema = new Schema({
   author: String,
-  text: String
+  text: String,
+  date: String
 });
 //export our module to use in server.js
 module.exports = mongoose.model("Comment", CommentSchema);

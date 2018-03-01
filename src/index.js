@@ -1,34 +1,67 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import "./index.css";
 import Home from "./components/home.js";
 import About from "./components/about.js";
 import Blog from "./components/blog.js";
+import Login from "./components/login.js";
+
+const Background = styled.div`
+  background-image: url("/images/background_pattern.png");
+  background-repeat: repeat;
+`;
+
+const NavbarLink = styled.li`
+  float: left;
+  :last-child {
+    float: right;
+  }
+  a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    :hover {
+      background-color: #111;
+    }
+  }
+`;
+
+const NavbarList = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+`;
 
 export default class App extends React.Component {
   render() {
     return (
-      <Router>
-        <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/blog">Blog</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-          </ul>
-          <img src="./images/test_background.png" alt="me" />
+      <Background>
+        <Router>
+          <div>
+            <NavbarList>
+              <NavbarLink>
+                <Link to="/">Home</Link>
+              </NavbarLink>
+              <NavbarLink>
+                <Link to="/blog">Blog</Link>
+              </NavbarLink>
+              <NavbarLink>
+                <Link to="/about">About</Link>
+              </NavbarLink>
+            </NavbarList>
 
-          <Route exact path="/" component={Home} />
-          <Route path="/blog" component={Blog} />
-          <Route path="/about" component={About} />
-        </div>
-      </Router>
+            <Route exact path="/" component={Home} />
+            <Route path="/blog" component={Blog} />
+            <Route path="/login" component={Login} />
+            <Route path="/about" component={About} />
+          </div>
+        </Router>
+      </Background>
     );
   }
 }

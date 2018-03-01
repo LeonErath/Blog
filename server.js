@@ -56,9 +56,13 @@ router
   })
   //post new comment to the database
   .post(function(req, res) {
-    var comment = new Comment();
-    req.body.author ? (comment.author = req.body.author) : null;
-    req.body.text ? (comment.text = req.body.text) : null;
+    console.log(res);
+
+    var comment = new Comment({
+      author: req.body.author,
+      text: req.body.text,
+      date: req.body.date
+    });
 
     comment.save(function(err) {
       if (err) res.send(err);
@@ -73,3 +77,9 @@ app.use("/api", router);
 app.listen(port, function() {
   console.log(`api running on port ${port}`);
 });
+
+// Comment.remove({}, function(err, doc) {
+//   if (err) {
+//     // handle error
+//   }
+// });

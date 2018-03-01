@@ -1,17 +1,15 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Segment,
-  SegmentGroup,
-  Input,
-  Transition,
-  TransitionGroup
-} from "semantic-ui-react";
+import { Button, Input } from "semantic-ui-react";
+import styled from "styled-components";
+
+const InputStyled = styled(Input)`
+  margin-left: 10px;
+`;
 
 export default class CommentForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { author: "", text: "" };
+    this.state = { author: "", text: "", date: "" };
     this.handleAuthorChange = this.handleAuthorChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,23 +24,24 @@ export default class CommentForm extends Component {
     e.preventDefault();
     let author = this.state.author.trim();
     let text = this.state.text.trim();
+    let date = new Date().toLocaleDateString();
     if (!text || !author) {
       return;
     }
-    this.props.onCommentSubmit({ author: author, text: text });
+    this.props.onCommentSubmit({ author: author, text: text, date: date });
 
-    this.setState({ author: "", text: "" });
+    this.setState({ author: "", text: "", date: "" });
   }
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className={this.props.className} onSubmit={this.handleSubmit}>
         <Input
           type="text"
           placeholder="Author..."
           value={this.state.author}
           onChange={this.handleAuthorChange}
         />
-        <Input
+        <InputStyled
           type="text"
           placeholder="Comment..."
           value={this.state.text}
