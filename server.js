@@ -4,6 +4,8 @@ var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var Comment = require("./model/commentSchema");
+var Login = require("./model/loginSchema");
+var Article = require("./model/articleSchema");
 
 var app = express();
 var router = express.Router();

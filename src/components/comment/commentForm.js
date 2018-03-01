@@ -48,7 +48,7 @@ export default class CommentForm extends Component {
           onChange={this.handleTextChange}
         />
         <Button type="submit" value="Post">
-          Submit
+          Posten
         </Button>
       </form>
     );

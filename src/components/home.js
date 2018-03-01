@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Comments from "./commentBox.js";
+import CommentBox from "./comment/commentBox.js";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import { Divider, Label, Segment } from "semantic-ui-react";
@@ -65,7 +65,7 @@ export default class Home extends React.Component {
 
           <Divider horizontal>Comments</Divider>
 
-          <Comments />
+          <CommentBox />
         </Article>
       </div>
     );
