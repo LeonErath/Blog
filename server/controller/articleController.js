@@ -1,21 +1,24 @@
 var Article = require("../model/articleSchema.js");
+var User = require("../model/userSchema.js");
 
 exports.findAll = function(req, res) {
-  Article.find(function(err, data) {
-    if (err) res.send(err);
-    res.json(data);
-  });
+  Article.find()
+    .populate("author")
+    .exec(function(err, article) {
+      if (err) res.send(err);
+      res.json(article);
+    });
 };
 
 exports.create = function(req, res, next) {
   if (
-    req.body.author &&
     req.body.content &&
+    req.body.userID &&
     req.body.headline &&
     req.body.date
   ) {
     var article = {
-      //author: req.user._id,
+      author: req.body.userID,
       content: req.body.content,
       headline: req.body.headline
     };

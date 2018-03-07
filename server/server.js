@@ -53,7 +53,9 @@ app.listen(port, function() {
   console.log(`api running on port ${port}`);
 });
 
-// Comment.remove({}, function(err, doc) {
+// var Article = require("./model/articleSchema.js");
+
+// Article.remove({}, function(err, doc) {
 //   if (err) {
 //     // handle error
 //   }

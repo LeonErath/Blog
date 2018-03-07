@@ -6,6 +6,8 @@ var Schema = mongoose.Schema;
 //object that shows the shape of your database entries.
 var UserSchema = new Schema({
   username: String,
+  email: String,
+  name: String,
   password: String
 });
 //export our module to use in server.js

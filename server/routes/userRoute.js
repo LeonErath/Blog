@@ -7,6 +7,8 @@ module.exports = function(router) {
   // Retrieve all user
   router.get("/user", user.findAll);
 
+  router.get("/user/:id", user.findOne);
+
   // Update a Note with noteId
   router.put("/user/:id", user.update);
 

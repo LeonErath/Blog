@@ -7,11 +7,27 @@ exports.findAll = function(req, res) {
   });
 };
 
+exports.findOne = function(req, res) {
+  User.findById(req.params.id, function(err, data) {
+    if (err) {
+      res.send(err);
+    }
+    res.json(data);
+  });
+};
+
 exports.create = function(req, res, next) {
-  if (req.body.username && req.body.password) {
+  if (
+    req.body.username &&
+    req.body.password &&
+    req.body.email &&
+    req.body.name
+  ) {
     var userData = {
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      name: req.body.name,
+      email: req.body.email
     };
 
     User.create(userData, function(error, user) {
