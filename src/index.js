@@ -51,6 +51,9 @@ export default class App extends React.Component {
                 <Link to="/blog">Blog</Link>
               </NavbarLink>
               <NavbarLink>
+                <Link to="/login">Login</Link>
+              </NavbarLink>
+              <NavbarLink>
                 <Link to="/about">About</Link>
               </NavbarLink>
             </NavbarList>

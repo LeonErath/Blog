@@ -6,8 +6,10 @@ var Schema = mongoose.Schema;
 //object that shows the shape of your database entries.
 var ArticleSchema = new Schema({
   author: String,
-  thema: String,
-  text: String,
+  headline: String,
+  abstract: String,
+  topic: String,
+  content: String,
   date: String,
   tag: [String]
 });
