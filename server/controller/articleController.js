@@ -1,0 +1,49 @@
+var Article = require("../model/articleSchema.js");
+
+exports.findAll = function(req, res) {
+  Article.find(function(err, data) {
+    if (err) res.send(err);
+    res.json(data);
+  });
+};
+
+exports.create = function(req, res, next) {
+  if (
+    req.body.author &&
+    req.body.content &&
+    req.body.headline &&
+    req.body.date
+  ) {
+    var article = {
+      //author: req.user._id,
+      content: req.body.content,
+      headline: req.body.headline
+    };
+
+    Article.create(article, function(error) {
+      if (error) {
+        console.log(error);
+
+        return next(error);
+      } else {
+        res.json({ message: "Article successfully added!" });
+      }
+    });
+  } else {
+    var err = new Error("All fields required.");
+    err.status = 400;
+    return next(err);
+  }
+};
+
+exports.findOne = function(req, res) {
+  Article.findById(req.params.id, function(err, data) {
+    if (err) {
+      res.send(err);
+    }
+    res.json(data);
+  });
+};
+
+exports.update = function(req, res, next) {};
+exports.delete = function(req, res, next) {};

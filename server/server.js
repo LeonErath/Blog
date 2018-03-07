@@ -3,9 +3,6 @@
 var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
-var Comment = require("./model/commentSchema");
-var User = require("./model/userSchema");
-var Article = require("./model/articleSchema");
 
 var app = express();
 var router = express.Router();
@@ -44,100 +41,9 @@ router.get("/", function(req, res) {
   res.json({ message: "API Initialized!" });
 });
 
-//adding the /comments route to our /api router
-router
-  .route("/comments")
-  //retrieve all comments from the database
-  .get(function(req, res) {
-    //looks at our Comment Schema
-    Comment.find(function(err, comments) {
-      if (err) res.send(err);
-      //responds with a json object of our database comments.
-      res.json(comments);
-    });
-  })
-  //post new comment to the database
-  .post(function(req, res) {
-    console.log(res);
-
-    var comment = new Comment({
-      author: req.body.author,
-      text: req.body.text,
-      date: req.body.date
-    });
-
-    comment.save(function(err) {
-      if (err) res.send(err);
-      res.json({ message: "Comment successfully added!" });
-    });
-  });
-
-router
-  .route("/user")
-  .get(function(req, res) {
-    User.find(function(err, data) {
-      if (err) res.send(err);
-      res.json(data);
-    });
-  })
-  .post(function(req, res, next) {
-    if (req.body.username && req.body.password) {
-      var userData = {
-        username: req.body.username,
-        password: req.body.password
-      };
-
-      User.create(userData, function(error, user) {
-        if (error) {
-          console.log(error);
-
-          return next(error);
-        } else {
-          res.json({ message: "User successfully added!" });
-        }
-      });
-    } else {
-      var err = new Error("All fields required.");
-      err.status = 400;
-      return next(err);
-    }
-  });
-
-router
-  .route("/article")
-  .get(function(req, res) {
-    Article.find(function(err, data) {
-      if (err) res.send(err);
-      res.json(data);
-    });
-  })
-  .post(function(req, res, next) {
-    if (
-      req.body.author &&
-      req.body.content &&
-      req.body.headline &&
-      req.body.date
-    ) {
-      var article = {
-        author: req.body.author,
-        content: req.body.content
-      };
-
-      Article.create(article, function(error) {
-        if (error) {
-          console.log(error);
-
-          return next(error);
-        } else {
-          res.json({ message: "Article successfully added!" });
-        }
-      });
-    } else {
-      var err = new Error("All fields required.");
-      err.status = 400;
-      return next(err);
-    }
-  });
+require("./routes/userRoute.js")(router);
+require("./routes/commentRoute.js")(router);
+require("./routes/articleRoute.js")(router);
 
 //Use our router configuration when we call /api
 app.use("/api", router);
