@@ -7,6 +7,8 @@ module.exports = function(router) {
   // Retrieve all article
   router.get("/article", article.findAll);
 
+  router.get("/article/:id", article.findOne);
+
   // Update a Note with noteId
   router.put("/article/:id", article.update);
 

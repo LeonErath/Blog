@@ -15,12 +15,15 @@ exports.create = function(req, res, next) {
     req.body.content &&
     req.body.userID &&
     req.body.headline &&
+    req.body.abstract &&
     req.body.date
   ) {
     var article = {
       author: req.body.userID,
       content: req.body.content,
-      headline: req.body.headline
+      headline: req.body.headline,
+      abstract: req.body.abstract,
+      date: req.body.date
     };
 
     Article.create(article, function(error) {
@@ -40,12 +43,12 @@ exports.create = function(req, res, next) {
 };
 
 exports.findOne = function(req, res) {
-  Article.findById(req.params.id, function(err, data) {
-    if (err) {
-      res.send(err);
-    }
-    res.json(data);
-  });
+  Article.findById(req.params.id)
+    .populate("author")
+    .exec(function(err, article) {
+      if (err) res.send(err);
+      res.json(article);
+    });
 };
 
 exports.update = function(req, res, next) {};

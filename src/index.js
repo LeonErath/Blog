@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import Home from "./components/home.js";
 import About from "./components/about.js";
-import Blog from "./components/blog.js";
+import BlogList from "./components/blog/blogList.js";
 import Login from "./components/login.js";
+import Blog from "./components/blog/blog.js";
 
 const Background = styled.div`
   background-image: url("/images/background_pattern.png");
@@ -59,7 +60,11 @@ export default class App extends React.Component {
             </NavbarList>
 
             <Route exact path="/" component={Home} />
-            <Route path="/blog" component={Blog} />
+            <Switch>
+              <Route exact path="/blog" component={BlogList} />
+              <Route path="/blog/:id" component={Blog} />
+            </Switch>
+
             <Route path="/login" component={Login} />
             <Route path="/about" component={About} />
           </div>
