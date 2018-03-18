@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import "normalize.css";
+import { Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
 
@@ -27,10 +28,19 @@ const Content = styled.div`
   font-size: 14px;
   text-align: justify;
 `;
+
+const Abstract = styled.div`
+  margin-top: 8px;
+  color: #9e9e9e;
+  font-size: 14px;
+  text-align: justify;
+`;
+
 export default class Blog extends React.Component {
   constructor(props) {
     super(props);
     this.state = { data: { author: {} } };
+    this.goBack = this.goBack.bind(this);
   }
 
   loadCommentsFromServer = () => {
@@ -51,9 +61,14 @@ export default class Blog extends React.Component {
     this.loadCommentsFromServer();
   }
 
+  goBack() {
+    this.props.history.goBack();
+  }
+
   render() {
     return (
       <Div>
+        <Button onClick={this.goBack}>Back</Button>
         <br />
         <Title>{this.state.data.headline}</Title>
 

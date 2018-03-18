@@ -7,6 +7,7 @@ import About from "./components/about.js";
 import BlogList from "./components/blog/blogList.js";
 import Login from "./components/login.js";
 import Blog from "./components/blog/blog.js";
+import BlogForm from "./components/blog/blogForm.js";
 
 const Background = styled.div`
   background-image: url("/images/background_pattern.png");
@@ -62,6 +63,7 @@ export default class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Switch>
               <Route exact path="/blog" component={BlogList} />
+              <Route path="/blog/create" component={BlogForm} />
               <Route path="/blog/:id" component={Blog} />
             </Switch>
 

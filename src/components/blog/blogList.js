@@ -3,7 +3,7 @@ import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import BlogShort from "./blogShort.js";
 import { Button } from "semantic-ui-react";
-
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import Blog from "./blog.js";
@@ -24,7 +24,6 @@ export default class BlogList extends React.Component {
     super(props);
     this.state = { data: [] };
     this.pollInterval = null;
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
   loadCommentsFromServer = () => {
     axios.get(url).then(res => {
@@ -37,11 +36,6 @@ export default class BlogList extends React.Component {
     console.log("fired");
 
     this.loadCommentsFromServer();
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    console.log("pressed button");
   }
 
   render() {
@@ -61,9 +55,11 @@ export default class BlogList extends React.Component {
     return (
       <Div>
         <h1>Blog</h1>
-        <form onSubmit={this.handleSubmit}>
-          <Button type="submit">Aktualisieren</Button>
-        </form>
+
+        <Link to={`blog/create`}>
+          <Button type="submit">Neuen Artikel schreiben</Button>
+        </Link>
+
         <div>{data}</div>
       </Div>
     );
