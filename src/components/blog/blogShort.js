@@ -8,6 +8,9 @@ const Date = styled.div`
   font-size: 14px;
 `;
 
+const Div = styled.div`
+  padding: 16px;
+`;
 const Headline = styled.h2`
   text-align: left;
   color: black;
@@ -34,22 +37,17 @@ export default class BlogShort extends Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <div>
-            <Link to={`blog/${this.props.id}`}>
-              <Headline>{this.props.headline}</Headline>
+      <Div>
+        <Link to={`blog/${this.props.id}`}>
+          <Headline>{this.props.headline}</Headline>
 
-              <Date>{this.props.date}</Date>
-            </Link>
+          <Date>{this.props.date}</Date>
+        </Link>
 
-            {this.props.author}
-            <br />
-            <Abstract>{this.props.abstract}</Abstract>
-            <hr />
-          </div>
-        </div>
-      </div>
+        {this.props.author}
+        <br />
+        <Abstract>{this.props.abstract}</Abstract>
+      </Div>
     );
   }
 }
