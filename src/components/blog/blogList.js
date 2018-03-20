@@ -5,18 +5,18 @@ import BlogShort from "./blogShort.js";
 import { Button } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import axios from "axios";
+import { Div } from "../styledComponents";
 import styled from "styled-components";
 import Blog from "./blog.js";
 
 const url = "http://127.0.0.1:3030/api/article";
 
-const Div = styled.div`
-  position: relative;
-  background: #fff;
-  padding: 50px;
-  width: 600px;
-  margin: 0 auto 0 auto;
-  box-shadow: 0 20px 40px rgba(100, 100, 100, 0.1);
+const Title = styled.h1`
+  display: inline-block;
+  color: black;
+`;
+const ButtonStyled = styled(Button)`
+  float: right;
 `;
 
 export default class BlogList extends React.Component {
@@ -54,13 +54,16 @@ export default class BlogList extends React.Component {
 
     return (
       <Div>
-        <h1>Blog</h1>
+        <Title>Blog</Title>
 
         <Link to={`blog/create`}>
-          <Button type="submit">Neuen Artikel schreiben</Button>
+          <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
         </Link>
+        <br />
+        <br />
+        <br />
 
-        <div>{data}</div>
+        <div> {data}</div>
       </Div>
     );
   }

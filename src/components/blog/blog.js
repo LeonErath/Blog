@@ -4,6 +4,7 @@ import "normalize.css";
 import { Button } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
+import Comment from "../comment/commentBox";
 
 const Title = styled.h2`
   text-align: center;
@@ -14,7 +15,7 @@ const Div = styled.div`
   position: relative;
   background: #fff;
   padding: 50px;
-  width: 600px;
+  width: 800px;
   margin: 0 auto 0 auto;
   box-shadow: 0 20px 40px rgba(100, 100, 100, 0.1);
 `;
@@ -25,7 +26,15 @@ const Date = styled.div`
 `;
 
 const Content = styled.div`
-  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  color: rgba(0, 0, 0, 0.84);
+
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1.58;
+  font-weight: 400;
   text-align: justify;
 `;
 
@@ -51,7 +60,6 @@ export default class Blog extends React.Component {
 
     axios.get(url).then(res => {
       this.setState({ data: res.data });
-      console.log(this.state.data);
     });
   };
 
@@ -92,6 +100,8 @@ export default class Blog extends React.Component {
               );
             })}
         </Content>
+
+        <Comment articleID={this.state.data._id} />
       </Div>
     );
   }

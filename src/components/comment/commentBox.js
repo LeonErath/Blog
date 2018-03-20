@@ -5,12 +5,13 @@ import "semantic-ui-css/semantic.min.css";
 import CommentForm from "./commentForm.js";
 import CommentList from "./commentList.js";
 import styled from "styled-components";
+import { Segment, Button, Divider } from "semantic-ui-react";
 
 const CommentFormStyled = styled(CommentForm)`
   margin-top: 10px;
 `;
 
-const url = "http://127.0.0.1:3030/api/comments";
+var url = "http://127.0.0.1:3030/api/comment?articleID=";
 
 export default class CommentBox extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ export default class CommentBox extends React.Component {
   handleCommentSubmit(comment) {
     let comments = this.state.data;
     comment.id = Date.now();
+    comment.articleID = this.props.articleID;
     let newComments = comments.concat([comment]);
     this.setState({ data: newComments });
 
@@ -32,19 +34,35 @@ export default class CommentBox extends React.Component {
   }
 
   loadCommentsFromServer = () => {
-    axios.get(url).then(res => {
-      console.log(res.data);
-      this.setState({ data: res.data });
-    });
+    if (this.props.articleID != undefined) {
+      var url2 = url + this.props.articleID;
+
+      axios
+        .get(url2)
+        .then(res => {
+          if (res.status) this.setState({ data: res.data });
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   };
 
   componentDidMount() {
     this.loadCommentsFromServer();
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.articleID != this.props.articleID) {
+      console.log("ID:" + this.props.articleID);
+
+      this.loadCommentsFromServer();
+    }
+  }
 
   render() {
     return (
       <div>
+        <Divider horizontal>Comments</Divider>
         <CommentList data={this.state.data} />
         <CommentFormStyled onCommentSubmit={this.handleCommentSubmit} />
       </div>

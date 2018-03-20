@@ -5,7 +5,10 @@ exports.findAll = function(req, res) {
   Article.find()
     .populate("author")
     .exec(function(err, article) {
-      if (err) res.send(err);
+      if (err) {
+        res.send(err);
+        return;
+      }
       res.json(article);
     });
 };
@@ -32,7 +35,9 @@ exports.create = function(req, res, next) {
 
         return next(error);
       } else {
-        res.json({ message: "Article successfully added!" });
+        console.log("success");
+
+        next(res.json({ message: "Article successfully added!" }));
       }
     });
   } else {

@@ -10,6 +10,7 @@
     "axios": "^0.18.0",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
+    "draft-js": "^0.10.5",
     "express": "^4.16.2",
     "foreman": "^2.0.0",
     "marked": "^0.3.16",

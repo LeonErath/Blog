@@ -1,56 +1,20 @@
 import React, { Component } from "react";
 import {
   Button,
+  Message,
   Checkbox,
   Form,
   Input,
-  Radio,
-  Select,
   TextArea
 } from "semantic-ui-react";
+import { Div, HeadlineCenter } from "../styledComponents";
 import styled from "styled-components";
 import axios from "axios";
 
 const url = "http://127.0.0.1:3030/api/article";
 
-const Div = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
-  padding: 20px;
-`;
-
 const FromStyled = styled(Form)`
   width: 100%;
-`;
-
-const ArticleDiv = styled.div`
-  border-radius: 2px 2px 5px 5px;
-  padding: 10px 20px 20px 20px;
-  max-width: 800px;
-  width: 90%;
-  background: #ffffff;
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
-`;
-
-const Title = styled.h1`
-  color: #444;
-  font-size: 1.2em;
-  font-weight: bold;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
-`;
-
-const ButtonStyled = styled.div`
-  margin-top: 10px;
 `;
 
 export default class CommentForm extends Component {
@@ -62,7 +26,12 @@ export default class CommentForm extends Component {
       userID: "",
       content: "",
       date: "",
-      topic: ""
+      topic: "",
+      message: "",
+      header: "",
+      loadingRequest: false,
+      successRequest: false,
+      failureRequest: false
     };
     this.handleAuthorChange = this.handleAuthorChange.bind(this);
     this.handleHeadlineChange = this.handleHeadlineChange.bind(this);
@@ -88,94 +57,139 @@ export default class CommentForm extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
+    this.setState({ loadingRequest: true });
+
     let userID = this.state.userID.trim();
     let content = this.state.content.trim();
     let headline = this.state.headline.trim();
     let abstract = this.state.abstract.trim();
     let topic = this.state.topic.trim();
-    let date = new Date().toLocaleDateString();
     if (!content || !userID || !abstract || !headline || !topic) {
       return;
     }
-    this.state.date = date;
-    console.log(this.state);
+    var article = {
+      userID: userID,
+      content: content,
+      headline: headline,
+      abstract: abstract,
+      topic: topic,
+      date: new Date().toLocaleDateString()
+    };
+    console.log(article);
 
-    axios.post(url, this.state).catch(err => {
-      console.error(err);
-    });
+    axios
+      .post(url, article)
+      .then(response => {
+        console.log(response);
 
-    this.setState({
-      author: "",
-      content: "",
-      date: "",
-      headline: "",
-      abstract: "",
-      topic: ""
-    });
+        this.setState({
+          userID: "",
+          content: "",
+          headline: "",
+          abstract: "",
+          topic: "",
+          message: response.data.message,
+          header: "Article successfully added",
+          loadingRequest: false,
+          failureRequest: false,
+          successRequest: true
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
 
-    this.props.history.goBack();
+        this.setState({
+          message: err.response.statusText,
+          header: "An Error occurred",
+          loadingRequest: false,
+          successRequest: false,
+          failureRequest: true
+        });
+      });
   }
+
+  componentDidMount() {
+    console.log(this.state);
+  }
+
   render() {
     return (
       <Div>
-        <ArticleDiv>
-          <Title> Neuen Artikel erstellen </Title>
+        <HeadlineCenter> Neuen Artikel erstellen </HeadlineCenter>
 
-          <FromStyled onSubmit={this.handleSubmit}>
+        <FromStyled
+          loading={this.state.loadingRequest}
+          success={this.state.successRequest}
+          error={this.state.failureRequest}
+          onSubmit={this.handleSubmit}
+        >
+          <Form.Field
+            required
+            control={Input}
+            label="Headline"
+            placeholder="Headline"
+            value={this.state.headline}
+            onChange={this.handleHeadlineChange}
+          />
+          <Form.Field
+            required
+            control={Input}
+            label="Abstract"
+            placeholder="Abstract"
+            value={this.state.abstract}
+            onChange={this.handleAbstractChange}
+          />
+          <Form.Field
+            required
+            control={TextArea}
+            style={{ minHeight: 400 }}
+            label="Content"
+            placeholder="Tell us your story..."
+            value={this.state.content}
+            onChange={this.handleContentChange}
+          />
+          <Form.Group>
             <Form.Field
               required
+              width={8}
               control={Input}
-              label="Headline"
-              placeholder="Headline"
-              value={this.state.headline}
-              onChange={this.handleHeadlineChange}
+              label="Topic"
+              placeholder="Topic"
+              value={this.state.topic}
+              onChange={this.handleTopicChange}
             />
             <Form.Field
               required
+              width={8}
               control={Input}
-              label="Abstract"
-              placeholder="Abstract"
-              value={this.state.abstract}
-              onChange={this.handleAbstractChange}
+              label="Author"
+              placeholder="Author"
+              value={this.state.author}
+              onChange={this.handleAuthorChange}
             />
-            <Form.Field
-              required
-              control={TextArea}
-              style={{ minHeight: 400 }}
-              label="Content"
-              placeholder="Tell us your story..."
-              value={this.state.content}
-              onChange={this.handleContentChange}
+          </Form.Group>
+          <Form.Field
+            required
+            control={Checkbox}
+            label="I agree to the Terms and Conditions"
+          />
+          <Form.Field control={Button}>Submit</Form.Field>
+          {this.state.successRequest ? (
+            <Message
+              success
+              header={this.state.header}
+              content={this.state.message}
             />
+          ) : null}
 
-            <Form.Group>
-              <Form.Field
-                required
-                width={8}
-                control={Input}
-                label="Topic"
-                placeholder="Topic"
-                value={this.state.topic}
-                onChange={this.handleTopicChange}
-              />
-              <Form.Field
-                required
-                width={8}
-                control={Input}
-                label="Author"
-                placeholder="Author"
-                value={this.state.author}
-                onChange={this.handleAuthorChange}
-              />
-            </Form.Group>
-            <Form.Field
-              required
-              control={Checkbox}
-              label="I agree to the Terms and Conditions"
+          {this.state.failureRequest ? (
+            <Message
+              error
+              header={this.state.header}
+              content={this.state.message}
             />
-            <Form.Field control={Button}>Submit</Form.Field>
-          </FromStyled>
-        </ArticleDiv>
+          ) : null}
+        </FromStyled>
       </Div>
     );
   }

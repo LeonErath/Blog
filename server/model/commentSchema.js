@@ -6,6 +6,10 @@ var Schema = mongoose.Schema;
 //object that shows the shape of your database entries.
 var CommentSchema = new Schema({
   author: String,
+  article: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Article"
+  },
   text: String,
   date: String
 });

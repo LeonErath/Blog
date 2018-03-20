@@ -8,10 +8,9 @@ const Date = styled.div`
   font-size: 14px;
 `;
 
-const Headline = styled.div`
-  margin-top: 10px;
-  font-size: 21px;
-  color: #cc0000;
+const Headline = styled.h2`
+  text-align: left;
+  color: black;
 `;
 
 const Abstract = styled.div`

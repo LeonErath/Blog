@@ -2,7 +2,10 @@ var User = require("../model/userSchema.js");
 
 exports.findAll = function(req, res) {
   User.find(function(err, data) {
-    if (err) res.send(err);
+    if (err) {
+      res.send(err);
+      return;
+    }
     res.json(data);
   });
 };
@@ -11,6 +14,7 @@ exports.findOne = function(req, res) {
   User.findById(req.params.id, function(err, data) {
     if (err) {
       res.send(err);
+      return;
     }
     res.json(data);
   });
