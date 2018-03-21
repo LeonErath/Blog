@@ -65,6 +65,8 @@ export default class CommentForm extends Component {
     let abstract = this.state.abstract.trim();
     let topic = this.state.topic.trim();
     if (!content || !userID || !abstract || !headline || !topic) {
+      console.log("some fields are empty");
+
       return;
     }
     var article = {
@@ -164,7 +166,7 @@ export default class CommentForm extends Component {
               control={Input}
               label="Author"
               placeholder="Author"
-              value={this.state.author}
+              value={this.state.userID}
               onChange={this.handleAuthorChange}
             />
           </Form.Group>

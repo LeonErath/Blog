@@ -33,6 +33,7 @@ const NavbarLink = styled.li`
 `;
 
 const Rectangle = styled.div`
+  z-index: 100;
   list-style-type: none;
   position: absolute;
   top: 0;

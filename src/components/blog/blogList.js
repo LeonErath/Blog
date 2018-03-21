@@ -73,21 +73,26 @@ export default class BlogList extends React.Component {
 
     return (
       <Div>
-        <Title>Newest</Title>
-
+        <Title>Featured</Title>
         <Link to={`blog/create`}>
           <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
         </Link>
         <br />
         <br />
+        <Title>Newest</Title>
         <br />
-
+        <br />
         <div>
           <Grid columns={2}>
             <Grid.Row>{section1}</Grid.Row>
           </Grid>
         </div>
+        <br /> <br />
+        <hr />
+        <br />
         <Title>Trending</Title>
+        <br />
+        <br />
         <div>
           <Grid columns={1}>
             <Grid.Row>{section2}</Grid.Row>

@@ -14,6 +14,7 @@ var ArticleSchema = new Schema({
   topic: String,
   content: String,
   date: String,
+  views: Number,
   tag: [String]
 });
 //export our module to use in server.js
