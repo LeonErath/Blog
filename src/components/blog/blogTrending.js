@@ -1,7 +1,7 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import BlogShort from "./blogShort.js";
+import BlogShort from "./blogShortTrending.js";
 import { Button, Grid, Dropdown, Menu } from "semantic-ui-react";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import axios from "axios";
@@ -16,19 +16,24 @@ const timeOptions = [
 ];
 const tagOptions = [
   {
+    label: { color: "green", empty: true, circular: true },
+    text: "All",
+    value: ""
+  },
+  {
     label: { color: "red", empty: true, circular: true },
     text: "Politics",
-    value: 1
+    value: "Politics"
   },
   {
     label: { color: "blue", empty: true, circular: true },
     text: "Life",
-    value: 2
+    value: "Life"
   },
   {
     label: { color: "black", empty: true, circular: true },
     text: "Test",
-    value: 3
+    value: "Test"
   }
 ];
 
@@ -84,6 +89,8 @@ export default class BlogTrending extends React.Component {
   }
 
   filterByTag = (e, { value }) => {
+    console.log("Tag", value, date, value);
+
     this.loadTrendingFromServer(date, value);
   };
 
@@ -94,13 +101,14 @@ export default class BlogTrending extends React.Component {
       var dateQuery = "date=" + time;
     }
     if (topic != "") {
-      var topicQuery = "topic" + topic;
+      var topicQuery = "topic=" + topic;
     }
     const urlTrending =
       `http://127.0.0.1:3030/api/article/trending?` +
       dateQuery +
       "&" +
       topicQuery;
+    console.log("Query", urlTrending, topic, topicQuery);
 
     axios.get(urlTrending).then(res => {
       console.log("Trending", res.data);
@@ -125,6 +133,8 @@ export default class BlogTrending extends React.Component {
             id={article._id}
             abstract={article.abstract}
             date={article.date}
+            views={article.views}
+            likes={article.likes}
           />
         </Grid.Column>
       );
@@ -138,6 +148,7 @@ export default class BlogTrending extends React.Component {
           <Title>Trending</Title>
           <MenuStyled compact>
             <Dropdown
+              closeOnChange
               placeholder="Today"
               options={timeOptions}
               onChange={this.filterByTime}
@@ -145,6 +156,7 @@ export default class BlogTrending extends React.Component {
               item
             />
             <Dropdown
+              closeOnChange
               placeholder="Topics"
               options={tagOptions}
               onChange={this.filterByTag}
@@ -160,8 +172,6 @@ export default class BlogTrending extends React.Component {
             <Grid.Row>{section1}</Grid.Row>
           </Grid>
         </div>
-        <br /> <br />
-        <hr />
       </div>
     );
   }

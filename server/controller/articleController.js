@@ -35,6 +35,7 @@ exports.getTrending = function(req, res) {
   if (req.query.topic) {
     query.topic = req.query.topic;
   }
+
   Article.find(query)
     .populate("author")
     .sort({ likes: -1 })
