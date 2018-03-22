@@ -13,6 +13,34 @@ exports.findAll = function(req, res) {
     });
 };
 
+exports.getNewest = function(req, res) {
+  Article.find()
+    .populate("author")
+    .sort({ date: -1 })
+    .limit(6)
+    .exec(function(err, article) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(article);
+    });
+};
+
+exports.getTrending = function(req, res) {
+  Article.find({ date: { $gte: new Date(), $lt: new Date(2012, 7, 15) } })
+    .populate("author")
+    .sort({ likes: -1 })
+    .limit(6)
+    .exec(function(err, article) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(article);
+    });
+};
+
 exports.create = function(req, res, next) {
   if (
     req.body.content &&
@@ -52,6 +80,38 @@ exports.findOne = function(req, res) {
     .populate("author")
     .exec(function(err, article) {
       if (err) res.send(err);
+      res.json(article);
+    });
+};
+
+exports.addView = function(req, res, next) {
+  Article.findOneAndUpdate(
+    { _id: req.params.id },
+    { $inc: { views: 1 } },
+    { new: true }
+  )
+    .populate("author")
+    .exec(function(err, article) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(article);
+    });
+};
+
+exports.addLike = function(req, res, next) {
+  Article.findOneAndUpdate(
+    { _id: req.params.id },
+    { $inc: { likes: 1 } },
+    { new: true }
+  )
+    .populate("author")
+    .exec(function(err, article) {
+      if (err) {
+        res.send(err);
+        return;
+      }
       res.json(article);
     });
 };

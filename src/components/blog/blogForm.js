@@ -75,7 +75,7 @@ export default class CommentForm extends Component {
       headline: headline,
       abstract: abstract,
       topic: topic,
-      date: new Date().toLocaleDateString()
+      date: new Date()
     };
     console.log(article);
 

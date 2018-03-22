@@ -9,6 +9,7 @@ import Login from "./components/login.js";
 import Blog from "./components/blog/blog.js";
 import BlogForm from "./components/blog/blogForm.js";
 import SearchStandard from "./components/search";
+import "./index.css";
 
 const Background = styled.div`
   background-image: url("/images/background_pattern.png");

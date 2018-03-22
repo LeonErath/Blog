@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
-const Date = styled.div`
+const DateDiv = styled.div`
   margin-top: 10px;
   color: #9e9e9e;
   font-size: 14px;
@@ -26,7 +26,7 @@ const Abstract = styled.div`
 export default class BlogShort extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
+    console.log("props", props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -41,7 +41,7 @@ export default class BlogShort extends Component {
         <Link to={`blog/${this.props.id}`}>
           <Headline>{this.props.headline}</Headline>
 
-          <Date>{this.props.date}</Date>
+          <DateDiv>{new Date(this.props.date).toLocaleDateString()}</DateDiv>
         </Link>
 
         {this.props.author}

@@ -13,8 +13,15 @@ var ArticleSchema = new Schema({
   abstract: String,
   topic: String,
   content: String,
-  date: String,
-  views: Number,
+  date: Date,
+  likes: {
+    type: Number,
+    default: 0
+  },
+  views: {
+    type: Number,
+    default: 0
+  },
   tag: [String]
 });
 //export our module to use in server.js

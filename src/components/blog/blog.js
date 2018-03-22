@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import "normalize.css";
-import { Button } from "semantic-ui-react";
+import { Button, Icon, Label } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
 import Comment from "../comment/commentBox";
+import Sidebar from "./sidebar";
 
 const Title = styled.h2`
   text-align: center;
@@ -26,16 +27,20 @@ const Date = styled.div`
 `;
 
 const Content = styled.div`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial,
-    sans-serif;
   color: rgba(0, 0, 0, 0.84);
 
   font-style: normal;
   font-size: 20px;
   line-height: 1.58;
   font-weight: 400;
-  text-align: justify;
+`;
+
+const P = styled.div`
+  white-space: pre-wrap;
+  ::selection {
+    background: #007486;
+    color: white;
+  }
 `;
 
 const Abstract = styled.div`
@@ -50,12 +55,11 @@ export default class Blog extends React.Component {
     super(props);
     this.state = { data: { author: {} } };
     this.goBack = this.goBack.bind(this);
+    this.addLike = this.addLike.bind(this);
   }
 
-  loadCommentsFromServer = () => {
+  loadCommentFromServer = () => {
     const id = this.props.match.params.id;
-    console.log(id);
-
     const url = `http://127.0.0.1:3030/api/article/${id}`;
 
     axios.get(url).then(res => {
@@ -63,10 +67,29 @@ export default class Blog extends React.Component {
     });
   };
 
+  addView() {
+    const id = this.props.match.params.id;
+    const url = `http://127.0.0.1:3030/api/article/addView/${id}`;
+    axios.put(url).then(res => {
+      console.log(res.data);
+
+      this.setState({ data: res.data });
+    });
+  }
+
+  addLike() {
+    const id = this.props.match.params.id;
+    const url = `http://127.0.0.1:3030/api/article/addLike/${id}`;
+    axios.put(url).then(res => {
+      console.log(res.data);
+      this.setState({ data: res.data });
+    });
+  }
+
   componentDidMount() {
     console.log("fired");
-
-    this.loadCommentsFromServer();
+    this.addView();
+    //this.loadCommentFromServer();
   }
 
   goBack() {
@@ -76,6 +99,8 @@ export default class Blog extends React.Component {
   render() {
     return (
       <Div>
+        <Sidebar id={this.state.data._id} click={this.addLike} />
+
         <Button onClick={this.goBack}>Back</Button>
         <br />
         <Title>{this.state.data.headline}</Title>
@@ -88,19 +113,28 @@ export default class Blog extends React.Component {
         <Abstract>{this.state.data.abstract}</Abstract>
         <br />
         <br />
+
         <Content>
-          {String(this.state.data.content)
-            .split("\n")
-            .map(function(item) {
-              return (
-                <span>
-                  {item}
-                  <br />
-                </span>
-              );
-            })}
+          <P>{this.state.data.content} </P>
         </Content>
 
+        <br />
+        <br />
+        <div>
+          <Label>
+            <Icon name="line chart" />
+            {this.state.data.views}
+            <Label.Detail>Views</Label.Detail>
+          </Label>
+
+          <Label>
+            <Icon name="heart" />
+            {this.state.data.likes}
+            <Label.Detail>Likes</Label.Detail>
+          </Label>
+        </div>
+        <br />
+        <br />
         <Comment articleID={this.state.data._id} />
       </Div>
     );

@@ -8,10 +8,8 @@ import axios from "axios";
 import { Div } from "../styledComponents";
 import styled from "styled-components";
 import Blog from "./blog.js";
-import BlogNewest from "./blogNewest";
-import BlogTrending from "./blogTrending";
 
-const urlTrending = "http://127.0.0.1:3030/api/article/";
+const urlNewest = "http://127.0.0.1:3030/api/article/trending";
 
 const Title = styled.h1`
   display: inline-block;
@@ -21,14 +19,14 @@ const ButtonStyled = styled(Button)`
   float: right;
 `;
 
-export default class BlogList extends React.Component {
+export default class BlogTrending extends React.Component {
   constructor(props) {
     super(props);
     this.state = { data: [] };
     this.pollInterval = null;
   }
   loadCommentsFromServer = () => {
-    axios.get(urlTrending).then(res => {
+    axios.get(urlNewest).then(res => {
       console.log(res.data);
       this.setState({ data: res.data });
     });
@@ -41,34 +39,36 @@ export default class BlogList extends React.Component {
   }
 
   render() {
-    let section2 = this.state.data
-      .slice(6, this.state.data.length)
-      .map(article => {
-        return (
-          <Grid.Column>
-            <BlogShort
-              headline={article.headline}
-              author={article.author.name}
-              key={article._id}
-              id={article._id}
-              abstract={article.abstract}
-              date={article.date}
-            />
-          </Grid.Column>
-        );
-      });
+    let section1 = this.state.data.slice(0, 6).map(article => {
+      return (
+        <Grid.Column>
+          <BlogShort
+            headline={article.headline}
+            author={article.author.name}
+            key={article._id}
+            id={article._id}
+            abstract={article.abstract}
+            date={article.date}
+          />
+        </Grid.Column>
+      );
+    });
 
     return (
-      <Div>
-        <Title>Featured</Title>
-        <Link to={`blog/create`}>
-          <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
-        </Link>
+      <div>
         <br />
         <br />
-        <BlogNewest />
-        <BlogTrending />
-      </Div>
+        <Title>Trending</Title>
+        <br />
+        <br />
+        <div>
+          <Grid columns={1}>
+            <Grid.Row>{section1}</Grid.Row>
+          </Grid>
+        </div>
+        <br /> <br />
+        <hr />
+      </div>
     );
   }
 }
