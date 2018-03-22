@@ -1,13 +1,14 @@
 module.exports = function(router) {
   var user = require("../controller/userController.js");
 
-  // Create a new Note
-  router.post("/user", user.create);
-
   // Retrieve all user
   router.get("/user", user.findAll);
 
-  router.get("/user/:id", user.findOne);
+  router.get("/logout", user.logout);
+
+  router.get("/login", user.login);
+
+  router.post("/register", user.create);
 
   // Update a Note with noteId
   router.put("/user/:id", user.update);

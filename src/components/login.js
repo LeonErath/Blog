@@ -3,6 +3,10 @@ import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import { Button, Input } from "semantic-ui-react";
 import styled from "styled-components";
+import axios from "axios";
+
+const url = "http://127.0.0.1:3030/api/register";
+const url2 = "http://127.0.0.1:3030/api/login";
 
 const Div = styled.div`
   display: flex;
@@ -44,15 +48,116 @@ const Title = styled.h1`
 `;
 
 export default class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: "",
+      username: "",
+      password: "",
+      conf_password: ""
+    };
+
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleUsermameChange = this.handleUsermameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleConfPasswordChange = this.handleConfPasswordChange.bind(this);
+    this.register = this.register.bind(this);
+    this.login = this.login.bind(this);
+  }
+
+  handleEmailChange(e) {
+    this.setState({ email: e.target.value });
+  }
+
+  handleUsermameChange(e) {
+    this.setState({ username: e.target.value });
+  }
+  handlePasswordChange(e) {
+    this.setState({ password: e.target.value });
+  }
+  handleConfPasswordChange(e) {
+    this.setState({ conf_password: e.target.value });
+  }
+
+  register(e) {
+    e.preventDefault();
+
+    let email = this.state.email.trim();
+    let username = this.state.username.trim();
+    let password = this.state.password.trim();
+    let conf_password = this.state.conf_password.trim();
+
+    if (!email || !username || !password || !conf_password) {
+      console.log("some fields are empty");
+      return;
+    }
+
+    var user = {
+      email: email,
+      username: username,
+      password: password,
+      passwordConf: conf_password
+    };
+
+    console.log(user);
+
+    axios
+      .post(url, user)
+      .then(response => {
+        console.log(response);
+        this.login();
+        this.setState({
+          email: "",
+          username: "",
+          password: "",
+          conf_password: ""
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
+
+        this.setState({});
+      });
+  }
+
+  login() {
+    axios
+      .get(url2)
+      .then(response => {
+        console.log("login", response);
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
+  }
+
   render() {
     return (
       <Div>
         <LoginDiv>
           <Title>Login</Title>
-          <InputStyled type="text" placeholder="Username..." />
-          <InputStyled type="password" placeholder="Password..." />
+          <InputStyled
+            type="email"
+            placeholder="Email..."
+            onChange={this.handleEmailChange}
+          />
+          <InputStyled
+            type="text"
+            placeholder="Username..."
+            onChange={this.handleUsermameChange}
+          />
+          <InputStyled
+            type="password"
+            placeholder="Password..."
+            onChange={this.handlePasswordChange}
+          />
+          <InputStyled
+            type="password"
+            placeholder="Confirm Password..."
+            onChange={this.handleConfPasswordChange}
+          />
           <ButtonStyled>
-            <Button type="submit" value="Post">
+            <Button type="submit" value="Post" onClick={this.register}>
               Login
             </Button>
           </ButtonStyled>

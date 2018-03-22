@@ -3,6 +3,8 @@
 var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
+var session = require("express-session");
+var MongoStore = require("connect-mongo")(session);
 
 var app = express();
 var router = express.Router();
@@ -36,6 +38,18 @@ app.use(function(req, res, next) {
   next();
 });
 
+//use sessions for tracking logins
+app.use(
+  session({
+    secret: "work hard",
+    resave: true,
+    saveUninitialized: false,
+    store: new MongoStore({
+      mongooseConnection: db
+    })
+  })
+);
+
 //now  we can set the route path & initialize the API
 router.get("/", function(req, res) {
   res.json({ message: "API Initialized!" });
@@ -60,3 +74,11 @@ app.listen(port, function() {
 //     // handle error
 //   }
 // });
+
+var User = require("./model/userSchema.js");
+
+User.remove({}, function(err, doc) {
+  if (err) {
+    // handle error
+  }
+});
