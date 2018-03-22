@@ -28,7 +28,14 @@ exports.getNewest = function(req, res) {
 };
 
 exports.getTrending = function(req, res) {
-  Article.find({ date: { $gte: new Date(), $lt: new Date(2012, 7, 15) } })
+  var query = {};
+  if (req.query.date) {
+    query.date = { $gte: req.query.date };
+  }
+  if (req.query.topic) {
+    query.topic = req.query.topic;
+  }
+  Article.find(query)
     .populate("author")
     .sort({ likes: -1 })
     .limit(6)
@@ -47,6 +54,7 @@ exports.create = function(req, res, next) {
     req.body.userID &&
     req.body.headline &&
     req.body.abstract &&
+    req.body.topic &&
     req.body.date
   ) {
     var article = {
@@ -54,6 +62,7 @@ exports.create = function(req, res, next) {
       content: req.body.content,
       headline: req.body.headline,
       abstract: req.body.abstract,
+      topic: req.body.topic,
       date: req.body.date
     };
 
