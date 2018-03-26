@@ -1,7 +1,7 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Input } from "semantic-ui-react";
+import { Button, Input, Checkbox } from "semantic-ui-react";
 import styled from "styled-components";
 import axios from "axios";
 
@@ -54,19 +54,25 @@ export default class Login extends React.Component {
       email: "",
       username: "",
       password: "",
-      conf_password: ""
+      conf_password: "",
+      registration: false
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleUsermameChange = this.handleUsermameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfPasswordChange = this.handleConfPasswordChange.bind(this);
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.register = this.register.bind(this);
     this.login = this.login.bind(this);
   }
 
   handleEmailChange(e) {
     this.setState({ email: e.target.value });
+  }
+
+  handleCheckboxChange(e) {
+    this.setState({ registration: !this.state.registration });
   }
 
   handleUsermameChange(e) {
@@ -82,44 +88,84 @@ export default class Login extends React.Component {
   register(e) {
     e.preventDefault();
 
-    let email = this.state.email.trim();
-    let username = this.state.username.trim();
-    let password = this.state.password.trim();
-    let conf_password = this.state.conf_password.trim();
+    if (this.state.registration) {
+      console.log("Registration");
 
-    if (!email || !username || !password || !conf_password) {
-      console.log("some fields are empty");
-      return;
-    }
+      let email = this.state.email.trim();
+      let username = this.state.username.trim();
+      let password = this.state.password.trim();
+      let conf_password = this.state.conf_password.trim();
 
-    var user = {
-      email: email,
-      username: username,
-      password: password,
-      passwordConf: conf_password
-    };
+      if (!email || !username || !password || !conf_password) {
+        console.log("some fields are empty");
+        return;
+      }
 
-    console.log(user);
-    axios.defaults.withCredentials = true;
-    axios(url, {
-      method: "post",
-      data: user,
-      withCredentials: true
-    })
-      .then(response => {
-        console.log(response);
-        this.setState({
-          email: "",
-          username: "",
-          password: "",
-          conf_password: ""
-        });
+      var user = {
+        email: email,
+        username: username,
+        password: password,
+        passwordConf: conf_password
+      };
+
+      console.log(user);
+      axios.defaults.withCredentials = true;
+      axios(url, {
+        method: "post",
+        data: user,
+        withCredentials: true
       })
-      .catch(err => {
-        console.log(err.response);
+        .then(response => {
+          this.setState({
+            email: "",
+            username: "",
+            password: "",
+            conf_password: ""
+          });
+        })
+        .catch(err => {
+          console.log(err.response);
 
-        this.setState({});
-      });
+          this.setState({});
+        });
+    } else {
+      console.log("Login");
+
+      let email = this.state.email.trim();
+      let password = this.state.password.trim();
+
+      if (!email || !password) {
+        console.log("some fields are empty");
+        return;
+      }
+
+      var user = {
+        email: email,
+        password: password
+      };
+
+      console.log(user);
+      axios.defaults.withCredentials = true;
+      axios(url2, {
+        method: "post",
+        data: user,
+        withCredentials: true
+      })
+        .then(response => {
+          console.log(response);
+          this.setState({
+            email: "",
+            username: "",
+            password: "",
+            conf_password: ""
+          });
+        })
+        .catch(err => {
+          console.log(err.response);
+
+          this.setState({});
+        });
+    }
   }
 
   login() {
@@ -138,25 +184,35 @@ export default class Login extends React.Component {
       <Div>
         <LoginDiv>
           <Title>Login</Title>
+
           <InputStyled
             type="email"
             placeholder="Email..."
             onChange={this.handleEmailChange}
           />
-          <InputStyled
-            type="text"
-            placeholder="Username..."
-            onChange={this.handleUsermameChange}
-          />
+          {this.state.registration ? (
+            <InputStyled
+              type="text"
+              placeholder="Username..."
+              onChange={this.handleUsermameChange}
+            />
+          ) : null}
           <InputStyled
             type="password"
             placeholder="Password..."
             onChange={this.handlePasswordChange}
           />
-          <InputStyled
-            type="password"
-            placeholder="Confirm Password..."
-            onChange={this.handleConfPasswordChange}
+          {this.state.registration ? (
+            <InputStyled
+              type="password"
+              placeholder="Confirm Password..."
+              onChange={this.handleConfPasswordChange}
+            />
+          ) : null}
+
+          <Checkbox
+            label="Register User"
+            onChange={this.handleCheckboxChange}
           />
           <ButtonStyled>
             <Button type="submit" value="Post" onClick={this.register}>

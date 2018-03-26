@@ -11,7 +11,7 @@ import Blog from "./blog.js";
 import BlogNewest from "./blogNewest";
 import BlogTrending from "./blogTrending";
 
-const urlTrending = "http://127.0.0.1:3030/api/article/";
+const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
 const Title = styled.h1`
   display: inline-block;
@@ -20,52 +20,40 @@ const Title = styled.h1`
 const ButtonStyled = styled(Button)`
   float: right;
 `;
-var amount = 0;
+
 export default class BlogList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [] };
+    this.state = { authenticated: false };
     this.pollInterval = null;
   }
   loadCommentsFromServer = () => {
-    axios.get(urlTrending).then(res => {
+    axios.get(urlCheckAuth).then(res => {
+      console.log("BlogList Authentication", res.data);
+
       if (res.data) {
-        this.setState({ data: res.data });
+        if (res.data == "No authentication") {
+          this.setState({ authenticated: false });
+        } else {
+          this.setState({ authenticated: true });
+        }
       }
-      console.log("res.data", res.data);
     });
   };
 
   componentDidMount() {
-    console.log("fired");
-
-    //this.loadCommentsFromServer();
+    this.loadCommentsFromServer();
   }
 
   render() {
-    let section2 = this.state.data
-      .slice(6, this.state.data.length)
-      .map(article => {
-        return (
-          <Grid.Column>
-            <BlogShort
-              headline={article.headline}
-              author={article.author.username}
-              key={article._id}
-              id={article._id}
-              abstract={article.abstract}
-              date={article.date}
-            />
-          </Grid.Column>
-        );
-      });
-
     return (
       <Div>
         <Title>Featured</Title>
-        <Link to={`blog/create`}>
-          <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
-        </Link>
+        {this.state.authenticated && (
+          <Link to={`blog/create`}>
+            <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
+          </Link>
+        )}
         <br />
         <br />
         <BlogNewest />

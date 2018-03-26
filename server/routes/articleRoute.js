@@ -6,11 +6,11 @@ module.exports = function(router) {
   router.post("/article", auth.check, article.create);
 
   // Retrieve all article
-  router.get("/article", auth.check, article.findAll);
+  router.get("/article", article.findAll);
 
-  router.get("/article/newest", auth.check, article.getNewest);
+  router.get("/article/newest", article.getNewest);
 
-  router.get("/article/trending", auth.check, article.getTrending);
+  router.get("/article/trending", article.getTrending);
 
   router.get("/article/:id", article.findOne);
 

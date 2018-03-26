@@ -5,6 +5,8 @@ module.exports = function(router) {
   // Retrieve all user
   router.get("/user", user.findAll);
 
+  router.get("/loggedin", auth.check, user.loggedin);
+
   router.get("/logout", user.logout);
 
   router.post("/login", user.login);

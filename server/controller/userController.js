@@ -10,7 +10,11 @@ exports.findAll = function(req, res) {
   });
 };
 
-exports.login2 = function(req, res, next) {
+exports.loggedin = function(req, res, next) {
+  return res.send("success");
+};
+
+exports.login = function(req, res, next) {
   if (req.body.email && req.body.password) {
     User.authenticate(req.body.email, req.body.password, function(error, user) {
       if (error || !user) {
@@ -32,29 +36,29 @@ exports.login2 = function(req, res, next) {
   }
 };
 
-exports.login = function(req, res, next) {
-  console.log(req.session);
+// exports.login = function(req, res, next) {
+//   console.log(req.session);
 
-  User.findById(req.session.userId).exec(function(error, user) {
-    if (error) {
-      return next(error);
-    } else {
-      if (user === null) {
-        var err = new Error("Not authorized! Go back!");
-        err.status = 400;
-        return next(err);
-      } else {
-        return res.send(
-          "<h1>Name: </h1>" +
-            user.username +
-            "<h2>Mail: </h2>" +
-            user.email +
-            '<br><a type="button" href="/logout">Logout</a>'
-        );
-      }
-    }
-  });
-};
+//   User.findById(req.session.userId).exec(function(error, user) {
+//     if (error) {
+//       return next(error);
+//     } else {
+//       if (user === null) {
+//         var err = new Error("Not authorized! Go back!");
+//         err.status = 400;
+//         return next(err);
+//       } else {
+//         return res.send(
+//           "<h1>Name: </h1>" +
+//             user.username +
+//             "<h2>Mail: </h2>" +
+//             user.email +
+//             '<br><a type="button" href="/logout">Logout</a>'
+//         );
+//       }
+//     }
+//   });
+// };
 
 exports.logout = function(req, res, next) {
   if (req.session) {
@@ -63,7 +67,7 @@ exports.logout = function(req, res, next) {
       if (err) {
         return next(err);
       } else {
-        return res.redirect("/");
+        return res.send("deleted");
       }
     });
   }

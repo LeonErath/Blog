@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Button } from "semantic-ui-react";
 import Home from "./components/home.js";
 import About from "./components/about.js";
 import BlogList from "./components/blog/blogList.js";
@@ -10,6 +11,10 @@ import Blog from "./components/blog/blog.js";
 import BlogForm from "./components/blog/blogForm.js";
 import SearchStandard from "./components/search";
 import "./index.css";
+import axios from "axios";
+
+const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
+const urlLogout = "http://127.0.0.1:3030/api/logout";
 
 const Background = styled.div`
   background-image: url("/images/background_pattern.png");
@@ -104,6 +109,38 @@ const Search = styled(SearchStandard)`
 `;
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { authenticated: false };
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  authenticate = () => {
+    axios.get(urlCheckAuth).then(res => {
+      console.log("BlogList Authentication", res.data);
+
+      if (res.data) {
+        if (res.data == "No authentication") {
+          this.setState({ authenticated: false });
+        } else {
+          this.setState({ authenticated: true });
+        }
+      }
+    });
+  };
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    axios.get(urlLogout).then(res => {
+      window.location.reload();
+    });
+  }
+
+  componentDidMount() {
+    this.authenticate();
+  }
+
   render() {
     return (
       <Background>
@@ -119,6 +156,12 @@ export default class App extends React.Component {
               <NavbarLink>
                 <Link to="/about">About</Link>
               </NavbarLink>
+              {this.state.authenticated && (
+                <NavbarLink>
+                  <Button onClick={this.handleSubmit}> Logout </Button>
+                </NavbarLink>
+              )}
+
               <Circle>
                 <Center>
                   <Title>
