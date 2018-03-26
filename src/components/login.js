@@ -100,12 +100,14 @@ export default class Login extends React.Component {
     };
 
     console.log(user);
-
-    axios
-      .post(url, user)
+    axios.defaults.withCredentials = true;
+    axios(url, {
+      method: "post",
+      data: user,
+      withCredentials: true
+    })
       .then(response => {
         console.log(response);
-        this.login();
         this.setState({
           email: "",
           username: "",

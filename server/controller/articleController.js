@@ -73,9 +73,9 @@ exports.create = function(req, res, next) {
 
         return next(error);
       } else {
-        console.log("success");
+        console.log("success", req.body.userID);
 
-        next(res.json({ message: "Article successfully added!" }));
+        return res.send("success");
       }
     });
   } else {

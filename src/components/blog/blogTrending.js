@@ -51,6 +51,7 @@ const MenuStyled = styled(Menu)`
 
 var date = "";
 var topic = "";
+var amount = 6;
 
 export default class BlogTrending extends React.Component {
   constructor(props) {
@@ -109,10 +110,12 @@ export default class BlogTrending extends React.Component {
       "&" +
       topicQuery;
     console.log("Query", urlTrending, topic, topicQuery);
-
-    axios.get(urlTrending).then(res => {
-      console.log("Trending", res.data);
-      this.setState({ data: res.data });
+    axios.defaults.withCredentials = true;
+    axios.get(urlTrending, { withCredentials: true }).then(res => {
+      if (res.data) {
+        console.log("BlogTrending", res.data);
+        this.setState({ data: res.data });
+      }
     });
   };
 
@@ -123,22 +126,25 @@ export default class BlogTrending extends React.Component {
   }
 
   render() {
-    let section1 = this.state.data.slice(0, 6).map(article => {
-      return (
-        <Grid.Column>
-          <BlogShort
-            headline={article.headline}
-            author={article.author.name}
-            key={article._id}
-            id={article._id}
-            abstract={article.abstract}
-            date={article.date}
-            views={article.views}
-            likes={article.likes}
-          />
-        </Grid.Column>
-      );
-    });
+    var section1;
+    if (this.state.data != "No authentication") {
+      section1 = this.state.data.slice(0, amount).map(article => {
+        return (
+          <Grid.Column>
+            <BlogShort
+              headline={article.headline}
+              author={article.author.name}
+              key={article._id}
+              id={article._id}
+              abstract={article.abstract}
+              date={article.date}
+              views={article.views}
+              likes={article.likes}
+            />
+          </Grid.Column>
+        );
+      });
+    }
 
     return (
       <div>

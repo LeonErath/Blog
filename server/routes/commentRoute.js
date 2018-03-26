@@ -1,15 +1,16 @@
 module.exports = function(router) {
+  const auth = require("../auth.js");
   var comment = require("../controller/commentController.js");
 
   // Create a new Note
-  router.post("/comment", comment.create);
+  router.post("/comment", auth.check, comment.create);
 
   // Retrieve all comment
   router.get("/comment", comment.findAll);
 
   // Update a Note with noteId
-  router.put("/comment/:id", comment.update);
+  router.put("/comment/:id", auth.check, comment.update);
 
   // Delete a Note with noteId
-  router.delete("/comment/:id", comment.delete);
+  router.delete("/comment/:id", auth.check, comment.delete);
 };

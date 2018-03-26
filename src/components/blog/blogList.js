@@ -20,7 +20,7 @@ const Title = styled.h1`
 const ButtonStyled = styled(Button)`
   float: right;
 `;
-
+var amount = 0;
 export default class BlogList extends React.Component {
   constructor(props) {
     super(props);
@@ -29,15 +29,17 @@ export default class BlogList extends React.Component {
   }
   loadCommentsFromServer = () => {
     axios.get(urlTrending).then(res => {
-      console.log(res.data);
-      this.setState({ data: res.data });
+      if (res.data) {
+        this.setState({ data: res.data });
+      }
+      console.log("res.data", res.data);
     });
   };
 
   componentDidMount() {
     console.log("fired");
 
-    this.loadCommentsFromServer();
+    //this.loadCommentsFromServer();
   }
 
   render() {
@@ -48,7 +50,7 @@ export default class BlogList extends React.Component {
           <Grid.Column>
             <BlogShort
               headline={article.headline}
-              author={article.author.name}
+              author={article.author.username}
               key={article._id}
               id={article._id}
               abstract={article.abstract}

@@ -10,8 +10,30 @@ exports.findAll = function(req, res) {
   });
 };
 
+exports.login2 = function(req, res, next) {
+  if (req.body.email && req.body.password) {
+    User.authenticate(req.body.email, req.body.password, function(error, user) {
+      if (error || !user) {
+        var err = new Error("Wrong email or password.");
+        err.status = 401;
+        return next(err);
+      } else {
+        req.session.userId = user._id;
+        req.session.save(err => {
+          if (!err) {
+            console.log("Session", req.session);
+            res.send("success");
+          } else {
+            return res.send(err);
+          }
+        });
+      }
+    });
+  }
+};
+
 exports.login = function(req, res, next) {
-  console.log(req.session.userId);
+  console.log(req.session);
 
   User.findById(req.session.userId).exec(function(error, user) {
     if (error) {
@@ -52,10 +74,8 @@ exports.create = function(req, res, next) {
   if (req.body.password !== req.body.passwordConf) {
     var err = new Error("Passwords do not match.");
     err.status = 400;
-    res.send("passwords dont match");
-    return next(err);
+    return res.next(err);
   }
-
   if (
     req.body.email &&
     req.body.username &&
@@ -74,31 +94,12 @@ exports.create = function(req, res, next) {
         return next(error);
       } else {
         req.session.userId = user._id;
+        req.session.cookie.maxAge = 300000;
         req.session.save(err => {
           if (!err) {
             console.log("Session", req.session);
-            res.redirect("/api/login");
-          } else {
-            return res.send(err);
-          }
-        });
-      }
-    });
-  } else if (req.body.logemail && req.body.logpassword) {
-    User.authenticate(req.body.logemail, req.body.logpassword, function(
-      error,
-      user
-    ) {
-      if (error || !user) {
-        var err = new Error("Wrong email or password.");
-        err.status = 401;
-        return next(err);
-      } else {
-        req.session.userId = user._id;
-        req.session.save(err => {
-          if (!err) {
-            console.log("Session", req.session);
-            res.redirect("/api/login");
+            console.log(req.sessionID);
+            res.send("success");
           } else {
             return res.send(err);
           }
@@ -106,6 +107,8 @@ exports.create = function(req, res, next) {
       }
     });
   } else {
+    console.log(req.bod);
+
     var err = new Error("All fields required.");
     err.status = 400;
     return next(err);

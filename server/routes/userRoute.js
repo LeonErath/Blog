@@ -1,12 +1,13 @@
 module.exports = function(router) {
-  var user = require("../controller/userController.js");
+  const auth = require("../auth.js");
+  const user = require("../controller/userController.js");
 
   // Retrieve all user
   router.get("/user", user.findAll);
 
   router.get("/logout", user.logout);
 
-  router.get("/login", user.login);
+  router.post("/login", user.login);
 
   router.post("/register", user.create);
 

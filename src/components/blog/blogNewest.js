@@ -19,6 +19,8 @@ const ButtonStyled = styled(Button)`
   float: right;
 `;
 
+var amount = 6;
+
 export default class BlogNewest extends React.Component {
   constructor(props) {
     super(props);
@@ -26,33 +28,40 @@ export default class BlogNewest extends React.Component {
     this.pollInterval = null;
   }
   loadCommentsFromServer = () => {
-    axios.get(urlNewest).then(res => {
-      console.log(res.data);
-      this.setState({ data: res.data });
+    axios.defaults.withCredentials = true;
+    axios.get(urlNewest, { withCredentials: true }).then(res => {
+      //console.log(res);
+
+      if (res.data) {
+        console.log("BlogNewest", res.data);
+
+        this.setState({ data: res.data });
+      }
     });
   };
 
   componentDidMount() {
-    console.log("fired");
-
     this.loadCommentsFromServer();
   }
 
   render() {
-    let section1 = this.state.data.slice(0, 6).map(article => {
-      return (
-        <Grid.Column>
-          <BlogShort
-            headline={article.headline}
-            author={article.author.name}
-            key={article._id}
-            id={article._id}
-            abstract={article.abstract}
-            date={article.date}
-          />
-        </Grid.Column>
-      );
-    });
+    var section1;
+    if (this.state.data != "No authentication") {
+      section1 = this.state.data.slice(0, amount).map(article => {
+        return (
+          <Grid.Column>
+            <BlogShort
+              headline={article.headline}
+              author={article.author.name}
+              key={article._id}
+              id={article._id}
+              abstract={article.abstract}
+              date={article.date}
+            />
+          </Grid.Column>
+        );
+      });
+    }
 
     return (
       <div>
