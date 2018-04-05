@@ -21,6 +21,11 @@ const ButtonStyled = styled(Button)`
   float: right;
 `;
 
+const Background = styled.div`
+  background-image: url("/images/background_pattern.png");
+  background-repeat: repeat;
+`;
+
 export default class BlogList extends React.Component {
   constructor(props) {
     super(props);
@@ -51,18 +56,20 @@ export default class BlogList extends React.Component {
 
   render() {
     return (
-      <Div>
-        <Title>Featured</Title>
-        {this.state.authenticated && (
-          <Link to={`blog/create`}>
-            <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
-          </Link>
-        )}
-        <br />
-        <br />
-        <BlogNewest />
-        <BlogTrending />
-      </Div>
+      <Background>
+        <Div>
+          <Title>Featured</Title>
+          {this.state.authenticated && (
+            <Link to={`blog/create`}>
+              <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
+            </Link>
+          )}
+          <br />
+          <br />
+          <BlogNewest />
+          <BlogTrending />
+        </Div>
+      </Background>
     );
   }
 }

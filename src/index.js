@@ -9,7 +9,11 @@ import BlogList from "./components/blog/blogList.js";
 import Login from "./components/login.js";
 import Blog from "./components/blog/blog.js";
 import BlogForm from "./components/blog/blogForm.js";
+import Profile from "./components/profile/profile.js";
 import Search from "./components/search";
+import BookmarkList from "./components/bookmark/bookmarkList.js";
+import Bookmark from "./components/bookmark/bookmark.js";
+
 import "./index.css";
 import axios from "axios";
 
@@ -203,7 +207,7 @@ export default class App extends React.Component {
               <RightSection>
                 {this.state.authenticated && (
                   <NavbarLink>
-                    <Link to="/">Profile</Link>
+                    <Link to="/profile">Profile</Link>
                   </NavbarLink>
                 )}
               </RightSection>
@@ -211,7 +215,7 @@ export default class App extends React.Component {
               <RightSection>
                 {this.state.authenticated && (
                   <NavbarLink>
-                    <Link to="/">
+                    <Link to="/bookmarks">
                       <Icon name="bookmark outline" size="large" />
                     </Link>
                   </NavbarLink>
@@ -225,6 +229,12 @@ export default class App extends React.Component {
                 <Route path="/blog/create" component={BlogForm} />
                 <Route path="/blog/:id" component={Blog} />
               </Switch>
+
+              <Switch>
+                <Route exact path="/bookmarks" component={BookmarkList} />
+                <Route path="/bookmarks/:id" component={Bookmark} />
+              </Switch>
+              <Route path="/profile" component={Profile} />
               <Route path="/welcome" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/about" component={About} />

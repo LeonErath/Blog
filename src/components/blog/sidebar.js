@@ -27,7 +27,11 @@ export default class Sidebar extends React.Component {
   constructor(props) {
     super(props);
     this.state = { authenticated: false };
-    this.click = this.click.bind(this);
+    this.clickLike = this.clickLike.bind(this);
+    this.clickBookmark = this.clickBookmark.bind(this);
+    this.clickTwitter = this.clickTwitter.bind(this);
+    this.clickFacebook = this.clickFacebook.bind(this);
+
     this.authenticate = this.authenticate.bind(this);
   }
 
@@ -45,9 +49,21 @@ export default class Sidebar extends React.Component {
     });
   };
 
-  click(e) {
+  clickLike(e) {
     e.preventDefault();
     this.props.click();
+  }
+  clickBookmark(e) {
+    e.preventDefault();
+  }
+  clickFacebook(e) {
+    e.preventDefault();
+  }
+  clickTwitter(e) {
+    e.preventDefault();
+  }
+  clickFacebook(e) {
+    e.preventDefault();
   }
 
   componentDidMount() {
@@ -57,16 +73,16 @@ export default class Sidebar extends React.Component {
   render() {
     return (
       <Div>
-        <Button circular icon="heart" size="huge" onClick={this.click} />
+        <Button circular icon="heart" size="huge" onClick={this.clickLike} />
         <br />
         <br />
-        {this.state.authenticated && <Button circular icon="bookmark" />}
+        <Button circular icon="bookmark" onClick={this.clickBookmark} />
         <br />
         <br />
-        <Button circular icon="twitter" />
+        <Button circular icon="twitter" onClick={this.clickTwitter} />
         <br />
         <br />
-        <Button circular icon="facebook" />
+        <Button circular icon="facebook" onClick={this.clickFacebook} />
         <br />
       </Div>
     );
