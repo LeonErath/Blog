@@ -122,6 +122,7 @@ export default class Login extends React.Component {
             password: "",
             conf_password: ""
           });
+          window.location.pathname = "/";
         })
         .catch(err => {
           console.log(err.response);
@@ -153,6 +154,8 @@ export default class Login extends React.Component {
       })
         .then(response => {
           console.log(response);
+
+          window.location.pathname = "/";
           this.setState({
             email: "",
             username: "",
@@ -188,22 +191,26 @@ export default class Login extends React.Component {
           <InputStyled
             type="email"
             placeholder="Email..."
+            value={this.state.email}
             onChange={this.handleEmailChange}
           />
           {this.state.registration ? (
             <InputStyled
+              value={this.state.username}
               type="text"
               placeholder="Username..."
               onChange={this.handleUsermameChange}
             />
           ) : null}
           <InputStyled
+            value={this.state.password}
             type="password"
             placeholder="Password..."
             onChange={this.handlePasswordChange}
           />
           {this.state.registration ? (
             <InputStyled
+              value={this.state.conf_password}
               type="password"
               placeholder="Confirm Password..."
               onChange={this.handleConfPasswordChange}

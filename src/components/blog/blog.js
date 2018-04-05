@@ -7,6 +7,7 @@ import axios from "axios";
 import Comment from "../comment/commentBox";
 import Sidebar from "./sidebar";
 
+const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 const Title = styled.h2`
   text-align: center;
   color: black;
@@ -53,43 +54,80 @@ const Abstract = styled.div`
 export default class Blog extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: { author: {} } };
+    this.state = {
+      data: { author: { username: "" } },
+      authenticated: false,
+      loaded: false
+    };
     this.goBack = this.goBack.bind(this);
     this.addLike = this.addLike.bind(this);
+    this.authenticate = this.authenticate.bind(this);
+    this.loadArticleFromServer = this.loadArticleFromServer.bind(this);
   }
 
-  loadCommentFromServer = () => {
+  authenticate = () => {
+    axios.get(urlCheckAuth).then(res => {
+      console.log("Blog Authentication", res.data);
+
+      if (res.data) {
+        if (res.data == "No authentication") {
+          this.setState({ authenticated: false });
+        } else {
+          this.setState({ authenticated: true });
+        }
+      }
+    });
+  };
+
+  loadArticleFromServer = () => {
     const id = this.props.match.params.id;
+    console.log("ID", id);
+
     const url = `http://127.0.0.1:3030/api/article/${id}`;
 
-    axios.get(url).then(res => {
-      this.setState({ data: res.data });
-    });
+    axios
+      .get(url)
+      .then(res => {
+        console.log("Data", res.data);
+
+        this.setState({ data: res.data, loaded: true });
+      })
+      .catch(err => {});
   };
 
   addView() {
     const id = this.props.match.params.id;
     const url = `http://127.0.0.1:3030/api/article/addView/${id}`;
-    axios.put(url).then(res => {
-      console.log(res.data);
+    axios
+      .put(url)
+      .then(res => {
+        console.log("VIEW", res.data);
 
-      this.setState({ data: res.data });
-    });
+        this.setState({ data: res.data });
+      })
+      .catch(err => {
+        console.log("VIEW", err);
+      });
   }
 
   addLike() {
     const id = this.props.match.params.id;
     const url = `http://127.0.0.1:3030/api/article/addLike/${id}`;
-    axios.put(url).then(res => {
-      console.log(res.data);
-      this.setState({ data: res.data });
-    });
+    axios
+      .put(url)
+      .then(res => {
+        console.log("LIKE", res.data);
+        this.setState({ data: res.data });
+      })
+      .catch(err => {
+        console.log("LIKE", err);
+      });
   }
 
   componentDidMount() {
-    console.log("fired");
     this.addView();
-    //this.loadCommentFromServer();
+    this.authenticate();
+    this.loadArticleFromServer();
   }
 
   goBack() {
@@ -100,24 +138,20 @@ export default class Blog extends React.Component {
     return (
       <Div>
         <Sidebar id={this.state.data._id} click={this.addLike} />
-
         <Button onClick={this.goBack}>Back</Button>
         <br />
         <Title>{this.state.data.headline}</Title>
-
         <br />
-        <i>{this.state.data.author.name}</i>
+        {this.state.loaded && <i>{this.state.data.author.username}</i>}
         <Date>{this.state.data.date}</Date>
         <br />
         <br />
         <Abstract>{this.state.data.abstract}</Abstract>
         <br />
         <br />
-
         <Content>
           <P>{this.state.data.content} </P>
         </Content>
-
         <br />
         <br />
         <div>

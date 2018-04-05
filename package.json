@@ -12,6 +12,7 @@
     "body-parser": "^1.18.2",
     "connect-mongo": "^2.0.1",
     "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "draft-js": "^0.10.5",
     "ejs": "^2.5.8",
     "express": "^4.16.2",

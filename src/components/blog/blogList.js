@@ -28,7 +28,11 @@ export default class BlogList extends React.Component {
     this.pollInterval = null;
   }
   loadCommentsFromServer = () => {
-    axios.get(urlCheckAuth).then(res => {
+    axios.defaults.withCredentials = true;
+    axios(urlCheckAuth, {
+      method: "get",
+      withCredentials: true
+    }).then(res => {
       console.log("BlogList Authentication", res.data);
 
       if (res.data) {

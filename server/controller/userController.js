@@ -22,10 +22,10 @@ exports.login = function(req, res, next) {
         err.status = 401;
         return next(err);
       } else {
+        req.session.cookie.maxAge = 36000000;
         req.session.userId = user._id;
         req.session.save(err => {
           if (!err) {
-            console.log("Session", req.session);
             res.send("success");
           } else {
             return res.send(err);

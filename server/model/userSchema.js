@@ -23,7 +23,13 @@ var UserSchema = new mongoose.Schema({
   passwordConf: {
     type: String,
     required: true
-  }
+  },
+  bookmarks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Article"
+    }
+  ]
 });
 
 //authenticate input against database

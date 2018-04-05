@@ -5,7 +5,7 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var session = require("express-session");
 var MongoStore = require("connect-mongo")(session);
-var cookieParser = require("cookie-parser");
+var cors = require("cors");
 
 var app = express();
 var router = express.Router();
@@ -21,28 +21,13 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(`${__dirname}/public`));
-app.use(express.static(`${__dirname}/bower_components`));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true
+  })
+);
 
-//To prevent errors from Cross Origin Resource Sharing, we will set our headers to allow CORS with middleware like so:
-app.use(function(req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000 ");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-  );
-
-  //and remove cacheing so we get the most recent comments
-  res.setHeader("Cache-Control", "no-cache");
-  next();
-});
-
-app.use(cookieParser("keyboard cat"));
 //use sessions for tracking logins
 app.use(
   session({
@@ -50,11 +35,12 @@ app.use(
     secret: "this is the default passphrase",
     store: new MongoStore({ mongooseConnection: db }),
     resave: true,
-    saveUninitialized: true,
-    httpOnly: true,
-    secure: true,
-    duration: 30 * 60 * 10000,
-    activeDuration: 5 * 60 * 10000
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      secure: false,
+      httpOnly: true
+    }
   })
 );
 
