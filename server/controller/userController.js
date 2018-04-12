@@ -10,9 +10,25 @@ exports.findAll = function(req, res) {
   });
 };
 
+exports.deleteBookmark = function(req, res) {
+  User.findOneAndUpdate(
+    { _id: req.session.userId },
+    { $pullAll: { bookmarks: [req.body.articleId] } },
+    { new: true }
+  )
+    .populate({ path: "bookmarks", populate: { path: "author" } })
+    .exec(function(err, data) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.send(data);
+    });
+};
+
 exports.getBookmarks = function(req, res) {
   User.findOne({ _id: req.session.userId })
-    .populate("bookmarks")
+    .populate({ path: "bookmarks", populate: { path: "author" } })
     .exec(function(err, data) {
       if (err) {
         res.send(err);

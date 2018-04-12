@@ -12,7 +12,6 @@ import BlogForm from "./components/blog/blogForm.js";
 import Profile from "./components/profile/profile.js";
 import Search from "./components/search";
 import BookmarkList from "./components/bookmark/bookmarkList.js";
-import Bookmark from "./components/bookmark/bookmark.js";
 
 import "./index.css";
 import axios from "axios";
@@ -226,7 +225,6 @@ export default class App extends React.Component {
 
               <Switch>
                 <Route exact path="/bookmarks" component={BookmarkList} />
-                <Route path="/bookmarks/:id" component={Bookmark} />
               </Switch>
               <Route path="/profile" component={Profile} />
               <Route path="/welcome" component={Home} />

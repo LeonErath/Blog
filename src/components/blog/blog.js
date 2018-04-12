@@ -136,7 +136,7 @@ export default class Blog extends React.Component {
     axios
       .put(url, { articleId: id })
       .then(res => {
-        console.log("Bookmark", res.data);
+        console.log("Bookmark ", res.data);
       })
       .catch(err => {
         console.log("Bookmark", err);

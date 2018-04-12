@@ -11,6 +11,8 @@ module.exports = function(router) {
 
   router.get("/user/getBookmarks", auth.check, user.getBookmarks);
 
+  router.put("/user/deleteBookmark", user.deleteBookmark);
+
   router.post("/login", user.login);
 
   router.post("/register", user.create);
