@@ -35,10 +35,11 @@ app.use(
     secret: "this is the default passphrase",
     store: new MongoStore({ mongooseConnection: db }),
     resave: true,
+    rolling: true,
     saveUninitialized: false,
     cookie: {
       maxAge: 30 * 24 * 60 * 60 * 1000,
-      secure: false,
+      secure: "auto",
       httpOnly: true
     }
   })

@@ -9,12 +9,15 @@ module.exports = function(router) {
 
   router.get("/logout", user.logout);
 
+  router.get("/user/getBookmarks", auth.check, user.getBookmarks);
+
   router.post("/login", user.login);
 
   router.post("/register", user.create);
 
   // Update a Note with noteId
-  router.put("/user/:id", user.update);
+
+  router.put("/user/addBookmark", auth.check, user.addBookmark);
 
   // Delete a Note with noteId
   router.delete("/user/:id", user.delete);

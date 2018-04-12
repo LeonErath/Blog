@@ -10,8 +10,40 @@ exports.findAll = function(req, res) {
   });
 };
 
+exports.getBookmarks = function(req, res) {
+  User.findOne({ _id: req.session.userId })
+    .populate("bookmarks")
+    .exec(function(err, data) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.send(data);
+    });
+};
+
+exports.addBookmark = function(req, res) {
+  User.findOneAndUpdate(
+    { _id: req.session.userId },
+    { $push: { bookmarks: req.body.articleId } }
+  ).exec(function(err, data) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.send("Article successfully added to BookmarkList");
+  });
+};
+
 exports.loggedin = function(req, res, next) {
-  return res.send("success");
+  User.findOne({ _id: req.session.userId }).exec(function(err, data) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+
+    res.json(data);
+  });
 };
 
 exports.login = function(req, res, next) {
@@ -101,8 +133,6 @@ exports.create = function(req, res, next) {
         req.session.cookie.maxAge = 300000;
         req.session.save(err => {
           if (!err) {
-            console.log("Session", req.session);
-            console.log(req.sessionID);
             res.send("success");
           } else {
             return res.send(err);

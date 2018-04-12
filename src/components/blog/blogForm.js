@@ -12,6 +12,7 @@ import styled from "styled-components";
 import axios from "axios";
 
 const url = "http://127.0.0.1:3030/api/article";
+const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
 const FromStyled = styled(Form)`
   width: 100%;
@@ -33,13 +34,31 @@ export default class CommentForm extends Component {
       successRequest: false,
       failureRequest: false
     };
-    this.handleAuthorChange = this.handleAuthorChange.bind(this);
+
     this.handleHeadlineChange = this.handleHeadlineChange.bind(this);
     this.handleAbstractChange = this.handleAbstractChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handleTopicChange = this.handleTopicChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.authenticate = this.authenticate.bind(this);
   }
+
+  authenticate = () => {
+    axios.defaults.withCredentials = true;
+    axios(urlCheckAuth, {
+      method: "get",
+      withCredentials: true
+    })
+      .then(res => {
+        this.setState({ userID: res.data._id });
+      })
+      .catch(err => {
+        console.log("need to go back");
+
+        this.props.history.goBack();
+      });
+  };
+
   handleHeadlineChange(e) {
     this.setState({ headline: e.target.value });
   }
@@ -48,9 +67,6 @@ export default class CommentForm extends Component {
   }
   handleContentChange(e) {
     this.setState({ content: e.target.value });
-  }
-  handleAuthorChange(e) {
-    this.setState({ userID: e.target.value });
   }
   handleTopicChange(e) {
     this.setState({ topic: e.target.value });
@@ -85,7 +101,6 @@ export default class CommentForm extends Component {
         console.log(response);
 
         this.setState({
-          userID: "",
           content: "",
           headline: "",
           abstract: "",
@@ -111,6 +126,7 @@ export default class CommentForm extends Component {
   }
 
   componentDidMount() {
+    this.authenticate();
     console.log(this.state);
   }
 
@@ -159,15 +175,6 @@ export default class CommentForm extends Component {
               placeholder="Topic"
               value={this.state.topic}
               onChange={this.handleTopicChange}
-            />
-            <Form.Field
-              required
-              width={8}
-              control={Input}
-              label="Author"
-              placeholder="Author"
-              value={this.state.userID}
-              onChange={this.handleAuthorChange}
             />
           </Form.Group>
           <Form.Field

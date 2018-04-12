@@ -63,10 +63,15 @@ export default class Blog extends React.Component {
     this.addLike = this.addLike.bind(this);
     this.authenticate = this.authenticate.bind(this);
     this.loadArticleFromServer = this.loadArticleFromServer.bind(this);
+    this.addBookmark = this.addBookmark.bind(this);
   }
 
   authenticate = () => {
-    axios.get(urlCheckAuth).then(res => {
+    axios.defaults.withCredentials = true;
+    axios(urlCheckAuth, {
+      method: "get",
+      withCredentials: true
+    }).then(res => {
       console.log("Blog Authentication", res.data);
 
       if (res.data) {
@@ -124,6 +129,20 @@ export default class Blog extends React.Component {
       });
   }
 
+  addBookmark() {
+    const id = this.props.match.params.id;
+    const url = `http://127.0.0.1:3030/api/user/addBookmark`;
+
+    axios
+      .put(url, { articleId: id })
+      .then(res => {
+        console.log("Bookmark", res.data);
+      })
+      .catch(err => {
+        console.log("Bookmark", err);
+      });
+  }
+
   componentDidMount() {
     this.addView();
     this.authenticate();
@@ -137,7 +156,11 @@ export default class Blog extends React.Component {
   render() {
     return (
       <Div>
-        <Sidebar id={this.state.data._id} click={this.addLike} />
+        <Sidebar
+          id={this.state.data._id}
+          click={this.addLike}
+          addBookmark={this.addBookmark}
+        />
         <Button onClick={this.goBack}>Back</Button>
         <br />
         <Title>{this.state.data.headline}</Title>

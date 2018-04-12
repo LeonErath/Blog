@@ -129,14 +129,15 @@ export default class App extends React.Component {
   }
 
   authenticate = () => {
-    axios
-      .get(urlCheckAuth)
+    axios.defaults.withCredentials = true;
+    axios(urlCheckAuth, {
+      method: "get",
+      withCredentials: true
+    })
       .then(res => {
         this.setState({ authenticated: true });
       })
       .catch(err => {
-        console.log("NAVBAR", err);
-
         this.setState({ authenticated: false });
       });
   };
@@ -155,8 +156,8 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Background>
-        <Router>
+      <Router>
+        <Background>
           <div>
             <Rectangle>
               <NavbarLink>
@@ -240,8 +241,8 @@ export default class App extends React.Component {
               <Route path="/about" component={About} />
             </Div>
           </div>
-        </Router>
-      </Background>
+        </Background>
+      </Router>
     );
   }
 }

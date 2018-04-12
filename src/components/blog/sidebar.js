@@ -36,7 +36,11 @@ export default class Sidebar extends React.Component {
   }
 
   authenticate = () => {
-    axios.get(urlCheckAuth).then(res => {
+    axios.defaults.withCredentials = true;
+    axios(urlCheckAuth, {
+      method: "get",
+      withCredentials: true
+    }).then(res => {
       console.log("BlogList Authentication", res.data);
 
       if (res.data) {
@@ -55,6 +59,8 @@ export default class Sidebar extends React.Component {
   }
   clickBookmark(e) {
     e.preventDefault();
+
+    this.props.addBookmark();
   }
   clickFacebook(e) {
     e.preventDefault();
