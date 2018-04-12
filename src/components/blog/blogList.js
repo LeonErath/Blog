@@ -1,13 +1,11 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import BlogShort from "./blogShort.js";
-import { Button, Grid } from "semantic-ui-react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Button } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Div } from "../styledComponents";
 import styled from "styled-components";
-import Blog from "./blog.js";
 import BlogNewest from "./blogNewest";
 import BlogTrending from "./blogTrending";
 
@@ -41,7 +39,7 @@ export default class BlogList extends React.Component {
       console.log("BlogList Authentication", res.data);
 
       if (res.data) {
-        if (res.data == "No authentication") {
+        if (res.data === "No authentication") {
           this.setState({ authenticated: false });
         } else {
           this.setState({ authenticated: true });

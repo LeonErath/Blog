@@ -17,12 +17,6 @@ const Div = styled.div`
   padding: 8px 0;
 `;
 
-const ButtonStyled = styled(Button)`
-  padding: 6px 8px 6px 16px;
-  color: #2196f3;
-  display: block;
-`;
-
 export default class Sidebar extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +38,7 @@ export default class Sidebar extends React.Component {
       console.log("BlogList Authentication", res.data);
 
       if (res.data) {
-        if (res.data == "No authentication") {
+        if (res.data === "No authentication") {
           this.setState({ authenticated: false });
         } else {
           this.setState({ authenticated: true });
@@ -66,9 +60,6 @@ export default class Sidebar extends React.Component {
     e.preventDefault();
   }
   clickTwitter(e) {
-    e.preventDefault();
-  }
-  clickFacebook(e) {
     e.preventDefault();
   }
 

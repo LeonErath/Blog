@@ -75,7 +75,7 @@ export default class Blog extends React.Component {
       console.log("Blog Authentication", res.data);
 
       if (res.data) {
-        if (res.data == "No authentication") {
+        if (res.data === "No authentication") {
           this.setState({ authenticated: false });
         } else {
           this.setState({ authenticated: true });

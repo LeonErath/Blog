@@ -5,10 +5,6 @@ import CommentObj from "./comment.js";
 import { Comment } from "semantic-ui-react";
 
 export default class CommentList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     var commentNodes;
 

@@ -2,10 +2,9 @@ import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import { Div } from "../styledComponents";
-import { Button, Grid } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import axios from "axios";
 import BlogShort from "../blog/blogShort.js";
-import styled from "styled-components";
 
 const urlBookmarks = "http://127.0.0.1:3030/api/user/getBookmarks";
 const amount = 6;
@@ -37,7 +36,7 @@ export default class BookmarkList extends React.Component {
 
   render() {
     var section1;
-    if (this.state.data != "No authentication") {
+    if (this.state.data !== "No authentication") {
       section1 = this.state.data.slice(0, amount).map(article => {
         return (
           <Grid.Column>

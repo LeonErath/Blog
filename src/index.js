@@ -94,13 +94,6 @@ const Div = styled.div`
   background-repeat: repeat;
 `;
 
-const DivSearch = styled.div`
-  padding-top: 4px;
-  padding-right: 16px;
-  float: right;
-  display: inline-block;
-  height: 100%;
-`;
 const Circle = styled.div`
   position: absolute;
   bottom: -15px;

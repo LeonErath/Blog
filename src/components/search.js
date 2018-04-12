@@ -1,10 +1,8 @@
 import _ from "lodash";
-import faker from "faker";
 import axios from "axios";
-import React, { Component } from "react";
-import { Search, Grid, Header } from "semantic-ui-react";
+import React from "react";
+import { Search, Grid } from "semantic-ui-react";
 import PropTypes from "prop-types";
-import { Label } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
 var source;

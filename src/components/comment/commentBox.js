@@ -5,7 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 import CommentForm from "./commentForm.js";
 import CommentList from "./commentList.js";
 import styled from "styled-components";
-import { Segment, Button, Divider } from "semantic-ui-react";
+import { Divider } from "semantic-ui-react";
 
 const CommentFormStyled = styled(CommentForm)`
   margin-top: 10px;
@@ -34,7 +34,7 @@ export default class CommentBox extends React.Component {
   }
 
   loadCommentsFromServer = () => {
-    if (this.props.articleID != undefined) {
+    if (this.props.articleID !== undefined) {
       var url2 = url + this.props.articleID;
 
       axios
@@ -52,7 +52,7 @@ export default class CommentBox extends React.Component {
     this.loadCommentsFromServer();
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.articleID != this.props.articleID) {
+    if (prevProps.articleID !== this.props.articleID) {
       console.log("ID:" + this.props.articleID);
 
       this.loadCommentsFromServer();

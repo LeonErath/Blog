@@ -2,12 +2,9 @@ import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import BlogShort from "./blogShortTrending.js";
-import { Button, Grid, Dropdown, Menu } from "semantic-ui-react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Grid, Dropdown, Menu } from "semantic-ui-react";
 import axios from "axios";
-import { Div } from "../styledComponents";
 import styled from "styled-components";
-import Blog from "./blog.js";
 
 const timeOptions = [
   { key: 1, text: "Today", value: 1 },
@@ -40,9 +37,6 @@ const tagOptions = [
 const Title = styled.h1`
   display: inline-block;
   color: black;
-`;
-const ButtonStyled = styled(Button)`
-  float: right;
 `;
 
 const MenuStyled = styled(Menu)`
@@ -98,11 +92,11 @@ export default class BlogTrending extends React.Component {
   loadTrendingFromServer = (time, topic) => {
     var dateQuery = "date";
     var topicQuery = "topic";
-    if (time != "") {
-      var dateQuery = "date=" + time;
+    if (time !== "") {
+      dateQuery = "date=" + time;
     }
-    if (topic != "") {
-      var topicQuery = "topic=" + topic;
+    if (topic !== "") {
+      topicQuery = "topic=" + topic;
     }
     const urlTrending =
       `http://127.0.0.1:3030/api/article/trending?` +
@@ -127,7 +121,7 @@ export default class BlogTrending extends React.Component {
 
   render() {
     var section1;
-    if (this.state.data != "No authentication") {
+    if (this.state.data !== "No authentication") {
       section1 = this.state.data.slice(0, amount).map(article => {
         return (
           <Grid.Column>

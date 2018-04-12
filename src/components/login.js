@@ -140,7 +140,7 @@ export default class Login extends React.Component {
         return;
       }
 
-      var user = {
+      user = {
         email: email,
         password: password
       };

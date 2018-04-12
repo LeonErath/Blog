@@ -2,12 +2,9 @@ import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import BlogShort from "./blogShort.js";
-import { Button, Grid } from "semantic-ui-react";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { Grid } from "semantic-ui-react";
 import axios from "axios";
-import { Div } from "../styledComponents";
 import styled from "styled-components";
-import Blog from "./blog.js";
 
 const urlNewest = "http://127.0.0.1:3030/api/article/newest";
 
@@ -15,10 +12,6 @@ const Title = styled.h1`
   display: inline-block;
   color: black;
 `;
-const ButtonStyled = styled(Button)`
-  float: right;
-`;
-
 var amount = 6;
 
 export default class BlogNewest extends React.Component {
@@ -27,7 +20,7 @@ export default class BlogNewest extends React.Component {
     this.state = { data: [] };
     this.pollInterval = null;
   }
-  loadCommentsFromServer = () => {
+  loadNewestFromServer = () => {
     axios.defaults.withCredentials = true;
     axios.get(urlNewest, { withCredentials: true }).then(res => {
       //console.log(res);
@@ -41,12 +34,12 @@ export default class BlogNewest extends React.Component {
   };
 
   componentDidMount() {
-    this.loadCommentsFromServer();
+    this.loadNewestFromServer();
   }
 
   render() {
     var section1;
-    if (this.state.data != "No authentication") {
+    if (this.state.data !== "No authentication") {
       section1 = this.state.data.slice(0, amount).map(article => {
         return (
           <Grid.Column>
