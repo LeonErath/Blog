@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Icon, Card, Button, Image, Segment, Label } from "semantic-ui-react";
 
 const DateDiv = styled.div`
   margin-top: 10px;
@@ -9,9 +10,16 @@ const DateDiv = styled.div`
 `;
 
 const Div = styled.div`
-  padding: 16px;
+  text-align: center;
 `;
+
+const DivMargin = styled.div`
+  display: inline-block;
+  padding: 4px;
+`;
+
 const Headline = styled.h2`
+  padding-top: 16px;
   text-align: left;
   color: black;
 `;
@@ -22,7 +30,6 @@ const Abstract = styled.div`
   font-size: 14px;
   text-align: justify;
 `;
-
 export default class BlogShort extends Component {
   constructor(props) {
     super(props);
@@ -37,17 +44,33 @@ export default class BlogShort extends Component {
 
   render() {
     return (
-      <Div>
-        <Link to={`blog/${this.props.id}`}>
-          <Headline>{this.props.headline}</Headline>
+      <Card>
+        <Card.Content header>
+          <Label as="a" color="red" attached="top right">
+            {this.props.topic}
+          </Label>
+          <Link to={`blog/${this.props.id}`}>
+            <Headline>{this.props.headline}</Headline>
 
-          <DateDiv>{new Date(this.props.date).toLocaleDateString()}</DateDiv>
-        </Link>
+            <DateDiv>{new Date(this.props.date).toLocaleDateString()}</DateDiv>
+          </Link>
+          {this.props.author}
+        </Card.Content>
+        <Card.Content description={this.props.abstract} />
 
-        {this.props.author}
-        <br />
-        <Abstract>{this.props.abstract}</Abstract>
-      </Div>
+        <Card.Content extra>
+          <Div>
+            <DivMargin>
+              <Icon name="line chart" />
+              {this.props.views} Views
+            </DivMargin>
+            <DivMargin>
+              <Icon name="heart" />
+              {this.props.likes} Likes
+            </DivMargin>
+          </Div>
+        </Card.Content>
+      </Card>
     );
   }
 }

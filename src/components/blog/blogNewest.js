@@ -2,7 +2,7 @@ import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import BlogShort from "./blogShort.js";
-import { Grid } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import axios from "axios";
 import styled from "styled-components";
 
@@ -13,6 +13,10 @@ const Title = styled.h1`
   color: black;
 `;
 var amount = 6;
+
+const DivMargin = styled.div`
+  margin: 16px;
+`;
 
 export default class BlogNewest extends React.Component {
   constructor(props) {
@@ -42,16 +46,17 @@ export default class BlogNewest extends React.Component {
     if (this.state.data !== "No authentication") {
       section1 = this.state.data.slice(0, amount).map(article => {
         return (
-          <Grid.Column>
-            <BlogShort
-              headline={article.headline}
-              author={article.author.name}
-              key={article._id}
-              id={article._id}
-              abstract={article.abstract}
-              date={article.date}
-            />
-          </Grid.Column>
+          <BlogShort
+            headline={article.headline}
+            key={article._id}
+            id={article._id}
+            author={article.author.username}
+            likes={article.likes}
+            views={article.views}
+            abstract={article.abstract}
+            date={article.date}
+            topic={article.topic}
+          />
         );
       });
     }
@@ -62,9 +67,7 @@ export default class BlogNewest extends React.Component {
         <br />
         <br />
         <div>
-          <Grid columns={2}>
-            <Grid.Row>{section1}</Grid.Row>
-          </Grid>
+          <Card.Group itemsPerRow={2}> {section1}</Card.Group>
         </div>
         <br /> <br />
         <hr />

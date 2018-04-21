@@ -12,25 +12,51 @@ const CommentFormStyled = styled(CommentForm)`
 `;
 
 var url = "http://127.0.0.1:3030/api/comment?articleID=";
+const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
 export default class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [] };
+    this.state = { data: [], authenticated: false };
+    this.authenticate = this.authenticate.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.pollInterval = null;
   }
 
-  handleCommentSubmit(comment) {
-    let comments = this.state.data;
-    comment.id = Date.now();
-    comment.articleID = this.props.articleID;
-    let newComments = comments.concat([comment]);
-    this.setState({ data: newComments });
+  authenticate = () => {
+    axios.defaults.withCredentials = true;
+    axios(urlCheckAuth, {
+      method: "get",
+      withCredentials: true
+    }).then(res => {
+      console.log("CommentBox Authentication", res.data);
 
-    axios.post(url, comment).catch(err => {
-      console.error(err);
+      if (res.data) {
+        if (res.data === "No authentication") {
+          this.setState({ authenticated: false });
+        } else {
+          this.setState({ authenticated: true });
+        }
+      }
     });
+  };
+
+  handleCommentSubmit(comment) {
+    if (this.state.authenticated) {
+      let comments = this.state.data;
+      comment.id = Date.now();
+      comment.articleID = this.props.articleID;
+
+      axios
+        .post(url, comment)
+        .then(res => {
+          let newComments = comments.concat([res.data]);
+          this.setState({ data: newComments });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
   }
 
   loadCommentsFromServer = () => {
@@ -49,12 +75,13 @@ export default class CommentBox extends React.Component {
   };
 
   componentDidMount() {
+    this.authenticate();
     this.loadCommentsFromServer();
   }
   componentDidUpdate(prevProps) {
     if (prevProps.articleID !== this.props.articleID) {
       console.log("ID:" + this.props.articleID);
-
+      this.authenticate();
       this.loadCommentsFromServer();
     }
   }

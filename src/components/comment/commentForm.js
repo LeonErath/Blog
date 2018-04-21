@@ -9,38 +9,30 @@ const InputStyled = styled(Input)`
 export default class CommentForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { author: "", text: "", date: "" };
-    this.handleAuthorChange = this.handleAuthorChange.bind(this);
+    this.state = { text: "", date: "" };
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleAuthorChange(e) {
-    this.setState({ author: e.target.value });
-  }
+
   handleTextChange(e) {
     this.setState({ text: e.target.value });
   }
   handleSubmit(e) {
     e.preventDefault();
-    let author = this.state.author.trim();
+
     let text = this.state.text.trim();
     let date = new Date().toLocaleDateString();
-    if (!text || !author) {
+    if (!text) {
       return;
     }
-    this.props.onCommentSubmit({ author: author, text: text, date: date });
 
-    this.setState({ author: "", text: "", date: "" });
+    this.props.onCommentSubmit({ text: text, date: date });
+
+    this.setState({ text: "", date: "" });
   }
   render() {
     return (
       <form className={this.props.className} onSubmit={this.handleSubmit}>
-        <Input
-          type="text"
-          placeholder="Author..."
-          value={this.state.author}
-          onChange={this.handleAuthorChange}
-        />
         <InputStyled
           type="text"
           placeholder="Comment..."

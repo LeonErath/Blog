@@ -5,7 +5,10 @@ var Schema = mongoose.Schema;
 //create new instance of the mongoose.schema. the schema takes an
 //object that shows the shape of your database entries.
 var CommentSchema = new Schema({
-  author: String,
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
   article: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Article"

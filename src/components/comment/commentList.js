@@ -14,7 +14,7 @@ export default class CommentList extends React.Component {
       return (
         <Comment.Group>
           <CommentObj
-            author={comment.author}
+            author={comment.author.username}
             key={comment.id}
             date={comment.date}
             text={comment.text}
