@@ -3,35 +3,34 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Icon, Card, Button, Image, Segment, Label } from "semantic-ui-react";
 import axios from "axios";
+import Moment from "react-moment";
 
 const DateDiv = styled.div`
-  margin-top: 10px;
-  color: #9e9e9e;
-  font-size: 14px;
-`;
-
-const Div = styled.div`
-  text-align: center;
-`;
-
-const DivMargin = styled.div`
+  text-align: right;
   display: inline-block;
-  padding: 4px;
+  width: 30%;
+  margin-top: -8px;
+  font-family: "Courier New", Courier, monospace;
+  color: #7f5959;
+  font-size: 14px;
 `;
 
 const Headline = styled.h2`
-  padding-top: 16px;
+  display: inline-block;
+  font-family: "Courier New", Courier, monospace;
+  width: 70%;
   text-align: left;
-  color: black;
+  color: #292929;
 `;
 
 const Abstract = styled.div`
-  margin-top: 8px;
-  color: #9e9e9e;
+  font-family: "Courier New", Courier, monospace;
+  color: #292929;
   font-size: 14px;
+  max-height: 3.6em;
+  line-height: 1.8em;
   text-align: justify;
 `;
-
 export default class BookmarkShort extends Component {
   constructor(props) {
     super(props);
@@ -47,35 +46,43 @@ export default class BookmarkShort extends Component {
   render() {
     return (
       <Card>
+        <Image
+          style={{ objectFit: "cover", height: "240px" }}
+          src={this.props.thumbnail}
+          alt="image preview"
+        />
         <Card.Content header>
-          <Label as="a" color="red" attached="top right">
-            {this.props.topic}
-          </Label>
           <Link to={`blog/${this.props.id}`}>
             <Headline>{this.props.headline}</Headline>
-
-            <DateDiv>{new Date(this.props.date).toLocaleDateString()}</DateDiv>
+            <DateDiv>
+              <Moment fromNow>{this.props.date}</Moment>
+            </DateDiv>
           </Link>
-          {this.props.author}
+
+          <Abstract>{this.props.abstract}</Abstract>
         </Card.Content>
-        <Card.Content description={this.props.abstract} />
 
         <Card.Content extra>
-          <Div>
-            <DivMargin>
-              <Icon name="line chart" />
-              {this.props.views} Views
-            </DivMargin>
-            <DivMargin>
-              <Icon name="heart" />
-              {this.props.likes} Likes
-            </DivMargin>
-            <DivMargin>
-              <Button icon basic color="grey" onClick={this.handleSubmit}>
-                <Icon name="trash" />
-              </Button>
-            </DivMargin>
-          </Div>
+          <div
+            style={{
+              display: "inline-block",
+              width: "50%",
+              textAlign: "center"
+            }}
+          >
+            <Icon name="line chart" />
+            {this.props.views} Views
+          </div>
+          <div
+            style={{
+              display: "inline-block",
+              width: "50%",
+              textAlign: "center"
+            }}
+          >
+            <Icon name="heart" />
+            {this.props.likes} Likes
+          </div>
         </Card.Content>
       </Card>
     );

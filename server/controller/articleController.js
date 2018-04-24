@@ -1,5 +1,17 @@
 var Article = require("../model/articleSchema.js");
 var User = require("../model/userSchema.js");
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "public/images/article");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+  }
+});
+
+var upload = multer({ storage: storage }).single("thumbnail");
 
 exports.findAll = function(req, res) {
   Article.find()
@@ -62,39 +74,66 @@ exports.getTrending = function(req, res) {
     });
 };
 
+exports.getRandom = function(req, res, next) {
+  Article.count().exec(function(err, count) {
+    var random = Math.floor(Math.random() * count);
+    Article.findOne()
+      .skip(random)
+      .populate("author")
+      .exec(function(err, result) {
+        if (err) {
+          res.send(err);
+          return;
+        } else {
+          res.send(result);
+        }
+      });
+  });
+};
+
 exports.create = function(req, res, next) {
-  if (
-    req.body.content &&
-    req.body.headline &&
-    req.body.abstract &&
-    req.body.topic &&
-    req.body.date
-  ) {
-    var article = {
-      author: req.session.userId,
-      content: req.body.content,
-      headline: req.body.headline,
-      abstract: req.body.abstract,
-      topic: req.body.topic,
-      date: req.body.date
-    };
+  upload(req, res, function(err) {
+    if (err) {
+      var err = new Error("No thumbnail upload possible.");
+      err.status = 400;
+      return next(err);
+    }
+    if (
+      req.body.content &&
+      req.body.headline &&
+      req.body.abstract &&
+      req.body.topic &&
+      req.body.date
+    ) {
+      var path = req.file.path.substring(6, req.file.path.length);
+      console.log(path);
 
-    Article.create(article, function(error) {
-      if (error) {
-        console.log(error);
+      var article = {
+        author: req.session.userId,
+        content: req.body.content,
+        headline: req.body.headline,
+        abstract: req.body.abstract,
+        topic: req.body.topic,
+        date: req.body.date,
+        thumbnail: path
+      };
 
-        return next(error);
-      } else {
-        console.log("success", req.body.userID);
+      Article.create(article, function(error) {
+        if (error) {
+          console.log(error);
 
-        return res.send("success");
-      }
-    });
-  } else {
-    var err = new Error("All fields required.");
-    err.status = 400;
-    return next(err);
-  }
+          return next(error);
+        } else {
+          console.log("success", req.body.userID);
+          return res.send(article);
+        }
+      });
+    } else {
+      var err = new Error("All fields required.");
+      err.status = 400;
+      return next(err);
+    }
+  });
 };
 
 exports.findOne = function(req, res) {

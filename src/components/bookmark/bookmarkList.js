@@ -59,6 +59,7 @@ export default class BookmarkList extends React.Component {
       section1 = this.state.data.slice(0, amount).map(article => {
         return (
           <BookmarkShort
+            thumbnail={article.thumbnail}
             deleteBookmark={this.deleteBookmark}
             headline={article.headline}
             key={article._id}

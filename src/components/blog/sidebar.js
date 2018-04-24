@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import "normalize.css";
-import { Button } from "semantic-ui-react";
+import { Button, Transition, Label } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
 
@@ -20,7 +20,16 @@ const Div = styled.div`
 export default class Sidebar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { authenticated: false };
+    this.state = {
+      authenticated: false,
+      animation: "pulse",
+      duration: 500,
+      visible: true,
+      animation2: "fade",
+      duration2: 500,
+      visible2: false,
+      counter: 0
+    };
     this.clickLike = this.clickLike.bind(this);
     this.clickBookmark = this.clickBookmark.bind(this);
     this.clickTwitter = this.clickTwitter.bind(this);
@@ -49,7 +58,23 @@ export default class Sidebar extends React.Component {
 
   clickLike(e) {
     e.preventDefault();
-    this.props.click();
+    if (this.state.counter < 15) {
+      this.setState({
+        visible2: true,
+        visible: !this.state.visible,
+        counter: this.state.counter + 1
+      });
+
+      this.props.click();
+
+      setTimeout(
+        function() {
+          this.setState({ visible2: false });
+        }.bind(this),
+        1000
+      );
+    } else {
+    }
   }
   clickBookmark(e) {
     e.preventDefault();
@@ -70,16 +95,53 @@ export default class Sidebar extends React.Component {
   render() {
     return (
       <Div>
-        <Button circular icon="heart" size="huge" onClick={this.clickLike} />
+        <Transition
+          animation={this.state.animation2}
+          duration={this.state.duration2}
+          visible={this.state.visible2}
+        >
+          <Label style={{ marginBottom: "10px" }}>
+            +{this.state.counter} Like
+          </Label>
+        </Transition>
+        <br />
+        <Transition
+          animation={this.state.animation}
+          duration={this.state.duration}
+          visible={this.state.visible}
+        >
+          <Button
+            circular
+            icon="heart"
+            size="huge"
+            color="red"
+            onClick={this.clickLike}
+          />
+        </Transition>
         <br />
         <br />
-        <Button circular icon="bookmark" onClick={this.clickBookmark} />
+        <Button
+          circular
+          icon="bookmark"
+          color="teal"
+          onClick={this.clickBookmark}
+        />
         <br />
         <br />
-        <Button circular icon="twitter" onClick={this.clickTwitter} />
+        <Button
+          circular
+          icon="twitter"
+          color="twitter"
+          onClick={this.clickTwitter}
+        />
         <br />
         <br />
-        <Button circular icon="facebook" onClick={this.clickFacebook} />
+        <Button
+          circular
+          icon="facebook"
+          color="facebook"
+          onClick={this.clickFacebook}
+        />
         <br />
       </Div>
     );

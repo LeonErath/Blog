@@ -3,7 +3,7 @@ module.exports = function(router) {
   var article = require("../controller/articleController.js");
 
   // Create a new Note
-  router.post("/article", auth.check, article.create);
+  router.post("/article/create", auth.check, article.create);
 
   // Retrieve all article
   router.get("/article", article.findAll);
@@ -11,6 +11,8 @@ module.exports = function(router) {
   router.get("/article/newest", article.getNewest);
 
   router.get("/article/trending", article.getTrending);
+
+  router.get("/article/featured", article.getRandom);
 
   router.get("/article/getAll", auth.check, article.getAll);
 

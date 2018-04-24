@@ -1,30 +1,71 @@
 import React from "react";
 import styled from "styled-components";
 import "normalize.css";
-import { Button, Icon, Label } from "semantic-ui-react";
+import { Button, Icon, Label, Statistic } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
 import Comment from "../comment/commentBox";
 import Sidebar from "./sidebar";
+import Moment from "react-moment";
+var converter = require("number-to-words");
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
-const Title = styled.h2`
+
+const Header = styled.div`
+  border: black;
+  display: block;
+  box-sizing: border-box;
+`;
+
+const Header2 = styled.div`
+  margin-top: 8px;
+  display: inline-block;
+  width: 100%;
+`;
+const Header3 = styled.div`
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  width: 25%;
+`;
+const Header4 = styled.div`
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  width: 50%;
+`;
+const Title = styled.div`
+  margin-top: 8px;
   text-align: center;
-  color: black;
+  font-size: 40px;
+  line-height: 1;
+  font-family: "Courier New", Courier, monospace;
+  letter-spacing: 10px;
+  color: #292929;
 `;
 
 const Div = styled.div`
   position: relative;
   background: #fff;
-  padding: 50px;
-  width: 800px;
-  margin: 0 auto 0 auto;
+  width: 1000px;
+  margin: -50px auto 40px auto;
   box-shadow: 0 20px 40px rgba(100, 100, 100, 0.1);
 `;
 
 const Date = styled.div`
-  color: #9e9e9e;
-  font-size: 14px;
+  padding: 8px;
+  text-align: center;
+  font-size: 20px;
+  font-family: "Courier New", Courier, monospace;
+  color: #7f5959;
+`;
+
+const Author = styled.div`
+  padding: 8px;
+  text-align: center;
+  font-size: 20px;
+  font-family: "Courier New", Courier, monospace;
+  color: #7f5959;
 `;
 
 const Content = styled.div`
@@ -37,25 +78,35 @@ const Content = styled.div`
 `;
 
 const P = styled.div`
+  font-family: "Courier New", Courier, monospace;
   white-space: pre-wrap;
-  ::selection {
-    background: #007486;
-    color: white;
-  }
+  font-size: 20px;
+  text-align: justify;
+  text-justify: inter-word;
+`;
+
+const DivMargin = styled.div`
+  margin: 0px 60px 10px 60px;
 `;
 
 const Abstract = styled.div`
-  margin-top: 8px;
-  color: #9e9e9e;
-  font-size: 14px;
-  text-align: justify;
+  color: #3d2b2b;
+  font-size: 26px;
+  line-height: 1.2;
+  text-align: center;
+  font-family: "Courier New", Courier, monospace;
+`;
+const StatisticDiv = styled.div`
+  text-align: center;
+  display: table;
+  margin: 0 auto;
 `;
 
 export default class Blog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: { author: { username: "" } },
+      data: { author: { username: "" }, likes: 0, views: 0 },
       authenticated: false,
       loaded: false
     };
@@ -161,38 +212,67 @@ export default class Blog extends React.Component {
           click={this.addLike}
           addBookmark={this.addBookmark}
         />
-        <Button onClick={this.goBack}>Back</Button>
-        <br />
-        <Title>{this.state.data.headline}</Title>
-        <br />
-        {this.state.loaded && <i>{this.state.data.author.username}</i>}
-        <Date>{this.state.data.date}</Date>
-        <br />
-        <br />
-        <Abstract>{this.state.data.abstract}</Abstract>
-        <br />
-        <br />
-        <Content>
-          <P>{this.state.data.content} </P>
-        </Content>
-        <br />
-        <br />
-        <div>
-          <Label>
-            <Icon name="line chart" />
-            {this.state.data.views}
-            <Label.Detail>Views</Label.Detail>
-          </Label>
 
-          <Label>
-            <Icon name="heart" />
-            {this.state.data.likes}
-            <Label.Detail>Likes</Label.Detail>
-          </Label>
-        </div>
+        <img
+          style={{ width: "100%", objectFit: "cover", maxHeight: "500px" }}
+          src={this.state.data.thumbnail}
+          alt="image preview"
+        />
+
+        <Header>
+          <Header2>
+            <Header3>
+              <Date>
+                <Moment fromNow>{this.state.data.date}</Moment>
+              </Date>
+            </Header3>
+            <Header4>
+              <Title>{this.state.data.headline}</Title>
+            </Header4>
+            <Header3>
+              <Author>
+                {" "}
+                {this.state.loaded && <i>{this.state.data.author.username}</i>}
+              </Author>
+            </Header3>
+          </Header2>
+        </Header>
         <br />
-        <br />
-        <Comment articleID={this.state.data._id} />
+        <DivMargin>
+          <br />
+          <br />
+          <Abstract>{this.state.data.abstract}</Abstract>
+          <br />
+          <br />
+          <Content>
+            <P>{this.state.data.content} </P>
+          </Content>
+          <br />
+          <br />
+
+          <StatisticDiv>
+            <Statistic.Group size="tiny">
+              <Statistic>
+                <Statistic.Value>
+                  {converter.toWords(this.state.data.views)}
+                </Statistic.Value>
+                <Statistic.Label>Views</Statistic.Label>
+              </Statistic>
+              <Statistic>
+                <Statistic.Value>
+                  {converter.toWords(this.state.data.likes)}
+                </Statistic.Value>
+                <Statistic.Label>Likes</Statistic.Label>
+              </Statistic>
+            </Statistic.Group>
+          </StatisticDiv>
+
+          <br />
+          <br />
+          <Comment articleID={this.state.data._id} />
+          <br />
+          <br />
+        </DivMargin>
       </Div>
     );
   }

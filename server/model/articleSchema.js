@@ -11,6 +11,7 @@ var ArticleSchema = new Schema({
   },
   headline: String,
   abstract: String,
+  thumbnail: String,
   topic: String,
   content: String,
   date: Date,

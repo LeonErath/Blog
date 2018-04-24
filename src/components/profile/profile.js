@@ -184,7 +184,7 @@ export default class Profile extends React.Component {
         <h1>Profile</h1>
         <div>
           <ProfileDiv>
-            <Header as="h3" icon textAlign="center">
+            <Header as="h2" icon textAlign="center">
               <Icon color="grey" name="user outline" />
               <Header.Content>{this.state.profile.username}</Header.Content>
             </Header>

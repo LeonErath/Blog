@@ -8,6 +8,7 @@ import { Div } from "../styledComponents";
 import styled from "styled-components";
 import BlogNewest from "./blogNewest";
 import BlogTrending from "./blogTrending";
+import BlogFeature from "./blogFeature";
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
@@ -30,7 +31,7 @@ export default class BlogList extends React.Component {
     this.state = { authenticated: false };
     this.pollInterval = null;
   }
-  loadCommentsFromServer = () => {
+  authenticate = () => {
     axios.defaults.withCredentials = true;
     axios(urlCheckAuth, {
       method: "get",
@@ -49,19 +50,21 @@ export default class BlogList extends React.Component {
   };
 
   componentDidMount() {
-    this.loadCommentsFromServer();
+    this.authenticate();
   }
 
   render() {
     return (
       <Background>
         <Div>
-          <Title>Featured</Title>
           {this.state.authenticated && (
             <Link to={`blog/create`}>
-              <ButtonStyled type="submit">Neuen Artikel schreiben</ButtonStyled>
+              <ButtonStyled basic color="gray" type="submit">
+                Neuen Artikel schreiben
+              </ButtonStyled>
             </Link>
           )}
+          <BlogFeature />
           <br />
           <br />
           <BlogNewest />

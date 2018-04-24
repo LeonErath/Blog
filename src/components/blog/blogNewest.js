@@ -47,6 +47,7 @@ export default class BlogNewest extends React.Component {
       section1 = this.state.data.slice(0, amount).map(article => {
         return (
           <BlogShort
+            thumbnail={article.thumbnail}
             headline={article.headline}
             key={article._id}
             id={article._id}

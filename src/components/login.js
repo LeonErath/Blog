@@ -1,13 +1,20 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Input, Checkbox } from "semantic-ui-react";
+import { Button, Input, Checkbox, Form } from "semantic-ui-react";
 import styled from "styled-components";
 import axios from "axios";
+import Dropzone from "react-dropzone";
 
 const url = "http://127.0.0.1:3030/api/register";
 const url2 = "http://127.0.0.1:3030/api/login";
 
+const DivDrop = styled.div`
+  width: 100%;
+  border: 1px dashed #ccc !important;
+  border-radius: 16px;
+  height: 200px;
+`;
 const Div = styled.div`
   display: flex;
   align-items: center;
@@ -20,7 +27,7 @@ const Div = styled.div`
 
 const LoginDiv = styled.div`
   border-radius: 2px 2px 5px 5px;
-  padding: 10px 20px 20px 20px;
+  padding: 10px 10px 20px 10px;
   width: 90%;
   max-width: 320px;
   background: #ffffff;
@@ -32,10 +39,6 @@ const LoginDiv = styled.div`
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.3);
 `;
 const InputStyled = styled(Input)`
-  margin-top: 10px;
-`;
-
-const ButtonStyled = styled.div`
   margin-top: 10px;
 `;
 
@@ -55,6 +58,7 @@ export default class Login extends React.Component {
       username: "",
       password: "",
       conf_password: "",
+      file: "",
       registration: false
     };
 
@@ -64,6 +68,7 @@ export default class Login extends React.Component {
     this.handleConfPasswordChange = this.handleConfPasswordChange.bind(this);
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.register = this.register.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
     this.login = this.login.bind(this);
   }
 
@@ -72,7 +77,14 @@ export default class Login extends React.Component {
   }
 
   handleCheckboxChange(e) {
-    this.setState({ registration: !this.state.registration });
+    this.setState({
+      registration: !this.state.registration,
+      email: "",
+      username: "",
+      password: "",
+      conf_password: "",
+      file: ""
+    });
   }
 
   handleUsermameChange(e) {
@@ -181,13 +193,63 @@ export default class Login extends React.Component {
         console.log(err.response);
       });
   }
+  handleDrop(acceptedFiles, rejectedFiles) {
+    if (acceptedFiles.length == 1) {
+      console.log(this.state);
+
+      this.setState({ file: acceptedFiles[0] });
+    }
+  }
+  handleDropRejected(acceptedFiles, rejectedFiles) {}
 
   render() {
     return (
       <Div>
         <LoginDiv>
-          <Title>Login</Title>
+          <Title> {this.state.registration ? "Registration" : "Login"}</Title>
 
+          {this.state.registration ? (
+            <Dropzone
+              style={{
+                width: "100%",
+                paddingLeft: "48px",
+                paddingRight: "48px"
+              }}
+              className="dragAndDropArea"
+              onDrop={this.handleDrop}
+              accept="image/jpeg,image/jpg,image/tiff,image/gif,image/png"
+              multiple={false}
+              onDropRejected={this.handleDropRejected}
+            >
+              <DivDrop>
+                {this.state.file == "" && (
+                  <center>
+                    <br />
+                    <br />
+                    <br />
+                    <h3>
+                      Drag 'n' Drop <br />Profile Picutre
+                    </h3>
+                  </center>
+                )}
+
+                {this.state.file != "" && (
+                  <center>
+                    <img
+                      src={this.state.file.preview}
+                      alt="image preview"
+                      style={{
+                        width: "100%",
+                        objectFit: "cover",
+                        height: "200px",
+                        borderRadius: "16px"
+                      }}
+                    />
+                  </center>
+                )}
+              </DivDrop>
+            </Dropzone>
+          ) : null}
           <InputStyled
             type="email"
             placeholder="Email..."
@@ -216,16 +278,22 @@ export default class Login extends React.Component {
               onChange={this.handleConfPasswordChange}
             />
           ) : null}
-
           <Checkbox
+            style={{ marginTop: "16px" }}
             label="Register User"
             onChange={this.handleCheckboxChange}
           />
-          <ButtonStyled>
-            <Button type="submit" value="Post" onClick={this.register}>
-              Login
-            </Button>
-          </ButtonStyled>
+
+          <Button
+            style={{ width: "160px", marginTop: "16px" }}
+            basic
+            color="gray"
+            type="submit"
+            value="Post"
+            onClick={this.register}
+          >
+            {this.state.registration ? "Register" : "Login"}
+          </Button>
         </LoginDiv>
       </Div>
     );

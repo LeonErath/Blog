@@ -10,12 +10,22 @@ import {
 import { Div, HeadlineCenter } from "../styledComponents";
 import styled from "styled-components";
 import axios from "axios";
+import Dropzone from "react-dropzone";
 
-const url = "http://127.0.0.1:3030/api/article";
+const url = "http://127.0.0.1:3030/api/article/create";
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
 const FromStyled = styled(Form)`
   width: 100%;
+`;
+
+const DivDrop = styled.div`
+  margin-top: 16px;
+  margin-bottom: 16px;
+  width: 100%;
+  border: 1px dashed #ccc !important;
+  border-radius: 16px;
+  height: 200px;
 `;
 
 export default class CommentForm extends Component {
@@ -29,6 +39,7 @@ export default class CommentForm extends Component {
       topic: "",
       message: "",
       header: "",
+      file: "",
       loadingRequest: false,
       successRequest: false,
       failureRequest: false
@@ -38,6 +49,8 @@ export default class CommentForm extends Component {
     this.handleAbstractChange = this.handleAbstractChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
     this.handleTopicChange = this.handleTopicChange.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
+    this.handleDropRejected = this.handleDropRejected.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.authenticate = this.authenticate.bind(this);
   }
@@ -48,9 +61,7 @@ export default class CommentForm extends Component {
       method: "get",
       withCredentials: true
     })
-      .then(res => {
-        this.setState({ userID: res.data._id });
-      })
+      .then(res => {})
       .catch(err => {
         console.log("need to go back");
 
@@ -59,10 +70,14 @@ export default class CommentForm extends Component {
   };
 
   handleHeadlineChange(e) {
-    this.setState({ headline: e.target.value });
+    if (e.target.value.length < 50) {
+      this.setState({ headline: e.target.value });
+    }
   }
   handleAbstractChange(e) {
-    this.setState({ abstract: e.target.value });
+    if (e.target.value.length < 80) {
+      this.setState({ abstract: e.target.value });
+    }
   }
   handleContentChange(e) {
     this.setState({ content: e.target.value });
@@ -70,6 +85,7 @@ export default class CommentForm extends Component {
   handleTopicChange(e) {
     this.setState({ topic: e.target.value });
   }
+
   handleSubmit(e) {
     e.preventDefault();
     this.setState({ loadingRequest: true });
@@ -80,20 +96,22 @@ export default class CommentForm extends Component {
     let topic = this.state.topic.trim();
     if (!content || !abstract || !headline || !topic) {
       console.log("some fields are empty");
-
       return;
     }
-    var article = {
-      content: content,
-      headline: headline,
-      abstract: abstract,
-      topic: topic,
-      date: new Date()
-    };
-    console.log(article);
+    let formData = new FormData();
+    formData.append("thumbnail", this.state.file);
+    formData.append("content", content);
+    formData.append("headline", headline);
+    formData.append("abstract", abstract);
+    formData.append("topic", topic);
+    formData.append("date", new Date());
 
     axios
-      .post(url, article)
+      .post(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
       .then(response => {
         console.log(response);
 
@@ -102,6 +120,7 @@ export default class CommentForm extends Component {
           headline: "",
           abstract: "",
           topic: "",
+          file: "",
           message: response.data.message,
           header: "Article successfully added",
           loadingRequest: false,
@@ -124,13 +143,64 @@ export default class CommentForm extends Component {
 
   componentDidMount() {
     this.authenticate();
-    console.log(this.state);
   }
+  handleDrop(acceptedFiles, rejectedFiles) {
+    if (acceptedFiles.length == 1) {
+      console.log(acceptedFiles[0]);
+
+      this.setState({ file: acceptedFiles[0] });
+    }
+  }
+  handleDropRejected(acceptedFiles, rejectedFiles) {}
 
   render() {
     return (
       <Div>
         <HeadlineCenter> Neuen Artikel erstellen </HeadlineCenter>
+
+        <FromStyled>
+          <Form.Field required label="Thumbnail" placeholder="Thumbnail" />
+        </FromStyled>
+        <Dropzone
+          className="dragAndDropArea"
+          onDrop={this.handleDrop}
+          accept="image/jpeg,image/jpg,image/tiff,image/gif,image/png"
+          multiple={false}
+          onDropRejected={this.handleDropRejected}
+        >
+          <DivDrop>
+            {this.state.file == "" && (
+              <center>
+                <br />
+                <br />
+                <br />
+                <h3>Drag 'n' Drop Thumbnail</h3>
+              </center>
+            )}
+
+            {this.state.file != "" && (
+              <center>
+                <img
+                  src={this.state.file.preview}
+                  alt="image preview"
+                  height={200}
+                />
+              </center>
+            )}
+          </DivDrop>
+        </Dropzone>
+        {this.state.file != "" && (
+          <center>
+            <Button
+              style={{ margin: "4px" }}
+              onClick={() => {
+                this.setState({ file: "" });
+              }}
+            >
+              Delete
+            </Button>
+          </center>
+        )}
 
         <FromStyled
           loading={this.state.loadingRequest}

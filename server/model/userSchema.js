@@ -16,6 +16,9 @@ var UserSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  profilePicutre: {
+    type: String
+  },
   permission: {
     type: Number,
     default: 0
