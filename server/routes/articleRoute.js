@@ -12,6 +12,8 @@ module.exports = function(router) {
 
   router.get("/article/trending", article.getTrending);
 
+  router.get("/article/getAll", auth.check, article.getAll);
+
   router.get("/article/:id", article.findOne);
 
   // Update a Note with noteId

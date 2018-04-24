@@ -13,6 +13,19 @@ exports.findAll = function(req, res) {
     });
 };
 
+exports.getAll = function(req, res) {
+  Article.find({ author: req.session.userId })
+    .populate("author")
+    .sort({ date: -1 })
+    .exec(function(err, list) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(list);
+    });
+};
+
 exports.getNewest = function(req, res) {
   Article.find()
     .populate("author")

@@ -57,8 +57,7 @@ exports.loggedin = function(req, res, next) {
       res.send(err);
       return;
     }
-
-    res.json(data);
+    res.send("Success");
   });
 };
 
@@ -84,29 +83,18 @@ exports.login = function(req, res, next) {
   }
 };
 
-// exports.login = function(req, res, next) {
-//   console.log(req.session);
-
-//   User.findById(req.session.userId).exec(function(error, user) {
-//     if (error) {
-//       return next(error);
-//     } else {
-//       if (user === null) {
-//         var err = new Error("Not authorized! Go back!");
-//         err.status = 400;
-//         return next(err);
-//       } else {
-//         return res.send(
-//           "<h1>Name: </h1>" +
-//             user.username +
-//             "<h2>Mail: </h2>" +
-//             user.email +
-//             '<br><a type="button" href="/logout">Logout</a>'
-//         );
-//       }
-//     }
-//   });
-// };
+exports.getUser = function(req, res) {
+  User.findById(req.session.userId).exec(function(err, user) {
+    if (err) {
+      return res.send(err);
+    }
+    res.send({
+      username: user.username,
+      email: user.email,
+      permission: user.permission
+    });
+  });
+};
 
 exports.logout = function(req, res, next) {
   if (req.session) {
