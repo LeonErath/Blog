@@ -65,14 +65,13 @@ exports.getTrending = function(req, res) {
 exports.create = function(req, res, next) {
   if (
     req.body.content &&
-    req.body.userID &&
     req.body.headline &&
     req.body.abstract &&
     req.body.topic &&
     req.body.date
   ) {
     var article = {
-      author: req.body.userID,
+      author: req.session.userId,
       content: req.body.content,
       headline: req.body.headline,
       abstract: req.body.abstract,
@@ -140,4 +139,14 @@ exports.addLike = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {};
-exports.delete = function(req, res, next) {};
+exports.delete = function(req, res, next) {
+  Article.remove({ _id: req.params.id, author: req.session.userId }).exec(
+    function(err) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.send("Successfully delete Article");
+    }
+  );
+};

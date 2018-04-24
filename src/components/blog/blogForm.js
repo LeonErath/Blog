@@ -24,7 +24,6 @@ export default class CommentForm extends Component {
     this.state = {
       headline: "",
       abstract: "",
-      userID: "",
       content: "",
       date: "",
       topic: "",
@@ -75,18 +74,16 @@ export default class CommentForm extends Component {
     e.preventDefault();
     this.setState({ loadingRequest: true });
 
-    let userID = this.state.userID.trim();
     let content = this.state.content.trim();
     let headline = this.state.headline.trim();
     let abstract = this.state.abstract.trim();
     let topic = this.state.topic.trim();
-    if (!content || !userID || !abstract || !headline || !topic) {
+    if (!content || !abstract || !headline || !topic) {
       console.log("some fields are empty");
 
       return;
     }
     var article = {
-      userID: userID,
       content: content,
       headline: headline,
       abstract: abstract,

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Icon, Label } from "semantic-ui-react";
+import Moment from "react-moment";
 
 const DateDiv = styled.div`
   margin-top: 10px;
@@ -67,7 +68,10 @@ export default class BlogShort extends Component {
           <Link to={`blog/${this.props.id}`}>
             <Headline>{this.props.headline}</Headline>
 
-            <DateDiv>{new Date(this.props.date).toLocaleDateString()}</DateDiv>
+            <DateDiv>
+              {" "}
+              <Moment fromNow>{this.props.date}</Moment>
+            </DateDiv>
           </Link>
 
           {this.props.author}

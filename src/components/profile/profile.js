@@ -6,13 +6,32 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Moment from "react-moment";
 import Dashboard from "./dashboard.js";
-
-var moment = require("moment");
+import {
+  Header,
+  Icon,
+  Image,
+  Table,
+  Button,
+  Popup,
+  Statistic
+} from "semantic-ui-react";
+import styled from "styled-components";
+var converter = require("number-to-words");
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 const urlGetProfile = "http://127.0.0.1:3030/api/user/getProfile";
 const urlGetArticles = "http://127.0.0.1:3030/api/article/getAll";
+const urlDeleteArticle = "http://127.0.0.1:3030/api/article/";
 
+const DivButton = styled.div`
+  display: flex;
+`;
+
+const ProfileDiv = styled.div`
+  text-align: center;
+  display: table;
+  margin: 0 auto;
+`;
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -21,11 +40,14 @@ export default class Profile extends React.Component {
       articleList: [],
       authenticated: false,
       totalViews: 0,
+      totalArticle: 0,
       totalLikes: 0
     };
     this.authenticate = this.authenticate.bind(this);
     this.getProfile = this.getProfile.bind(this);
     this.getArticle = this.getArticle.bind(this);
+    this.articleDelete = this.articleDelete.bind(this);
+    this.articleEdit = this.articleEdit.bind(this);
     this.pollInterval = null;
   }
   authenticate = () => {
@@ -82,6 +104,31 @@ export default class Profile extends React.Component {
       });
   };
 
+  articleDelete(id) {
+    axios.defaults.withCredentials = true;
+    var urlDelete = urlDeleteArticle + id;
+    axios(urlDelete, {
+      method: "delete",
+      withCredentials: true
+    })
+      .then(res => {
+        this.setState({
+          articleList: this.state.articleList.filter(
+            article => article._id != id
+          )
+        });
+        console.log(this.state.articleList);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  articleEdit(e) {
+    e.preventDefault();
+    console.log("Edit");
+  }
+
   componentDidMount() {
     this.authenticate();
     this.getProfile();
@@ -91,22 +138,43 @@ export default class Profile extends React.Component {
   render() {
     var section1;
     if (this.state.articleList !== undefined) {
+      this.state.totalViews = 0;
+      this.state.totalLikes = 0;
+      this.state.totalArticle = 0;
       section1 = this.state.articleList.map(article => {
         this.state.totalViews += article.views;
         this.state.totalLikes += article.likes;
+        this.state.totalArticle += 1;
         return (
-          <div>
-            <Link to={`blog/${article._id}`}>Headline: {article.headline}</Link>
-            <br />
-            Topic: {article.topic}
-            <br />
-            Date: <Moment format="HH:mm DD.MM.YYYY" date={article.date} />
-            <br />
-            Views: {article.views}
-            <br />
-            Likes: {article.likes}
-            <hr />
-          </div>
+          <Table.Row>
+            <Table.Cell singleLine>
+              <Moment fromNow>{article.date}</Moment>
+            </Table.Cell>
+            <Table.Cell>
+              <Link to={`blog/${article._id}`}>{article.headline}</Link>
+            </Table.Cell>
+            <Table.Cell> {article.topic}</Table.Cell>
+            <Table.Cell>{article.views}</Table.Cell>
+            <Table.Cell>{article.likes}</Table.Cell>
+            <Table.Cell>
+              <DivButton>
+                <Popup
+                  trigger={<Button color="red" circular icon="delete" />}
+                  content={
+                    <Button
+                      color="green"
+                      onClick={() => this.articleDelete(article._id)}
+                      content="Are you sure?"
+                    />
+                  }
+                  on="click"
+                  position="top left"
+                />
+
+                <Button circular onClick={this.articleEdit} icon="edit" />
+              </DivButton>
+            </Table.Cell>
+          </Table.Row>
         );
       });
     }
@@ -114,19 +182,48 @@ export default class Profile extends React.Component {
     return (
       <Div>
         <h1>Profile</h1>
-        Username: {this.state.profile.username}
-        <br />
-        E-Mail: {this.state.profile.email}
-        <br />
-        Permissions: {this.state.profile.permission}
-        <br />
-        Total Views: {this.state.totalViews}
-        <br />
-        Total Like: {this.state.totalLikes}
-        <br />
+        <div>
+          <ProfileDiv>
+            <Header as="h3" icon textAlign="center">
+              <Icon color="grey" name="user outline" />
+              <Header.Content>{this.state.profile.username}</Header.Content>
+            </Header>
+            <h3>{this.state.profile.email}</h3>
+            <br />
+            <br />
+            <div>
+              <Statistic.Group size="tiny">
+                <Statistic>
+                  <Statistic.Value>{this.state.totalViews}</Statistic.Value>
+                  <Statistic.Label>Views</Statistic.Label>
+                </Statistic>
+                <Statistic>
+                  <Statistic.Value>
+                    {converter.toWords(this.state.totalLikes)}
+                  </Statistic.Value>
+                  <Statistic.Label>Likes</Statistic.Label>
+                </Statistic>
+                <Statistic>
+                  <Statistic.Value>0{this.state.totalArticle}</Statistic.Value>
+                  <Statistic.Label>Articles</Statistic.Label>
+                </Statistic>
+              </Statistic.Group>
+            </div>
+            <br />
+          </ProfileDiv>
+        </div>
         <Dashboard data={this.state.articleList} />
-        <h1>Articles</h1>
-        {section1}
+        <Table celled striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell colSpan="3">Articles</Table.HeaderCell>
+              <Table.HeaderCell colSpan="1">Views</Table.HeaderCell>
+              <Table.HeaderCell colSpan="1">Likes</Table.HeaderCell>
+              <Table.HeaderCell colSpan="1">Action</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>{section1}</Table.Body>
+        </Table>
       </Div>
     );
   }

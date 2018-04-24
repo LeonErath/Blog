@@ -2,6 +2,14 @@ import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
 import { PieChart, Pie, Legend, Tooltip, Cell, Label } from "recharts";
+import styled from "styled-components";
+
+const DivCenter = styled.div`
+  float: center;
+  text-align: center;
+  display: table;
+  margin: 0 auto;
+`;
 
 export default class Profile extends React.Component {
   constructor(props) {
@@ -40,40 +48,44 @@ export default class Profile extends React.Component {
       .filter(article => article.value > 0);
     return (
       <div>
-        <br />
-        <h1>Dashboard</h1>
-        <PieChart width={800} height={400}>
-          <Pie
-            data={data01}
-            cx={100}
-            cy={140}
-            outerRadius={80}
-            innerRadius={40}
-            fill="#8884d8"
-            label
-          >
-            <Label value="Views" position="center" />
-            {data01.map((entry, index) => (
-              <Cell fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
+        <DivCenter>
+          {this.state.data.length != 0 &&
+            data01.length != 0 &&
+            data02.length != 0 && (
+              <PieChart width={520} height={340}>
+                <Pie
+                  data={data01}
+                  cx={120}
+                  cy={140}
+                  outerRadius={80}
+                  innerRadius={40}
+                  fill="#8884d8"
+                  label
+                >
+                  <Label value="Views" position="center" />
+                  {data01.map((entry, index) => (
+                    <Cell fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
 
-          <Pie
-            data={data02}
-            cx={400}
-            cy={140}
-            outerRadius={80}
-            innerRadius={40}
-            fill="#8884d8"
-            label
-          >
-            <Label value="Likes" position="center" />
-            {data02.map((entry, index) => (
-              <Cell fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
+                <Pie
+                  data={data02}
+                  cx={420}
+                  cy={140}
+                  outerRadius={80}
+                  innerRadius={40}
+                  fill="#8884d8"
+                  label
+                >
+                  <Label value="Likes" position="center" />
+                  {data02.map((entry, index) => (
+                    <Cell fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            )}
+        </DivCenter>
       </div>
     );
   }
