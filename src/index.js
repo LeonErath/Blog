@@ -20,7 +20,7 @@ const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 const urlLogout = "http://127.0.0.1:3030/api/logout";
 
 const Background = styled.div`
-  background-image: url("/images/background_pattern.png");
+  background-image: url("/images/concrete-texture.png");
   background-repeat: repeat;
 `;
 

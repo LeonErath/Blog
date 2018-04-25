@@ -14,7 +14,7 @@ var CommentSchema = new Schema({
     ref: "Article"
   },
   text: String,
-  date: String
+  date: Date
 });
 //export our module to use in server.js
 module.exports = mongoose.model("Comment", CommentSchema);

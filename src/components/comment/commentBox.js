@@ -91,7 +91,9 @@ export default class CommentBox extends React.Component {
       <div>
         <Divider horizontal>Comments</Divider>
         <CommentList data={this.state.data} />
-        <CommentFormStyled onCommentSubmit={this.handleCommentSubmit} />
+        {this.state.authenticated && (
+          <CommentFormStyled onCommentSubmit={this.handleCommentSubmit} />
+        )}
       </div>
     );
   }

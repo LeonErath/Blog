@@ -12,8 +12,10 @@ export default class CommentList extends React.Component {
 
     commentNodes = this.props.data.map(comment => {
       return (
-        <Comment.Group>
+        <Comment.Group size="large">
           <CommentObj
+            userid={comment.author._id}
+            profile={comment.author.profilePicture}
             author={comment.author.username}
             key={comment.id}
             date={comment.date}

@@ -23,11 +23,18 @@ const Header3 = styled.div`
   display: inline-block;
   position: relative;
   vertical-align: top;
-  width: 33%;
+  width: 25%;
+`;
+const Header4 = styled.div`
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  width: 50%;
 `;
 const Title = styled.div`
   margin-top: 8px;
   text-align: center;
+  line-height: 0.9;
   font-size: 40px;
   font-family: "Courier New", Courier, monospace;
   letter-spacing: 10px;
@@ -85,30 +92,32 @@ export default class BlogTrending extends React.Component {
       <div>
         <h1>Featured</h1>
         <br />
-        <Link to={`blog/` + this.state.data._id}>
-          <img
-            style={{ width: "100%", objectFit: "cover", maxHeight: "300px" }}
-            src={this.state.data.thumbnail}
-            alt="image preview"
-          />
-          <br />
+        {this.state.data.author.username != "" && (
+          <Link to={`blog/` + this.state.data._id}>
+            <img
+              style={{ width: "100%", objectFit: "cover", maxHeight: "300px" }}
+              src={this.state.data.thumbnail}
+              alt="image preview"
+            />
+            <br />
 
-          <Header>
-            <Header2>
-              <Header3>
-                <Date>
-                  <Moment fromNow>{this.state.data.date}</Moment>
-                </Date>
-              </Header3>
-              <Header3>
-                <Title>{this.state.data.headline}</Title>
-              </Header3>
-              <Header3>
-                <Author>{this.state.data.author.username}</Author>
-              </Header3>
-            </Header2>
-          </Header>
-        </Link>
+            <Header>
+              <Header2>
+                <Header3>
+                  <Date>
+                    <Moment fromNow>{this.state.data.date}</Moment>
+                  </Date>
+                </Header3>
+                <Header4>
+                  <Title>{this.state.data.headline}</Title>
+                </Header4>
+                <Header3>
+                  <Author>{this.state.data.author.username}</Author>
+                </Header3>
+              </Header2>
+            </Header>
+          </Link>
+        )}
       </div>
     );
   }

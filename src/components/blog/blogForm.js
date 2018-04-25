@@ -162,6 +162,7 @@ export default class CommentForm extends Component {
           <Form.Field required label="Thumbnail" placeholder="Thumbnail" />
         </FromStyled>
         <Dropzone
+          maxSize={1000000}
           className="dragAndDropArea"
           onDrop={this.handleDrop}
           accept="image/jpeg,image/jpg,image/tiff,image/gif,image/png"

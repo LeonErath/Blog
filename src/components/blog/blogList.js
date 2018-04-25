@@ -21,7 +21,7 @@ const ButtonStyled = styled(Button)`
 `;
 
 const Background = styled.div`
-  background-image: url("/images/background_pattern.png");
+  background-image: url("/images/concrete-texture.png");
   background-repeat: repeat;
 `;
 

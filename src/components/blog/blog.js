@@ -48,7 +48,7 @@ const Div = styled.div`
   position: relative;
   background: #fff;
   width: 1000px;
-  margin: -50px auto 40px auto;
+  margin: -50px auto 0 auto;
   box-shadow: 0 20px 40px rgba(100, 100, 100, 0.1);
 `;
 
@@ -100,6 +100,10 @@ const StatisticDiv = styled.div`
   text-align: center;
   display: table;
   margin: 0 auto;
+`;
+const Background = styled.div`
+  background-image: url("/images/concrete-texture.png");
+  background-repeat: repeat;
 `;
 
 export default class Blog extends React.Component {
@@ -206,74 +210,80 @@ export default class Blog extends React.Component {
 
   render() {
     return (
-      <Div>
-        <Sidebar
-          id={this.state.data._id}
-          click={this.addLike}
-          addBookmark={this.addBookmark}
-        />
+      <Background>
+        <Div>
+          <Sidebar
+            id={this.state.data._id}
+            click={this.addLike}
+            addBookmark={this.addBookmark}
+          />
 
-        <img
-          style={{ width: "100%", objectFit: "cover", maxHeight: "500px" }}
-          src={this.state.data.thumbnail}
-          alt="image preview"
-        />
+          <img
+            style={{ width: "100%", objectFit: "cover", maxHeight: "500px" }}
+            src={this.state.data.thumbnail}
+            alt="image preview"
+          />
 
-        <Header>
-          <Header2>
-            <Header3>
-              <Date>
-                <Moment fromNow>{this.state.data.date}</Moment>
-              </Date>
-            </Header3>
-            <Header4>
-              <Title>{this.state.data.headline}</Title>
-            </Header4>
-            <Header3>
-              <Author>
-                {" "}
-                {this.state.loaded && <i>{this.state.data.author.username}</i>}
-              </Author>
-            </Header3>
-          </Header2>
-        </Header>
+          <Header>
+            <Header2>
+              <Header3>
+                <Date>
+                  <Moment fromNow>{this.state.data.date}</Moment>
+                </Date>
+              </Header3>
+              <Header4>
+                <Title>{this.state.data.headline}</Title>
+              </Header4>
+              <Header3>
+                <Author>
+                  {" "}
+                  {this.state.loaded && (
+                    <i>{this.state.data.author.username}</i>
+                  )}
+                </Author>
+              </Header3>
+            </Header2>
+          </Header>
+          <br />
+          <DivMargin>
+            <br />
+            <br />
+            <Abstract>{this.state.data.abstract}</Abstract>
+            <br />
+            <br />
+            <Content>
+              <P>{this.state.data.content} </P>
+            </Content>
+            <br />
+            <br />
+
+            <StatisticDiv>
+              <Statistic.Group size="tiny">
+                <Statistic>
+                  <Statistic.Value>
+                    {converter.toWords(this.state.data.views)}
+                  </Statistic.Value>
+                  <Statistic.Label>Views</Statistic.Label>
+                </Statistic>
+                <Statistic>
+                  <Statistic.Value>
+                    {converter.toWords(this.state.data.likes)}
+                  </Statistic.Value>
+                  <Statistic.Label>Likes</Statistic.Label>
+                </Statistic>
+              </Statistic.Group>
+            </StatisticDiv>
+
+            <br />
+            <br />
+            <Comment articleID={this.state.data._id} />
+            <br />
+            <br />
+          </DivMargin>
+        </Div>
         <br />
-        <DivMargin>
-          <br />
-          <br />
-          <Abstract>{this.state.data.abstract}</Abstract>
-          <br />
-          <br />
-          <Content>
-            <P>{this.state.data.content} </P>
-          </Content>
-          <br />
-          <br />
-
-          <StatisticDiv>
-            <Statistic.Group size="tiny">
-              <Statistic>
-                <Statistic.Value>
-                  {converter.toWords(this.state.data.views)}
-                </Statistic.Value>
-                <Statistic.Label>Views</Statistic.Label>
-              </Statistic>
-              <Statistic>
-                <Statistic.Value>
-                  {converter.toWords(this.state.data.likes)}
-                </Statistic.Value>
-                <Statistic.Label>Likes</Statistic.Label>
-              </Statistic>
-            </Statistic.Group>
-          </StatisticDiv>
-
-          <br />
-          <br />
-          <Comment articleID={this.state.data._id} />
-          <br />
-          <br />
-        </DivMargin>
-      </Div>
+        <br />
+      </Background>
     );
   }
 }

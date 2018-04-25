@@ -3,7 +3,7 @@ import { Button, Input } from "semantic-ui-react";
 import styled from "styled-components";
 
 const InputStyled = styled(Input)`
-  margin-left: 10px;
+  width: 300px;
 `;
 
 export default class CommentForm extends Component {
@@ -15,13 +15,15 @@ export default class CommentForm extends Component {
   }
 
   handleTextChange(e) {
-    this.setState({ text: e.target.value });
+    if (e.target.value.length < 100) {
+      this.setState({ text: e.target.value });
+    }
   }
   handleSubmit(e) {
     e.preventDefault();
 
     let text = this.state.text.trim();
-    let date = new Date().toLocaleDateString();
+    let date = new Date();
     if (!text) {
       return;
     }
@@ -32,14 +34,24 @@ export default class CommentForm extends Component {
   }
   render() {
     return (
-      <form className={this.props.className} onSubmit={this.handleSubmit}>
+      <form
+        className={this.props.className}
+        onSubmit={this.handleSubmit}
+        style={{ width: "100%", textAlign: "center" }}
+      >
         <InputStyled
           type="text"
           placeholder="Comment..."
           value={this.state.text}
           onChange={this.handleTextChange}
         />
-        <Button type="submit" value="Post">
+        <Button
+          basic
+          color="gray"
+          type="submit"
+          value="Post"
+          style={{ margin: "8px" }}
+        >
           Posten
         </Button>
       </form>

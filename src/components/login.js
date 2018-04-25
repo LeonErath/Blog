@@ -21,15 +21,12 @@ const Div = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  min-height: 100%;
-  padding: 20px;
 `;
 
 const LoginDiv = styled.div`
   border-radius: 2px 2px 5px 5px;
   padding: 10px 10px 20px 10px;
-  width: 90%;
-  max-width: 320px;
+  width: 24%;
   background: #ffffff;
   position: relative;
   display: flex;
@@ -69,6 +66,7 @@ export default class Login extends React.Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
     this.register = this.register.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.handleDropRejected = this.handleDropRejected.bind(this);
     this.login = this.login.bind(this);
   }
 
@@ -113,22 +111,27 @@ export default class Login extends React.Component {
         return;
       }
 
-      var user = {
-        email: email,
-        username: username,
-        password: password,
-        passwordConf: conf_password
-      };
-
-      console.log(user);
+      let formData = new FormData();
+      formData.append("profile", this.state.file);
+      formData.append("email", email);
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("passwordConf", conf_password);
+      window.URL.revokeObjectURL(this.state.file.preview);
       axios.defaults.withCredentials = true;
       axios(url, {
         method: "post",
-        data: user,
-        withCredentials: true
+        data: formData,
+        processData: false,
+        contentType: false,
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
       })
         .then(response => {
           this.setState({
+            file: "",
             email: "",
             username: "",
             password: "",
@@ -137,62 +140,54 @@ export default class Login extends React.Component {
           window.location.pathname = "/";
         })
         .catch(err => {
-          console.log(err.response);
-
-          this.setState({});
+          console.log(err);
         });
     } else {
-      console.log("Login");
-
-      let email = this.state.email.trim();
-      let password = this.state.password.trim();
-
-      if (!email || !password) {
-        console.log("some fields are empty");
-        return;
-      }
-
-      user = {
-        email: email,
-        password: password
-      };
-
-      console.log(user);
-      axios.defaults.withCredentials = true;
-      axios(url2, {
-        method: "post",
-        data: user,
-        withCredentials: true
-      })
-        .then(response => {
-          console.log(response);
-
-          window.location.pathname = "/";
-          this.setState({
-            email: "",
-            username: "",
-            password: "",
-            conf_password: ""
-          });
-        })
-        .catch(err => {
-          console.log(err.response);
-
-          this.setState({});
-        });
+      this.login();
     }
   }
 
   login() {
-    axios
-      .get(url2)
+    console.log("Login");
+
+    let email = this.state.email.trim();
+    let password = this.state.password.trim();
+
+    if (!email || !password) {
+      console.log("some fields are empty");
+      return;
+    }
+
+    var user = {
+      email: email,
+      password: password
+    };
+
+    console.log(user);
+    axios.defaults.withCredentials = true;
+    axios(url2, {
+      method: "post",
+      data: user,
+      withCredentials: true
+    })
       .then(response => {
-        console.log("login", response);
+        console.log(response);
+
+        window.location.pathname = "/";
+        this.setState({
+          email: "",
+          username: "",
+          password: "",
+          conf_password: ""
+        });
       })
       .catch(err => {
         console.log(err.response);
+
+        this.setState({});
       });
   }
+
   handleDrop(acceptedFiles, rejectedFiles) {
     if (acceptedFiles.length == 1) {
       console.log(this.state);
@@ -216,6 +211,7 @@ export default class Login extends React.Component {
                 paddingRight: "48px"
               }}
               className="dragAndDropArea"
+              maxSize={500000}
               onDrop={this.handleDrop}
               accept="image/jpeg,image/jpg,image/tiff,image/gif,image/png"
               multiple={false}
@@ -251,6 +247,10 @@ export default class Login extends React.Component {
             </Dropzone>
           ) : null}
           <InputStyled
+            style={{
+              width: "240px",
+              marginTop: "20px"
+            }}
             type="email"
             placeholder="Email..."
             value={this.state.email}
@@ -258,6 +258,10 @@ export default class Login extends React.Component {
           />
           {this.state.registration ? (
             <InputStyled
+              style={{
+                width: "240px",
+                marginTop: "20px"
+              }}
               value={this.state.username}
               type="text"
               placeholder="Username..."
@@ -265,6 +269,10 @@ export default class Login extends React.Component {
             />
           ) : null}
           <InputStyled
+            style={{
+              width: "240px",
+              marginTop: "20px"
+            }}
             value={this.state.password}
             type="password"
             placeholder="Password..."
@@ -272,6 +280,10 @@ export default class Login extends React.Component {
           />
           {this.state.registration ? (
             <InputStyled
+              style={{
+                width: "240px",
+                marginTop: "20px"
+              }}
               value={this.state.conf_password}
               type="password"
               placeholder="Confirm Password..."
@@ -279,17 +291,19 @@ export default class Login extends React.Component {
             />
           ) : null}
           <Checkbox
+            style={{
+              width: "240px",
+              marginTop: "20px"
+            }}
             style={{ marginTop: "16px" }}
             label="Register User"
             onChange={this.handleCheckboxChange}
           />
 
           <Button
-            style={{ width: "160px", marginTop: "16px" }}
+            style={{ width: "160px", marginTop: "20px" }}
             basic
             color="gray"
-            type="submit"
-            value="Post"
             onClick={this.register}
           >
             {this.state.registration ? "Register" : "Login"}

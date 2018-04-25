@@ -9,6 +9,7 @@ import Dashboard from "./dashboard.js";
 import {
   Header,
   Icon,
+  Item,
   Image,
   Table,
   Button,
@@ -185,10 +186,32 @@ export default class Profile extends React.Component {
         <div>
           <ProfileDiv>
             <Header as="h2" icon textAlign="center">
-              <Icon color="grey" name="user outline" />
-              <Header.Content>{this.state.profile.username}</Header.Content>
+              <img
+                src={this.state.profile.profilePicture}
+                style={{
+                  width: "200px",
+                  height: "200px",
+                  objectFit: "cover",
+                  borderRadius: "50%"
+                }}
+              />
+              <Header.Content
+                style={{
+                  marginTop: "16px",
+                  fontFamily: "Courier New, Courier, monospace"
+                }}
+              >
+                {this.state.profile.username}
+              </Header.Content>
             </Header>
-            <h3>{this.state.profile.email}</h3>
+            <h3
+              style={{
+                marginTop: "-16px",
+                fontFamily: "Courier New, Courier, monospace"
+              }}
+            >
+              {this.state.profile.email}
+            </h3>
             <br />
             <br />
             <div>

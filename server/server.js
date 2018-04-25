@@ -70,9 +70,9 @@ app.listen(port, function() {
 //   }
 // });
 
-// var Comment = require("./model/commentSchema.js");
+// var User = require("./model/userSchema.js");
 
-// Comment.remove({}, function(err, doc) {
+// User.remove({}, function(err, doc) {
 //   if (err) {
 //     // handle error
 //   }

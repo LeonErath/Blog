@@ -1,4 +1,16 @@
 var User = require("../model/userSchema.js");
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "public/images/profile");
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+  }
+});
+
+var upload = multer({ storage: storage }).single("profile");
 
 exports.findAll = function(req, res) {
   User.find(function(err, data) {
@@ -88,10 +100,13 @@ exports.getUser = function(req, res) {
     if (err) {
       return res.send(err);
     }
+    console.log(user);
+
     res.send({
       username: user.username,
       email: user.email,
-      permission: user.permission
+      permission: user.permission,
+      profilePicture: user.profilePicture
     });
   });
 };
@@ -110,47 +125,60 @@ exports.logout = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-  // confirm that user typed same password twice
-  if (req.body.password !== req.body.passwordConf) {
-    var err = new Error("Passwords do not match.");
-    err.status = 400;
-    return res.next(err);
-  }
-  if (
-    req.body.email &&
-    req.body.username &&
-    req.body.password &&
-    req.body.passwordConf
-  ) {
-    var userData = {
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      passwordConf: req.body.passwordConf
-    };
+  upload(req, res, function(err) {
+    if (err) {
+      var err = new Error("No profile upload possible.");
+      err.status = 400;
+      return next(err);
+    }
+    if (req.body.password !== req.body.passwordConf) {
+      var err = new Error("Passwords do not match.");
+      err.status = 400;
+      return next(err);
+    }
+    if (req.file == undefined) {
+      var err = new Error("No profile upload possible.");
+      err.status = 400;
+      return next(err);
+    }
+    var path = req.file.path.substring(6, req.file.path.length);
+    if (
+      req.body.email &&
+      req.body.username &&
+      req.body.password &&
+      req.body.passwordConf
+    ) {
+      var userData = {
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password,
+        passwordConf: req.body.passwordConf,
+        profilePicture: path
+      };
+      console.log(userData);
 
-    User.create(userData, function(error, user) {
-      if (error) {
-        return next(error);
-      } else {
-        req.session.userId = user._id;
-        req.session.cookie.maxAge = 300000;
-        req.session.save(err => {
-          if (!err) {
-            res.send("success");
-          } else {
-            return res.send(err);
-          }
-        });
-      }
-    });
-  } else {
-    console.log(req.bod);
-
-    var err = new Error("All fields required.");
-    err.status = 400;
-    return next(err);
-  }
+      User.create(userData, function(error, user) {
+        console.log(user);
+        if (error) {
+          return next(error);
+        } else {
+          req.session.userId = user._id;
+          req.session.cookie.maxAge = 300000;
+          req.session.save(err => {
+            if (!err) {
+              res.send("success");
+            } else {
+              return next(err);
+            }
+          });
+        }
+      });
+    } else {
+      var err = new Error("All fields required.");
+      err.status = 400;
+      return next(err);
+    }
+  });
 };
 
 exports.update = function(req, res, next) {};

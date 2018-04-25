@@ -11,7 +11,7 @@ const Div = styled.div`
   position: fixed;
   z-index: 1;
   top: 200px;
-  left: 40px;
+  left: 50px;
   text-align: center;
   overflow-x: hidden;
   padding: 8px 0;

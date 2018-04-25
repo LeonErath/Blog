@@ -1,21 +1,71 @@
 import React, { Component } from "react";
-import { Comment } from "semantic-ui-react";
+import { Feed, Icon } from "semantic-ui-react";
+import Moment from "react-moment";
+import styled from "styled-components";
+
+const Image = styled.div`
+  display: inline-block;
+  height: 60px;
+  width: 60px;
+`;
+
+const Div = styled.div`
+  padding-left: 16px;
+  vertical-align: top;
+  display: inline-block;
+  height: 60px;
+  width: 500px;
+`;
+
+const Author = styled.div`
+  display: inline;
+  font-size: 12px;
+  line-height: 1;
+  font-family: "Courier New", Courier, monospace;
+  color: #292929;
+`;
+const Date = styled.div`
+  font-style: italic;
+  padding-left: 8px;
+  display: inline;
+  font-size: 12px;
+  font-family: "Courier New", Courier, monospace;
+  color: #7f5959;
+`;
+const Content = styled.div`
+  font-size: 14px;
+  word-wrap: break-word;
+  width: 100%;
+  max-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #292929;
+  font-family: "Courier New", Courier, monospace;
+`;
 
 export default class CommentObj extends Component {
   render() {
     return (
-      <Comment>
-        <Comment.Content>
-          <Comment.Author as="a">{this.props.author}</Comment.Author>
-          <Comment.Metadata>
-            <div>{this.props.date}</div>
-          </Comment.Metadata>
-          <Comment.Text>{this.props.text}</Comment.Text>
-          <Comment.Actions>
-            <Comment.Action>Reply</Comment.Action>
-          </Comment.Actions>
-        </Comment.Content>
-      </Comment>
+      <div>
+        <Image>
+          <img
+            src={this.props.profile}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              borderRadius: "50%"
+            }}
+          />
+        </Image>
+        <Div>
+          <Author>{this.props.author}</Author>
+          <Date>
+            <Moment fromNow>{this.props.date}</Moment>
+          </Date>
+          <Content>{this.props.text}</Content>
+        </Div>
+      </div>
     );
   }
 }
