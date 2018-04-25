@@ -17,7 +17,7 @@ const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 export default class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: [], authenticated: false };
+    this.state = { data: [], authenticated: false, user: "" };
     this.authenticate = this.authenticate.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.pollInterval = null;
@@ -33,9 +33,10 @@ export default class CommentBox extends React.Component {
 
       if (res.data) {
         if (res.data === "No authentication") {
-          this.setState({ authenticated: false });
+          this.setState({ authenticated: false, user: "" });
         } else {
-          this.setState({ authenticated: true });
+          this.setState({ authenticated: true, user: res.data });
+          console.log(this.state);
         }
       }
     });
@@ -91,8 +92,12 @@ export default class CommentBox extends React.Component {
       <div>
         <Divider horizontal>Comments</Divider>
         <CommentList data={this.state.data} />
+        <br />
         {this.state.authenticated && (
-          <CommentFormStyled onCommentSubmit={this.handleCommentSubmit} />
+          <CommentFormStyled
+            onCommentSubmit={this.handleCommentSubmit}
+            user={this.state.user}
+          />
         )}
       </div>
     );

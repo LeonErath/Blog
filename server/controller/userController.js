@@ -64,12 +64,18 @@ exports.addBookmark = function(req, res) {
 };
 
 exports.loggedin = function(req, res, next) {
-  User.findOne({ _id: req.session.userId }).exec(function(err, data) {
+  User.findOne({ _id: req.session.userId }).exec(function(err, user) {
     if (err) {
       res.send(err);
       return;
     }
-    res.send("Success");
+    var userJSON = {
+      username: user.username,
+      userId: user._id,
+      email: user.email,
+      profile: user.profilePicture
+    };
+    res.json(userJSON);
   });
 };
 

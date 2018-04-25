@@ -3,13 +3,32 @@ import { Button, Input } from "semantic-ui-react";
 import styled from "styled-components";
 
 const InputStyled = styled(Input)`
-  width: 300px;
+  width: 100%;
 `;
 
+const ParentDiv = styled.div`
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+  width: 60%;
+  margin: 0 auto;
+`;
+const Div = styled.div`
+  flex: 1;
+`;
+const Div2 = styled.div`
+  flex: 3;
+`;
 export default class CommentForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: "", date: "" };
+    this.state = { text: "", date: "", user: { profile: "" } };
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -32,6 +51,13 @@ export default class CommentForm extends Component {
 
     this.setState({ text: "", date: "" });
   }
+  componentWillReceiveProps(nextProps) {
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    if (nextProps.user !== this.state.user) {
+      this.setState({ user: nextProps.user });
+    }
+  }
+
   render() {
     return (
       <form
@@ -39,21 +65,33 @@ export default class CommentForm extends Component {
         onSubmit={this.handleSubmit}
         style={{ width: "100%", textAlign: "center" }}
       >
-        <InputStyled
-          type="text"
-          placeholder="Comment..."
-          value={this.state.text}
-          onChange={this.handleTextChange}
-        />
-        <Button
-          basic
-          color="gray"
-          type="submit"
-          value="Post"
-          style={{ margin: "8px" }}
-        >
-          Posten
-        </Button>
+        <ParentDiv>
+          <Div>
+            <img
+              src={this.state.user.profile}
+              style={{
+                margin: "8px",
+                width: "60px",
+                height: "60px",
+                objectFit: "cover",
+                borderRadius: "50%"
+              }}
+            />
+          </Div>
+          <Div2>
+            <InputStyled
+              type="text"
+              placeholder="Comment..."
+              value={this.state.text}
+              onChange={this.handleTextChange}
+            />
+          </Div2>
+          <Div>
+            <Button basic color="gray" type="submit" value="Post">
+              Posten
+            </Button>
+          </Div>
+        </ParentDiv>
       </form>
     );
   }
