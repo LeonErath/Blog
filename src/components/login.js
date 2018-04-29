@@ -1,7 +1,7 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Input, Checkbox, Form } from "semantic-ui-react";
+import { Button, Input, Checkbox, Form, Message } from "semantic-ui-react";
 import styled from "styled-components";
 import axios from "axios";
 import Dropzone from "react-dropzone";
@@ -56,6 +56,9 @@ export default class Login extends React.Component {
       password: "",
       conf_password: "",
       file: "",
+      header: "error",
+      message: "Something went wrong. Please try Againg.",
+      failureRequest: false,
       registration: false
     };
 
@@ -183,8 +186,11 @@ export default class Login extends React.Component {
       })
       .catch(err => {
         console.log(err.response);
-
-        this.setState({});
+        this.setState({
+          failureRequest: true,
+          message: err.response.data.message,
+          header: err.response.data.header
+        });
       });
   }
 
@@ -308,6 +314,12 @@ export default class Login extends React.Component {
           >
             {this.state.registration ? "Register" : "Login"}
           </Button>
+          {this.state.failureRequest ? (
+            <Message negative>
+              <Message.Header>{this.state.header}</Message.Header>
+              <p>{this.state.message}</p>
+            </Message>
+          ) : null}
         </LoginDiv>
       </Div>
     );

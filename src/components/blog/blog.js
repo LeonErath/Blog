@@ -48,7 +48,7 @@ const Div = styled.div`
   position: relative;
   background: #fff;
   width: 1000px;
-  margin: -50px auto 0 auto;
+  margin: -54px auto 0 auto;
   box-shadow: 0 20px 40px rgba(100, 100, 100, 0.1);
 `;
 
@@ -213,7 +213,8 @@ export default class Blog extends React.Component {
       <Background>
         <Div>
           <Sidebar
-            id={this.state.data._id}
+            id={this.props.match.params.id}
+            title={this.state.data.headline}
             click={this.addLike}
             addBookmark={this.addBookmark}
           />

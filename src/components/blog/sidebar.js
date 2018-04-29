@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import "normalize.css";
-import { Button, Transition, Label } from "semantic-ui-react";
+import { Button, Transition, Label, Popup } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  TwitterIcon
+} from "react-share";
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
@@ -28,12 +34,16 @@ export default class Sidebar extends React.Component {
       animation2: "fade",
       duration2: 500,
       visible2: false,
+      bookmarkColor: "teal",
+      bookmarkPressed: false,
+      popupMessage: "Loading..",
       counter: 0
     };
     this.clickLike = this.clickLike.bind(this);
     this.clickBookmark = this.clickBookmark.bind(this);
     this.clickTwitter = this.clickTwitter.bind(this);
     this.clickFacebook = this.clickFacebook.bind(this);
+    this.checkBookmarks = this.checkBookmarks.bind(this);
 
     this.authenticate = this.authenticate.bind(this);
   }
@@ -43,18 +53,33 @@ export default class Sidebar extends React.Component {
     axios(urlCheckAuth, {
       method: "get",
       withCredentials: true
-    }).then(res => {
-      console.log("BlogList Authentication", res.data);
+    })
+      .then(res => {
+        console.log("Sidebar Authentication", res.data);
 
-      if (res.data) {
-        if (res.data === "No authentication") {
-          this.setState({ authenticated: false });
-        } else {
-          this.setState({ authenticated: true });
+        if (res.data) {
+          if (res.data === "No authentication") {
+            this.setState({ authenticated: false });
+          } else {
+            this.setState({ authenticated: true });
+            this.checkBookmarks(res.data.bookmarks);
+          }
         }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  checkBookmarks(bookmarks) {
+    console.log("Check Bookmark", bookmarks, this.props.id);
+
+    bookmarks.map(bookmarkID => {
+      if (bookmarkID == this.props.id) {
+        this.setState({ bookmarkColor: "gray", bookmarkPressed: true });
       }
     });
-  };
+  }
 
   clickLike(e) {
     e.preventDefault();
@@ -78,8 +103,16 @@ export default class Sidebar extends React.Component {
   }
   clickBookmark(e) {
     e.preventDefault();
-
-    this.props.addBookmark();
+    if (this.state.authenticated) {
+      this.setState({
+        bookmarkColor: "gray",
+        bookmarkPressed: true,
+        popupMessage: "Added to bookmarks."
+      });
+      this.props.addBookmark();
+    } else {
+      this.setState({ popupMessage: "You need to be logged in." });
+    }
   }
   clickFacebook(e) {
     e.preventDefault();
@@ -120,28 +153,48 @@ export default class Sidebar extends React.Component {
         </Transition>
         <br />
         <br />
-        <Button
-          circular
-          icon="bookmark"
-          color="teal"
-          onClick={this.clickBookmark}
+        <Popup
+          trigger={
+            <Button
+              circular
+              disabled={this.state.bookmarkPressed}
+              icon="bookmark"
+              color={this.state.bookmarkColor}
+              onClick={this.clickBookmark}
+            />
+          }
+          on="click"
+          content={this.state.popupMessage}
+          hideOnScroll
+          position="top right"
         />
+
         <br />
         <br />
-        <Button
-          circular
-          icon="twitter"
-          color="twitter"
-          onClick={this.clickTwitter}
-        />
+        <TwitterShareButton
+          url={window.location.href}
+          title={this.props.title}
+          style={{
+            display: "table",
+            margin: "0 auto",
+            cursor: "pointer"
+          }}
+        >
+          <TwitterIcon size={36} round />
+        </TwitterShareButton>
         <br />
-        <br />
-        <Button
-          circular
-          icon="facebook"
-          color="facebook"
-          onClick={this.clickFacebook}
-        />
+
+        <FacebookShareButton
+          url={window.location.href}
+          quote={this.props.title}
+          style={{
+            display: "table",
+            margin: "0 auto",
+            cursor: "pointer"
+          }}
+        >
+          <FacebookIcon size={36} round />
+        </FacebookShareButton>
         <br />
       </Div>
     );
