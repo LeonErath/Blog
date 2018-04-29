@@ -15,6 +15,8 @@ const DateDiv = styled.div`
 `;
 
 const Image = styled.img`
+  object-fit: cover;
+  max-height: 170px;
   flex: 3;
   width: 100%;
   height: 100%;

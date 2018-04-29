@@ -193,6 +193,8 @@ export default class CommentForm extends Component {
         {this.state.file != "" && (
           <center>
             <Button
+              basic
+              color="grey"
               style={{ margin: "4px" }}
               onClick={() => {
                 this.setState({ file: "" });
@@ -250,7 +252,9 @@ export default class CommentForm extends Component {
             control={Checkbox}
             label="I agree to the Terms and Conditions"
           />
-          <Form.Field control={Button}>Submit</Form.Field>
+          <Form.Field basic color="grey" control={Button}>
+            Submit
+          </Form.Field>
           {this.state.successRequest ? (
             <Message
               success
