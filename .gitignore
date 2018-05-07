@@ -26,3 +26,4 @@ yarn-error.log*
 *.jpeg
 *.png
 *.gif
+*.icloud

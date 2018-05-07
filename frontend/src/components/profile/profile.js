@@ -33,6 +33,11 @@ const ProfileDiv = styled.div`
   display: table;
   margin: 0 auto;
 `;
+
+const Background = styled.div`
+  background-image: url("/images/concrete-texture.png");
+  background-repeat: repeat;
+`;
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -181,73 +186,77 @@ export default class Profile extends React.Component {
     }
 
     return (
-      <Div>
-        <h1>Profile</h1>
-        <div>
-          <ProfileDiv>
-            <Header as="h2" icon textAlign="center">
-              <img
-                src={this.state.profile.profilePicture}
+      <Background>
+        <Div>
+          <h1>Profile</h1>
+          <div>
+            <ProfileDiv>
+              <Header as="h2" icon textAlign="center">
+                <img
+                  src={this.state.profile.profilePicture}
+                  style={{
+                    width: "200px",
+                    height: "200px",
+                    objectFit: "cover",
+                    borderRadius: "50%"
+                  }}
+                />
+                <Header.Content
+                  style={{
+                    marginTop: "16px",
+                    fontFamily: "Courier New, Courier, monospace"
+                  }}
+                >
+                  {this.state.profile.username}
+                </Header.Content>
+              </Header>
+              <h3
                 style={{
-                  width: "200px",
-                  height: "200px",
-                  objectFit: "cover",
-                  borderRadius: "50%"
-                }}
-              />
-              <Header.Content
-                style={{
-                  marginTop: "16px",
+                  marginTop: "-16px",
                   fontFamily: "Courier New, Courier, monospace"
                 }}
               >
-                {this.state.profile.username}
-              </Header.Content>
-            </Header>
-            <h3
-              style={{
-                marginTop: "-16px",
-                fontFamily: "Courier New, Courier, monospace"
-              }}
-            >
-              {this.state.profile.email}
-            </h3>
-            <br />
-            <br />
-            <div>
-              <Statistic.Group size="tiny">
-                <Statistic>
-                  <Statistic.Value>{this.state.totalViews}</Statistic.Value>
-                  <Statistic.Label>Views</Statistic.Label>
-                </Statistic>
-                <Statistic>
-                  <Statistic.Value>
-                    {converter.toWords(this.state.totalLikes)}
-                  </Statistic.Value>
-                  <Statistic.Label>Likes</Statistic.Label>
-                </Statistic>
-                <Statistic>
-                  <Statistic.Value>0{this.state.totalArticle}</Statistic.Value>
-                  <Statistic.Label>Articles</Statistic.Label>
-                </Statistic>
-              </Statistic.Group>
-            </div>
-            <br />
-          </ProfileDiv>
-        </div>
-        <Dashboard data={this.state.articleList} />
-        <Table celled striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell colSpan="3">Articles</Table.HeaderCell>
-              <Table.HeaderCell colSpan="1">Views</Table.HeaderCell>
-              <Table.HeaderCell colSpan="1">Likes</Table.HeaderCell>
-              <Table.HeaderCell colSpan="1">Action</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>{section1}</Table.Body>
-        </Table>
-      </Div>
+                {this.state.profile.email}
+              </h3>
+              <br />
+              <br />
+              <div>
+                <Statistic.Group size="tiny">
+                  <Statistic>
+                    <Statistic.Value>{this.state.totalViews}</Statistic.Value>
+                    <Statistic.Label>Views</Statistic.Label>
+                  </Statistic>
+                  <Statistic>
+                    <Statistic.Value>
+                      {converter.toWords(this.state.totalLikes)}
+                    </Statistic.Value>
+                    <Statistic.Label>Likes</Statistic.Label>
+                  </Statistic>
+                  <Statistic>
+                    <Statistic.Value>
+                      0{this.state.totalArticle}
+                    </Statistic.Value>
+                    <Statistic.Label>Articles</Statistic.Label>
+                  </Statistic>
+                </Statistic.Group>
+              </div>
+              <br />
+            </ProfileDiv>
+          </div>
+          <Dashboard data={this.state.articleList} />
+          <Table celled striped>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell colSpan="3">Articles</Table.HeaderCell>
+                <Table.HeaderCell colSpan="1">Views</Table.HeaderCell>
+                <Table.HeaderCell colSpan="1">Likes</Table.HeaderCell>
+                <Table.HeaderCell colSpan="1">Action</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>{section1}</Table.Body>
+          </Table>
+        </Div>
+      </Background>
     );
   }
 }

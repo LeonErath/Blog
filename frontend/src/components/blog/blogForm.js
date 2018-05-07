@@ -18,7 +18,10 @@ const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 const FromStyled = styled(Form)`
   width: 100%;
 `;
-
+const Background = styled.div`
+  background-image: url("/images/concrete-texture.png");
+  background-repeat: repeat;
+`;
 const DivDrop = styled.div`
   margin-top: 16px;
   margin-bottom: 16px;
@@ -155,123 +158,125 @@ export default class CommentForm extends Component {
 
   render() {
     return (
-      <Div>
-        <HeadlineCenter> Neuen Artikel erstellen </HeadlineCenter>
+      <Background>
+        <Div>
+          <HeadlineCenter> Neuen Artikel erstellen </HeadlineCenter>
 
-        <FromStyled>
-          <Form.Field required label="Thumbnail" placeholder="Thumbnail" />
-        </FromStyled>
-        <Dropzone
-          maxSize={1000000}
-          className="dragAndDropArea"
-          onDrop={this.handleDrop}
-          accept="image/jpeg,image/jpg,image/tiff,image/gif,image/png"
-          multiple={false}
-          onDropRejected={this.handleDropRejected}
-        >
-          <DivDrop>
-            {this.state.file == "" && (
-              <center>
-                <br />
-                <br />
-                <br />
-                <h3>Drag 'n' Drop Thumbnail</h3>
-              </center>
-            )}
+          <FromStyled>
+            <Form.Field required label="Thumbnail" placeholder="Thumbnail" />
+          </FromStyled>
+          <Dropzone
+            maxSize={1000000}
+            className="dragAndDropArea"
+            onDrop={this.handleDrop}
+            accept="image/jpeg,image/jpg,image/tiff,image/gif,image/png"
+            multiple={false}
+            onDropRejected={this.handleDropRejected}
+          >
+            <DivDrop>
+              {this.state.file == "" && (
+                <center>
+                  <br />
+                  <br />
+                  <br />
+                  <h3>Drag 'n' Drop Thumbnail</h3>
+                </center>
+              )}
 
-            {this.state.file != "" && (
-              <center>
-                <img
-                  src={this.state.file.preview}
-                  alt="image preview"
-                  height={200}
-                />
-              </center>
-            )}
-          </DivDrop>
-        </Dropzone>
-        {this.state.file != "" && (
-          <center>
-            <Button
-              basic
-              color="grey"
-              style={{ margin: "4px" }}
-              onClick={() => {
-                this.setState({ file: "" });
-              }}
-            >
-              Delete
-            </Button>
-          </center>
-        )}
+              {this.state.file != "" && (
+                <center>
+                  <img
+                    src={this.state.file.preview}
+                    alt="image preview"
+                    height={200}
+                  />
+                </center>
+              )}
+            </DivDrop>
+          </Dropzone>
+          {this.state.file != "" && (
+            <center>
+              <Button
+                basic
+                color="grey"
+                style={{ margin: "4px" }}
+                onClick={() => {
+                  this.setState({ file: "" });
+                }}
+              >
+                Delete
+              </Button>
+            </center>
+          )}
 
-        <FromStyled
-          loading={this.state.loadingRequest}
-          success={this.state.successRequest}
-          error={this.state.failureRequest}
-          onSubmit={this.handleSubmit}
-        >
-          <Form.Field
-            required
-            control={Input}
-            label="Headline"
-            placeholder="Headline"
-            value={this.state.headline}
-            onChange={this.handleHeadlineChange}
-          />
-          <Form.Field
-            required
-            control={Input}
-            label="Abstract"
-            placeholder="Abstract"
-            value={this.state.abstract}
-            onChange={this.handleAbstractChange}
-          />
-          <Form.Field
-            required
-            control={TextArea}
-            style={{ minHeight: 400 }}
-            label="Content"
-            placeholder="Tell us your story..."
-            value={this.state.content}
-            onChange={this.handleContentChange}
-          />
-          <Form.Group>
+          <FromStyled
+            loading={this.state.loadingRequest}
+            success={this.state.successRequest}
+            error={this.state.failureRequest}
+            onSubmit={this.handleSubmit}
+          >
             <Form.Field
               required
-              width={8}
               control={Input}
-              label="Topic"
-              placeholder="Topic"
-              value={this.state.topic}
-              onChange={this.handleTopicChange}
+              label="Headline"
+              placeholder="Headline"
+              value={this.state.headline}
+              onChange={this.handleHeadlineChange}
             />
-          </Form.Group>
-          <Form.Field
-            required
-            control={Checkbox}
-            label="I agree to the Terms and Conditions"
-          />
-          <Form.Field basic color="grey" control={Button}>
-            Submit
-          </Form.Field>
-          {this.state.successRequest ? (
-            <Message
-              success
-              header={this.state.header}
-              content={this.state.message}
+            <Form.Field
+              required
+              control={Input}
+              label="Abstract"
+              placeholder="Abstract"
+              value={this.state.abstract}
+              onChange={this.handleAbstractChange}
             />
-          ) : null}
+            <Form.Field
+              required
+              control={TextArea}
+              style={{ minHeight: 400 }}
+              label="Content"
+              placeholder="Tell us your story..."
+              value={this.state.content}
+              onChange={this.handleContentChange}
+            />
+            <Form.Group>
+              <Form.Field
+                required
+                width={8}
+                control={Input}
+                label="Topic"
+                placeholder="Topic"
+                value={this.state.topic}
+                onChange={this.handleTopicChange}
+              />
+            </Form.Group>
+            <Form.Field
+              required
+              control={Checkbox}
+              label="I agree to the Terms and Conditions"
+            />
+            <Form.Field basic color="grey" control={Button}>
+              Submit
+            </Form.Field>
+            {this.state.successRequest ? (
+              <Message
+                success
+                header={this.state.header}
+                content={this.state.message}
+              />
+            ) : null}
 
-          {this.state.failureRequest ? (
-            <Message
-              error
-              header={this.state.header}
-              content={this.state.message}
-            />
-          ) : null}
-        </FromStyled>
-      </Div>
+            {this.state.failureRequest ? (
+              <Message
+                error
+                header={this.state.header}
+                content={this.state.message}
+              />
+            ) : null}
+          </FromStyled>
+        </Div>
+      </Background>
     );
   }
 }
