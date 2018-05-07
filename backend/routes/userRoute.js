@@ -13,8 +13,6 @@ module.exports = function(router) {
 
   router.get("/user/getProfile", auth.check, user.getUser);
 
-  router.put("/user/deleteBookmark", auth.check, user.deleteBookmark);
-
   router.post("/login", user.login);
 
   router.post("/register", user.create);
@@ -22,6 +20,8 @@ module.exports = function(router) {
   // Update a Note with noteId
 
   router.put("/user/addBookmark", auth.check, user.addBookmark);
+
+  router.put("/user/deleteBookmark", auth.check, user.deleteBookmark);
 
   // Delete a Note with noteId
   router.delete("/user/:id", user.delete);

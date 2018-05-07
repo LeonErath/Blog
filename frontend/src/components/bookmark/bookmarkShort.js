@@ -1,8 +1,26 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Icon, Card, Image } from "semantic-ui-react";
+import { Icon, Card, Image, Button } from "semantic-ui-react";
 import Moment from "react-moment";
+
+const ImageContainter = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const ButtonStyled = styled(Button)`
+  position: absolute;
+  top: 9%;
+  left: 95%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+
+  cursor: pointer;
+
+  &:hover {
+  }
+`;
 
 const DateDiv = styled.div`
   text-align: right;
@@ -45,11 +63,22 @@ export default class BookmarkShort extends Component {
   render() {
     return (
       <Card>
-        <Image
-          style={{ objectFit: "cover", height: "240px" }}
-          src={this.props.thumbnail}
-          alt="image preview"
-        />
+        <ImageContainter>
+          <Image
+            style={{ objectFit: "cover", height: "240px", width: "100%" }}
+            src={this.props.thumbnail}
+            alt="image preview"
+          />
+          <ButtonStyled
+            basic
+            inverted
+            circular
+            icon="delete"
+            onClick={e => {
+              this.props.handleBookmarkDelete(this.props.id);
+            }}
+          />
+        </ImageContainter>
         <Card.Content header>
           <Link to={`blog/${this.props.id}`}>
             <Headline>{this.props.headline}</Headline>

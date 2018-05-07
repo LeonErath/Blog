@@ -14,7 +14,7 @@ export default class BookmarkList extends React.Component {
     super(props);
     this.state = { data: [] };
     this.pollInterval = null;
-    this.deleteBookmark = this.deleteBookmark.bind(this);
+    this.handleDeleteBookmark = this.handleDeleteBookmark.bind(this);
   }
   loadBookmarksFromServer = () => {
     axios.defaults.withCredentials = true;
@@ -31,18 +31,22 @@ export default class BookmarkList extends React.Component {
       });
   };
 
-  deleteBookmark(id) {
+  handleDeleteBookmark = id => {
     const url = `http://127.0.0.1:3030/api/user/deleteBookmark`;
 
     axios
       .put(url, { articleId: id })
       .then(res => {
-        this.setState({ data: res.data.bookmarks });
+        let newBookmarks = this.state.data.filter(
+          bookmark => bookmark._id !== id
+        );
+        this.setState({ data: newBookmarks });
+        console.log("Bookmark deleted", res.data);
       })
       .catch(err => {
-        console.log("Bookmark", err);
+        console.log("Bookmark err delete", err);
       });
-  }
+  };
 
   componentDidMount() {
     this.loadBookmarksFromServer();
@@ -55,7 +59,7 @@ export default class BookmarkList extends React.Component {
         return (
           <BookmarkShort
             thumbnail={article.thumbnail}
-            deleteBookmark={this.deleteBookmark}
+            handleBookmarkDelete={this.handleDeleteBookmark}
             headline={article.headline}
             key={article._id}
             id={article._id}
