@@ -14,12 +14,15 @@ export default class CommentList extends React.Component {
       return (
         <Comment.Group size="large">
           <CommentObj
-            userid={comment.author._id}
+            handleDelete={this.props.onDeleteComment}
+            id={comment._id}
+            userId={comment.author._id}
             profile={comment.author.profilePicture}
             author={comment.author.username}
             key={comment.id}
             date={comment.date}
             text={comment.text}
+            currentUser={this.props.user}
           />
         </Comment.Group>
       );

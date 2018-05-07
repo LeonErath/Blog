@@ -74,7 +74,7 @@ export default class Sidebar extends React.Component {
   checkBookmarks(bookmarks) {
     console.log("Check Bookmark", bookmarks, this.props.id);
 
-    bookmarks.array.forEach(bookmarkID => {
+    bookmarks.forEach(bookmarkID => {
       if (bookmarkID === this.props.id) {
         this.setState({ bookmarkColor: "gray", bookmarkPressed: true });
       }
@@ -101,15 +101,25 @@ export default class Sidebar extends React.Component {
     } else {
     }
   }
+
   clickBookmark(e) {
     e.preventDefault();
     if (this.state.authenticated) {
-      this.setState({
-        bookmarkColor: "gray",
-        bookmarkPressed: true,
-        popupMessage: "Added to bookmarks."
-      });
-      this.props.addBookmark();
+      if (!this.state.bookmarkPressed) {
+        this.setState({
+          bookmarkColor: "gray",
+          bookmarkPressed: true,
+          popupMessage: "Added to bookmarks."
+        });
+        this.props.addBookmark();
+      } else {
+        this.setState({
+          bookmarkColor: "teal",
+          bookmarkPressed: false,
+          popupMessage: "Deleted bookmark."
+        });
+        this.props.deleteBookmark();
+      }
     } else {
       this.setState({ popupMessage: "You need to be logged in." });
     }
@@ -129,6 +139,7 @@ export default class Sidebar extends React.Component {
     return (
       <Div>
         <Transition
+          unmountOnHide={false}
           animation={this.state.animation2}
           duration={this.state.duration2}
           visible={this.state.visible2}
@@ -157,7 +168,6 @@ export default class Sidebar extends React.Component {
           trigger={
             <Button
               circular
-              disabled={this.state.bookmarkPressed}
               icon="bookmark"
               color={this.state.bookmarkColor}
               onClick={this.clickBookmark}

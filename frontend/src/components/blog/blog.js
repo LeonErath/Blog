@@ -119,6 +119,7 @@ export default class Blog extends React.Component {
     this.authenticate = this.authenticate.bind(this);
     this.loadArticleFromServer = this.loadArticleFromServer.bind(this);
     this.addBookmark = this.addBookmark.bind(this);
+    this.deleteBookmark = this.deleteBookmark.bind(this);
   }
 
   authenticate = () => {
@@ -191,10 +192,24 @@ export default class Blog extends React.Component {
     axios
       .put(url, { articleId: id })
       .then(res => {
-        console.log("Bookmark ", res.data);
+        console.log("Bookmark added", res.data);
       })
       .catch(err => {
-        console.log("Bookmark", err);
+        console.log("Bookmark err add", err);
+      });
+  }
+
+  deleteBookmark() {
+    const id = this.props.match.params.id;
+    const url = `http://127.0.0.1:3030/api/user/deleteBookmark`;
+
+    axios
+      .put(url, { articleId: id })
+      .then(res => {
+        console.log("Bookmark deleted", res.data);
+      })
+      .catch(err => {
+        console.log("Bookmark err delete", err);
       });
   }
 
@@ -217,6 +232,7 @@ export default class Blog extends React.Component {
             title={this.state.data.headline}
             click={this.addLike}
             addBookmark={this.addBookmark}
+            deleteBookmark={this.deleteBookmark}
           />
 
           <img

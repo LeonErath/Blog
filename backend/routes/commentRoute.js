@@ -12,5 +12,5 @@ module.exports = function(router) {
   router.put("/comment/:id", auth.check, comment.update);
 
   // Delete a Note with noteId
-  router.delete("/comment/:id", auth.check, comment.delete);
+  router.delete("/deleteComment", auth.check, comment.delete);
 };

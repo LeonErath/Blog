@@ -39,4 +39,12 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res, next) {};
-exports.delete = function(req, res, next) {};
+exports.delete = function(req, res, next) {
+  Comment.remove({ _id: req.params.id }).exec(function(err) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.send("Comment deleted");
+  });
+};

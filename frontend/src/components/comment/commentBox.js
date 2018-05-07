@@ -13,6 +13,7 @@ const CommentFormStyled = styled(CommentForm)`
 
 var url = "http://127.0.0.1:3030/api/comment?articleID=";
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
+const urlDeleteComment = "http://127.0.0.1:3030/api/deleteComment";
 
 export default class CommentBox extends React.Component {
   constructor(props) {
@@ -20,6 +21,7 @@ export default class CommentBox extends React.Component {
     this.state = { data: [], authenticated: false, user: "" };
     this.authenticate = this.authenticate.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
+    this.handleCommentDeletion = this.handleCommentDeletion.bind(this);
     this.pollInterval = null;
   }
 
@@ -28,18 +30,20 @@ export default class CommentBox extends React.Component {
     axios(urlCheckAuth, {
       method: "get",
       withCredentials: true
-    }).then(res => {
-      console.log("CommentBox Authentication", res.data);
-
-      if (res.data) {
-        if (res.data === "No authentication") {
-          this.setState({ authenticated: false, user: "" });
-        } else {
-          this.setState({ authenticated: true, user: res.data });
-          console.log(this.state);
+    })
+      .then(res => {
+        console.log("CommentBox Authentication", res.data);
+        if (res.data) {
+          if (res.data === "No authentication") {
+            this.setState({ authenticated: false, user: "" });
+          } else {
+            this.setState({ authenticated: true, user: res.data });
+          }
         }
-      }
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   handleCommentSubmit(comment) {
@@ -51,11 +55,27 @@ export default class CommentBox extends React.Component {
       axios
         .post(url, comment)
         .then(res => {
-          let newComments = comments.concat([res.data]);
+          let newComments = comments.concat(res.data);
           this.setState({ data: newComments });
         })
         .catch(err => {
           console.error(err);
+        });
+    }
+  }
+
+  handleCommentDeletion(id) {
+    if (this.state.authenticated) {
+      axios
+        .delete(urlDeleteComment, id)
+        .then(res => {
+          let newComments = this.state.data.filter(
+            comment => comment._id !== id
+          );
+          this.setState({ data: newComments });
+        })
+        .catch(err => {
+          console.log(err);
         });
     }
   }
@@ -91,7 +111,11 @@ export default class CommentBox extends React.Component {
     return (
       <div>
         <Divider horizontal>Comments</Divider>
-        <CommentList data={this.state.data} />
+        <CommentList
+          data={this.state.data}
+          user={this.state.user}
+          onDeleteComment={this.handleCommentDeletion}
+        />
         <br />
         {this.state.authenticated && (
           <CommentFormStyled

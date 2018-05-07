@@ -12,7 +12,7 @@ const Title = styled.h1`
   display: inline-block;
   color: black;
 `;
-const amount = 6;
+const MAX_ARTICLES = 6;
 
 export default class BlogNewest extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ export default class BlogNewest extends React.Component {
   render() {
     var section1;
     if (this.state.data !== "No authentication") {
-      section1 = this.state.data.slice(0, amount).map(article => {
+      section1 = this.state.data.slice(0, MAX_ARTICLES).map(article => {
         return (
           <BlogShort
             thumbnail={article.thumbnail}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
+import { Button } from "semantic-ui-react";
 
 const Image = styled.div`
   display: inline-block;
@@ -65,6 +66,18 @@ export default class CommentObj extends Component {
           </Date>
           <Content>{this.props.text}</Content>
         </Div>
+        {this.props.currentUser.userId === this.props.userId && (
+          <div>
+            <Button
+              style={{ width: "160px", marginTop: "20px" }}
+              basic
+              color="gray"
+              onClick={e => this.props.handleDelete(this.props.id)}
+            >
+              Delete
+            </Button>
+          </div>
+        )}
       </div>
     );
   }
