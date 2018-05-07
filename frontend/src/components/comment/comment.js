@@ -67,7 +67,7 @@ export default class CommentObj extends Component {
           <Content>{this.props.text}</Content>
         </Div>
         {this.props.currentUser.userId === this.props.userId && (
-          <div>
+          <Div>
             <Button
               style={{ width: "160px", marginTop: "20px" }}
               basic
@@ -76,7 +76,7 @@ export default class CommentObj extends Component {
             >
               Delete
             </Button>
-          </div>
+          </Div>
         )}
       </div>
     );

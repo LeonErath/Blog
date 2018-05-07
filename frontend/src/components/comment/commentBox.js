@@ -13,7 +13,7 @@ const CommentFormStyled = styled(CommentForm)`
 
 var url = "http://127.0.0.1:3030/api/comment?articleID=";
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
-const urlDeleteComment = "http://127.0.0.1:3030/api/deleteComment";
+const urlDeleteComment = "http://127.0.0.1:3030/api/deleteComment/";
 
 export default class CommentBox extends React.Component {
   constructor(props) {
@@ -66,8 +66,12 @@ export default class CommentBox extends React.Component {
 
   handleCommentDeletion(id) {
     if (this.state.authenticated) {
-      axios
-        .delete(urlDeleteComment, id)
+      axios.defaults.withCredentials = true;
+      var urlDeleteComment2 = urlDeleteComment + id;
+      axios(urlDeleteComment2, {
+        method: "delete",
+        withCredentials: true
+      })
         .then(res => {
           let newComments = this.state.data.filter(
             comment => comment._id !== id

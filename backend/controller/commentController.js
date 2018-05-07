@@ -2,6 +2,8 @@ var Comment = require("../model/commentSchema.js");
 
 // adding the /comments route to our /api router
 exports.findAll = function(req, res) {
+  console.log("Finall");
+
   Comment.find({ article: req.query.articleID })
     .populate("author")
     .exec(function(err, comments) {
@@ -9,6 +11,7 @@ exports.findAll = function(req, res) {
         res.send(err);
         return;
       }
+
       res.json(comments);
     });
 };
@@ -42,9 +45,12 @@ exports.update = function(req, res, next) {};
 exports.delete = function(req, res, next) {
   Comment.remove({ _id: req.params.id }).exec(function(err) {
     if (err) {
+      console.log(err);
+
       res.send(err);
       return;
     }
+
     res.send("Comment deleted");
   });
 };
