@@ -9,12 +9,34 @@ const Image = styled.div`
   width: 60px;
 `;
 
-const Div = styled.div`
+const DivImage = styled.div`
   padding-left: 16px;
   vertical-align: top;
+
+  height: 60px;
+  flex: 1;
+  display: inline-block;
+`;
+
+const DivButton = styled.div`
+  text-align: right;
+  flex: 2;
   display: inline-block;
   height: 60px;
-  width: 500px;
+`;
+const DivContent = styled.div`
+  padding-left: 16px;
+  vertical-align: top;
+  height: 60px;
+  flex: 12;
+  display: inline-block;
+`;
+
+const Div = styled.div`
+  margin-top: 16px;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
 `;
 
 const Author = styled.div`
@@ -46,39 +68,41 @@ const Content = styled.div`
 export default class CommentObj extends Component {
   render() {
     return (
-      <div>
-        <Image>
-          <img
-            alt="Profile"
-            src={this.props.profile}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              borderRadius: "50%"
-            }}
-          />
-        </Image>
-        <Div>
+      <Div>
+        <DivImage>
+          <Image>
+            <img
+              alt="Profile"
+              src={this.props.profile}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                borderRadius: "50%"
+              }}
+            />
+          </Image>
+        </DivImage>
+        <DivContent>
           <Author>{this.props.author}</Author>
           <Date>
             <Moment fromNow>{this.props.date}</Moment>
           </Date>
           <Content>{this.props.text}</Content>
-        </Div>
+        </DivContent>
         {this.props.currentUser.userId === this.props.userId && (
-          <Div>
+          <DivButton>
             <Button
-              style={{ width: "160px", marginTop: "20px" }}
+              style={{ marginTop: "8px" }}
               basic
               color="gray"
               onClick={e => this.props.handleDelete(this.props.id)}
             >
               Delete
             </Button>
-          </Div>
+          </DivButton>
         )}
-      </div>
+      </Div>
     );
   }
 }
