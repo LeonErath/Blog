@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+node_modules/
 
 # testing
 /coverage
@@ -25,3 +26,4 @@ yarn-error.log*
 *.jpeg
 *.png
 *.gif
+*.icloud

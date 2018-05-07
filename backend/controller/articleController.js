@@ -94,6 +94,8 @@ exports.getRandom = function(req, res, next) {
 exports.create = function(req, res, next) {
   upload(req, res, function(err) {
     if (err) {
+      console.log(err);
+
       var err = new Error("No thumbnail upload possible.");
       err.status = 400;
       return next(err);
@@ -105,7 +107,8 @@ exports.create = function(req, res, next) {
       req.body.topic &&
       req.body.date
     ) {
-      var path = req.file.path.substring(6, req.file.path.length);
+      //var path = req.file.path.substring(6, req.file.path.length);
+      var path = "http://127.0.0.1:3030/" + req.file.path;
       console.log(path);
 
       var article = {

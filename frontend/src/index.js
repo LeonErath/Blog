@@ -148,8 +148,8 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Router>
-        <Background>
+      <Background>
+        <Router>
           <div>
             <Rectangle>
               <NavbarLink>
@@ -232,8 +232,8 @@ export default class App extends React.Component {
               <Route path="/about" component={About} />
             </Div>
           </div>
-        </Background>
-      </Router>
+        </Router>
+      </Background>
     );
   }
 }

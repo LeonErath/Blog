@@ -2,5 +2,6 @@
   "editor.formatOnSave": true,
   "editor.fontFamily": "OperatorMono Nerd Font",
   "editor.fontLigatures": true,
-  "editor.fontSize": 13
+  "editor.fontSize": 13,
+  "git.ignoreLimitWarning": true
 }

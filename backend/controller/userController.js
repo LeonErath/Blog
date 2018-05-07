@@ -185,7 +185,7 @@ exports.create = function(req, res, next) {
           "Profile Picutre could not be uploaded. Maybe try a diffrent picture. The following formats are allowed: image/jpeg,image/jpg,image/tiff,image/gif,image/png"
       });
     }
-    var path = req.file.path.substring(6, req.file.path.length);
+    var path = "http://127.0.0.1:3030/" + req.file.path;
     if (
       req.body.email &&
       req.body.username &&

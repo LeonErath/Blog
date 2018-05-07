@@ -11,15 +11,24 @@ var app = express();
 var router = express.Router();
 
 //set our port to either a predetermined port number if you have set it up, or 3001
-var port = process.env.API_PORT || 3030;
+var port = 3030;
 
-mongoose.connect("mongodb://127.0.0.1:27017");
+mongoose
+  .connect("mongodb://mongodb")
+  .then(() => {
+    console.log("Backend Started");
+  })
+  .catch(err => {
+    console.error("Backend error:", err.stack);
+    process.exit(1);
+  });
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 //now we should configure the APi to use bodyParser and look for JSON data in the body
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use("/public", express.static(__dirname + "/public"));
 
 app.use(
   cors({
