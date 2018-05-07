@@ -68,6 +68,7 @@ export default class CommentForm extends Component {
         <ParentDiv>
           <Div>
             <img
+              alt="Profile"
               src={this.state.user.profile}
               style={{
                 margin: "8px",

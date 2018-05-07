@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Feed, Icon } from "semantic-ui-react";
 import Moment from "react-moment";
 import styled from "styled-components";
 
@@ -49,6 +48,7 @@ export default class CommentObj extends Component {
       <div>
         <Image>
           <img
+            alt="Profile"
             src={this.props.profile}
             style={{
               width: "100%",

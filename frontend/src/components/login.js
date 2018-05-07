@@ -1,7 +1,7 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import { Button, Input, Checkbox, Form, Message } from "semantic-ui-react";
+import { Button, Input, Checkbox, Message } from "semantic-ui-react";
 import styled from "styled-components";
 import axios from "axios";
 import Dropzone from "react-dropzone";
@@ -195,7 +195,7 @@ export default class Login extends React.Component {
   }
 
   handleDrop(acceptedFiles, rejectedFiles) {
-    if (acceptedFiles.length == 1) {
+    if (acceptedFiles.length === 1) {
       console.log(this.state);
 
       this.setState({ file: acceptedFiles[0] });
@@ -224,7 +224,7 @@ export default class Login extends React.Component {
               onDropRejected={this.handleDropRejected}
             >
               <DivDrop>
-                {this.state.file == "" && (
+                {this.state.file === "" && (
                   <center>
                     <br />
                     <br />
@@ -235,11 +235,11 @@ export default class Login extends React.Component {
                   </center>
                 )}
 
-                {this.state.file != "" && (
+                {this.state.file !== "" && (
                   <center>
                     <img
                       src={this.state.file.preview}
-                      alt="image preview"
+                      alt="preview"
                       style={{
                         width: "100%",
                         objectFit: "cover",
@@ -301,7 +301,6 @@ export default class Login extends React.Component {
               width: "240px",
               marginTop: "20px"
             }}
-            style={{ marginTop: "16px" }}
             label="Register User"
             onChange={this.handleCheckboxChange}
           />

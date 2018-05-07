@@ -12,10 +12,6 @@ import BlogFeature from "./blogFeature";
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
-const Title = styled.h1`
-  display: inline-block;
-  color: black;
-`;
 const ButtonStyled = styled(Button)`
   float: right;
 `;

@@ -12,11 +12,7 @@ const Title = styled.h1`
   display: inline-block;
   color: black;
 `;
-var amount = 6;
-
-const DivMargin = styled.div`
-  margin: 16px;
-`;
+const amount = 6;
 
 export default class BlogNewest extends React.Component {
   constructor(props) {

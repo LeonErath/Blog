@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { Icon, Label, Card } from "semantic-ui-react";
+import { Icon, Card } from "semantic-ui-react";
 import Moment from "react-moment";
 
 const DateDiv = styled.div`

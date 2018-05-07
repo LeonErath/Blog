@@ -5,7 +5,6 @@ import BlogShort from "./blogShortTrending.js";
 import { Grid, Dropdown, Menu } from "semantic-ui-react";
 import axios from "axios";
 import styled from "styled-components";
-import Moment from "react-moment";
 
 const timeOptions = [
   { key: 1, text: "Today", value: 1 },

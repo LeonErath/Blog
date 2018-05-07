@@ -148,7 +148,7 @@ export default class CommentForm extends Component {
     this.authenticate();
   }
   handleDrop(acceptedFiles, rejectedFiles) {
-    if (acceptedFiles.length == 1) {
+    if (acceptedFiles.length === 1) {
       console.log(acceptedFiles[0]);
 
       this.setState({ file: acceptedFiles[0] });
@@ -174,7 +174,7 @@ export default class CommentForm extends Component {
             onDropRejected={this.handleDropRejected}
           >
             <DivDrop>
-              {this.state.file == "" && (
+              {this.state.file === "" && (
                 <center>
                   <br />
                   <br />
@@ -183,18 +183,18 @@ export default class CommentForm extends Component {
                 </center>
               )}
 
-              {this.state.file != "" && (
+              {this.state.file !== "" && (
                 <center>
                   <img
                     src={this.state.file.preview}
-                    alt="image preview"
+                    alt="preview"
                     height={200}
                   />
                 </center>
               )}
             </DivDrop>
           </Dropzone>
-          {this.state.file != "" && (
+          {this.state.file !== "" && (
             <center>
               <Button
                 basic

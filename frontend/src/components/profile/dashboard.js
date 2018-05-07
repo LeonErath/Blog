@@ -1,7 +1,7 @@
 import React from "react";
 import "normalize.css";
 import "semantic-ui-css/semantic.min.css";
-import { PieChart, Pie, Legend, Tooltip, Cell, Label } from "recharts";
+import { PieChart, Pie, Tooltip, Cell, Label } from "recharts";
 import styled from "styled-components";
 
 const DivCenter = styled.div`
@@ -49,9 +49,9 @@ export default class Profile extends React.Component {
     return (
       <div>
         <DivCenter>
-          {this.state.data.length != 0 &&
-            data01.length != 0 &&
-            data02.length != 0 && (
+          {this.state.data.length !== 0 &&
+            data01.length !== 0 &&
+            data02.length !== 0 && (
               <PieChart width={520} height={340}>
                 <Pie
                   data={data01}

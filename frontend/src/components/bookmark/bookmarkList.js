@@ -5,14 +5,9 @@ import { Div } from "../styledComponents";
 import { Card } from "semantic-ui-react";
 import axios from "axios";
 import BookmarkShort from "./bookmarkShort.js";
-import styled from "styled-components";
 
 const urlBookmarks = "http://127.0.0.1:3030/api/user/getBookmarks";
 const amount = 6;
-
-const DivMargin = styled.div`
-  margin: 16px;
-`;
 
 export default class BookmarkList extends React.Component {
   constructor(props) {

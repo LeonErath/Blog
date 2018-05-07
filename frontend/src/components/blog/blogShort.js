@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { Icon, Card, Button, Image, Segment, Label } from "semantic-ui-react";
+import { Icon, Card, Image } from "semantic-ui-react";
 
 const DateDiv = styled.div`
   text-align: right;

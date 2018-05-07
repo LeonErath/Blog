@@ -6,16 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Moment from "react-moment";
 import Dashboard from "./dashboard.js";
-import {
-  Header,
-  Icon,
-  Item,
-  Image,
-  Table,
-  Button,
-  Popup,
-  Statistic
-} from "semantic-ui-react";
+import { Header, Table, Button, Popup, Statistic } from "semantic-ui-react";
 import styled from "styled-components";
 var converter = require("number-to-words");
 
@@ -120,7 +111,7 @@ export default class Profile extends React.Component {
       .then(res => {
         this.setState({
           articleList: this.state.articleList.filter(
-            article => article._id != id
+            article => article._id !== id
           )
         });
         console.log(this.state.articleList);
@@ -144,13 +135,14 @@ export default class Profile extends React.Component {
   render() {
     var section1;
     if (this.state.articleList !== undefined) {
-      this.state.totalViews = 0;
-      this.state.totalLikes = 0;
-      this.state.totalArticle = 0;
+      this.setState({ totalViews: 0, totalLikes: 0, totalArticle: 0 });
       section1 = this.state.articleList.map(article => {
-        this.state.totalViews += article.views;
-        this.state.totalLikes += article.likes;
-        this.state.totalArticle += 1;
+        this.setState({
+          totalViews: this.state.totalViews + article.views,
+          totalLikes: this.state.totalLikes + article.likes,
+          totalArticle: this.state.totalArticle + 1
+        });
+
         return (
           <Table.Row>
             <Table.Cell singleLine>
@@ -200,6 +192,7 @@ export default class Profile extends React.Component {
                     objectFit: "cover",
                     borderRadius: "50%"
                   }}
+                  alt="profile"
                 />
                 <Header.Content
                   style={{

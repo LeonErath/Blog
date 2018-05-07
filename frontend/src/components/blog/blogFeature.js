@@ -41,14 +41,6 @@ const Title = styled.div`
   color: #292929;
 `;
 
-const Div = styled.div`
-  position: relative;
-  background: #fff;
-  width: 1000px;
-  margin: -50px auto 40px auto;
-  box-shadow: 0 20px 40px rgba(100, 100, 100, 0.1);
-`;
-
 const Date = styled.div`
   padding: 8px;
   text-align: center;
@@ -92,12 +84,12 @@ export default class BlogTrending extends React.Component {
       <div>
         <h1>Featured</h1>
         <br />
-        {this.state.data.author.username != "" && (
+        {this.state.data.author.username !== "" && (
           <Link to={`blog/` + this.state.data._id}>
             <img
               style={{ width: "100%", objectFit: "cover", maxHeight: "300px" }}
               src={this.state.data.thumbnail}
-              alt="image preview"
+              alt="thumbnail"
             />
             <br />
 

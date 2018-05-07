@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import "normalize.css";
-import { Button, Icon, Label, Statistic } from "semantic-ui-react";
+import { Statistic } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import axios from "axios";
 import Comment from "../comment/commentBox";
@@ -222,7 +222,7 @@ export default class Blog extends React.Component {
           <img
             style={{ width: "100%", objectFit: "cover", maxHeight: "500px" }}
             src={this.state.data.thumbnail}
-            alt="image preview"
+            alt="preview"
           />
 
           <Header>

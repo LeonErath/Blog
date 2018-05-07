@@ -74,8 +74,8 @@ export default class Sidebar extends React.Component {
   checkBookmarks(bookmarks) {
     console.log("Check Bookmark", bookmarks, this.props.id);
 
-    bookmarks.map(bookmarkID => {
-      if (bookmarkID == this.props.id) {
+    bookmarks.array.forEach(bookmarkID => {
+      if (bookmarkID === this.props.id) {
         this.setState({ bookmarkColor: "gray", bookmarkPressed: true });
       }
     });
