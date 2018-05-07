@@ -94,7 +94,23 @@ export default class Profile extends React.Component {
       .then(res => {
         console.log("Articles", res.data);
 
-        this.setState({ articleList: res.data });
+        if (res.data !== undefined) {
+          var likes = 0;
+          var views = 0;
+          var articleCount = 0;
+          res.data.map(article => {
+            likes += article.likes;
+            views += article.views;
+            articleCount += 1;
+          });
+          this.setState({
+            articleList: res.data,
+            totalLikes: likes,
+            totalViews: views,
+            totalArticle: articleCount
+          });
+          console.log(this.state);
+        }
       })
       .catch(err => {
         console.log(err);
@@ -135,14 +151,7 @@ export default class Profile extends React.Component {
   render() {
     var section1;
     if (this.state.articleList !== undefined) {
-      this.setState({ totalViews: 0, totalLikes: 0, totalArticle: 0 });
       section1 = this.state.articleList.map(article => {
-        this.setState({
-          totalViews: this.state.totalViews + article.views,
-          totalLikes: this.state.totalLikes + article.likes,
-          totalArticle: this.state.totalArticle + 1
-        });
-
         return (
           <Table.Row>
             <Table.Cell singleLine>
@@ -226,9 +235,7 @@ export default class Profile extends React.Component {
                     <Statistic.Label>Likes</Statistic.Label>
                   </Statistic>
                   <Statistic>
-                    <Statistic.Value>
-                      0{this.state.totalArticle}
-                    </Statistic.Value>
+                    <Statistic.Value>{this.state.totalArticle}</Statistic.Value>
                     <Statistic.Label>Articles</Statistic.Label>
                   </Statistic>
                 </Statistic.Group>
