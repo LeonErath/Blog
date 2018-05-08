@@ -1,6 +1,19 @@
 # Webengineering Project
 
-# Todo's
+## Setup
+
+Clone the repository, enter the repository's directoy with a terminal.
+
+
+Then execute the following commands:
+```sh
+docker-compose -p build
+docker-compose -p up -d
+```
+
+`MyBlog` will then be available at [http://localhost:3000](http://localhost:3000).
+
+## Todo's
 
 * [x] Profile View
 * [x] Edit Blog
@@ -13,12 +26,3 @@
 * [x] Docker server
 * [ ] Mobile Version (stretch goal)
 
----
-
-brew services start mongodb
-
-brew service list
-
-npm run start-dev
-
-killall -9 node
