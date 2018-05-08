@@ -73,7 +73,7 @@ app.listen(port, function() {
 
 // var Article = require("./model/articleSchema.js");
 
-// Article.remove({}, function(err, doc) {
+// Article.remove({ _id: "5af17b78ef582d0313c32a86" }, function(err, doc) {
 //   if (err) {
 //     // handle error
 //   }

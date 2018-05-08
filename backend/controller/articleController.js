@@ -109,7 +109,6 @@ exports.create = function(req, res, next) {
     ) {
       //var path = req.file.path.substring(6, req.file.path.length);
       var path = "http://127.0.0.1:3030/" + req.file.path;
-      console.log(path);
 
       var article = {
         author: req.session.userId,
@@ -121,13 +120,13 @@ exports.create = function(req, res, next) {
         thumbnail: path
       };
 
-      Article.create(article, { upsert: true }, function(error) {
+      Article.create(article, function(error) {
         if (error) {
           console.log(error);
 
           return next(error);
         } else {
-          console.log("success", req.body.userID);
+          console.log("success", article);
           return res.send(article);
         }
       });
@@ -181,6 +180,8 @@ exports.addLike = function(req, res, next) {
 };
 
 exports.update = function(req, res, next) {
+  console.log("Trigger UPDATE");
+
   Article.update(
     { _id: req.params.id },
     {

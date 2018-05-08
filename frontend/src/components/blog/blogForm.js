@@ -339,12 +339,7 @@ export default class CommentForm extends Component {
                 onChange={this.handleTopicChange}
               />
             </Form.Group>
-            <Form.Field
-              required
-              control={Checkbox}
-              checked={this.state.edit}
-              label="I agree to the Terms and Conditions"
-            />
+
             <Form.Field basic color="grey" control={Button}>
               {this.state.edit ? "Save" : "Create"}
             </Form.Field>

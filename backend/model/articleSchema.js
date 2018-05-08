@@ -6,14 +6,30 @@ var Schema = mongoose.Schema;
 //object that shows the shape of your database entries.
 var ArticleSchema = new Schema({
   author: {
+    required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
-  headline: String,
-  abstract: String,
-  thumbnail: String,
-  topic: String,
-  content: String,
+  headline: {
+    type: String,
+    required: true
+  },
+  abstract: {
+    type: String,
+    required: true
+  },
+  thumbnail: {
+    type: String,
+    required: true
+  },
+  topic: {
+    type: String,
+    required: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
   date: Date,
   likes: {
     type: Number,
