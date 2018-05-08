@@ -71,6 +71,7 @@ export default class SearchStandard extends React.Component {
             onSearchChange={_.debounce(this.handleSearchChange, 500, {
               leading: true
             })}
+            noResultsMessage="No Results found."
             results={results}
             value={value}
             {...this.props}

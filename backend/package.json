@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \\\"Error: no test specified\\\" && exit 1",
-    "start": "nodemon server.js"
-  },
   "author": "Leon Erath",
   "license": "ISC",
   "dependencies": {
@@ -18,10 +14,13 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "express-session": "^1.15.6",
-    "lodash": "^4.17.10",
     "mongoose": "^5.0.17",
     "multer": "^1.3.0",
     "nodemon": "^1.17.4",
     "parser": "^0.1.4"
+  },
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "start": "npm install && nodemon server.js"
   }
 }

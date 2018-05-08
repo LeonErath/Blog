@@ -246,7 +246,7 @@ export default class CommentForm extends Component {
       <Background>
         <Div>
           <HeadlineCenter>
-            {this.state.edit ? "Artikel bearbeiten" : "Neuen Artikel erstellen"}{" "}
+            {this.state.edit ? "Change article" : "Create new article"}{" "}
           </HeadlineCenter>
 
           <FromStyled>

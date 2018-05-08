@@ -1,10 +1,20 @@
-<<<<<<< HEAD
-FROM node:carbon
-=======
-FROM node:6.11.1
->>>>>>> 356da2d433f0d25d9e42c4fe45236badd4b6a773
+FROM node:9
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+RUN yarn global add npm
+
+RUN npm --version
+COPY package*.json ./
+
+RUN npm cache verify
+RUN npm install
+
+COPY . .
+
+
 EXPOSE 3000
 CMD [ "npm", "start" ]
+
+
+

@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
-import Home from "./components/home.js";
-import About from "./components/about.js";
+
 import BlogList from "./components/blog/blogList.js";
 import Login from "./components/login.js";
 import Blog from "./components/blog/blog.js";
@@ -152,17 +151,11 @@ export default class App extends React.Component {
         <Router>
           <div>
             <Rectangle>
-              <NavbarLink>
-                <Link to="/welcome">Welcome</Link>
-              </NavbarLink>
               {!this.state.authenticated && (
                 <NavbarLink>
                   <Link to="/login">Login</Link>
                 </NavbarLink>
               )}
-              <NavbarLink>
-                <Link to="/about">About</Link>
-              </NavbarLink>
 
               <Circle>
                 <Center>
@@ -231,9 +224,7 @@ export default class App extends React.Component {
 
               <Route path="/profile/:id" component={Profile} />
 
-              <Route path="/welcome" component={Home} />
               <Route path="/login" component={Login} />
-              <Route path="/about" component={About} />
             </Div>
           </div>
         </Router>

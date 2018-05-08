@@ -56,7 +56,7 @@ export default class BlogList extends React.Component {
           {this.state.authenticated && (
             <Link to={`blog/create/0`}>
               <ButtonStyled basic color="gray" type="submit">
-                Neuen Artikel schreiben
+                Create an Article
               </ButtonStyled>
             </Link>
           )}
