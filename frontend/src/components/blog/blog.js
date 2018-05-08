@@ -7,6 +7,7 @@ import axios from "axios";
 import Comment from "../comment/commentBox";
 import Sidebar from "./sidebar";
 import Moment from "react-moment";
+import { Link } from "react-router-dom";
 var converter = require("number-to-words");
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
@@ -252,12 +253,14 @@ export default class Blog extends React.Component {
                 <Title>{this.state.data.headline}</Title>
               </Header4>
               <Header3>
-                <Author>
-                  {" "}
-                  {this.state.loaded && (
-                    <i>{this.state.data.author.username}</i>
-                  )}
-                </Author>
+                <Link to={`/profile/${this.state.data.author._id}`}>
+                  <Author>
+                    {" "}
+                    {this.state.loaded && (
+                      <i>{this.state.data.author.username}</i>
+                    )}
+                  </Author>
+                </Link>
               </Header3>
             </Header2>
           </Header>

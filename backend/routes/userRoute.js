@@ -11,7 +11,7 @@ module.exports = function(router) {
 
   router.get("/user/getBookmarks", auth.check, user.getBookmarks);
 
-  router.get("/user/getProfile", auth.check, user.getUser);
+  router.get("/user/getProfile/:id", user.getUser);
 
   router.post("/login", user.login);
 

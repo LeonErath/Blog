@@ -26,7 +26,7 @@ exports.findAll = function(req, res) {
 };
 
 exports.getAll = function(req, res) {
-  Article.find({ author: req.session.userId })
+  Article.find({ author: req.params.id })
     .populate("author")
     .sort({ date: -1 })
     .exec(function(err, list) {

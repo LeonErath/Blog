@@ -2,14 +2,15 @@
 
 # Todo's
 
-* [ ] Profile View
+* [x] Profile View
+* [ ] Edit Blog
 * [ ] Fix Likes
-* [ ] Delete Bookmarks
+* [x] Delete Bookmarks
 * [ ] Delete Welcome and About
 * [x] Delete Comments
 * [ ] Add Impressum
 * [ ] Add Contact
-* [ ] Docker server
+* [x] Docker server
 * [ ] Mobile Version (stretch goal)
 
 ---

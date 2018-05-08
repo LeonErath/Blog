@@ -11,8 +11,8 @@ import styled from "styled-components";
 var converter = require("number-to-words");
 
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
-const urlGetProfile = "http://127.0.0.1:3030/api/user/getProfile";
-const urlGetArticles = "http://127.0.0.1:3030/api/article/getAll";
+const urlGetProfile = "http://127.0.0.1:3030/api/user/getProfile/";
+const urlGetArticles = "http://127.0.0.1:3030/api/article/getAll/";
 const urlDeleteArticle = "http://127.0.0.1:3030/api/article/";
 
 const DivButton = styled.div`
@@ -61,7 +61,7 @@ export default class Profile extends React.Component {
             this.setState({ authenticated: false });
             this.props.history.goBack();
           } else {
-            this.setState({ authenticated: true });
+            this.setState({ authenticated: true, user: res.data });
           }
         }
       })
@@ -72,7 +72,8 @@ export default class Profile extends React.Component {
 
   getProfile = () => {
     axios.defaults.withCredentials = true;
-    axios(urlGetProfile, {
+    var urlGetProfile2 = urlGetProfile + this.props.match.params.id;
+    axios(urlGetProfile2, {
       method: "get",
       withCredentials: true
     })
@@ -87,7 +88,8 @@ export default class Profile extends React.Component {
 
   getArticle = () => {
     axios.defaults.withCredentials = true;
-    axios(urlGetArticles, {
+    var urlGetArticles2 = urlGetArticles + this.props.match.params.id;
+    axios(urlGetArticles2, {
       method: "get",
       withCredentials: true
     })
@@ -163,24 +165,27 @@ export default class Profile extends React.Component {
             <Table.Cell> {article.topic}</Table.Cell>
             <Table.Cell>{article.views}</Table.Cell>
             <Table.Cell>{article.likes}</Table.Cell>
-            <Table.Cell>
-              <DivButton>
-                <Popup
-                  trigger={<Button color="red" circular icon="delete" />}
-                  content={
-                    <Button
-                      color="green"
-                      onClick={() => this.articleDelete(article._id)}
-                      content="Are you sure?"
+            {this.state.user !== undefined &&
+              this.state.user.userId === this.state.profile.userId && (
+                <Table.Cell>
+                  <DivButton>
+                    <Popup
+                      trigger={<Button color="red" circular icon="delete" />}
+                      content={
+                        <Button
+                          color="green"
+                          onClick={() => this.articleDelete(article._id)}
+                          content="Are you sure?"
+                        />
+                      }
+                      on="click"
+                      position="top left"
                     />
-                  }
-                  on="click"
-                  position="top left"
-                />
 
-                <Button circular onClick={this.articleEdit} icon="edit" />
-              </DivButton>
-            </Table.Cell>
+                    <Button circular onClick={this.articleEdit} icon="edit" />
+                  </DivButton>
+                </Table.Cell>
+              )}
           </Table.Row>
         );
       });
@@ -250,7 +255,10 @@ export default class Profile extends React.Component {
                 <Table.HeaderCell colSpan="3">Articles</Table.HeaderCell>
                 <Table.HeaderCell colSpan="1">Views</Table.HeaderCell>
                 <Table.HeaderCell colSpan="1">Likes</Table.HeaderCell>
-                <Table.HeaderCell colSpan="1">Action</Table.HeaderCell>
+                {this.state.user !== undefined &&
+                  this.state.user.userId === this.state.profile.userId && (
+                    <Table.HeaderCell colSpan="1">Action</Table.HeaderCell>
+                  )}
               </Table.Row>
             </Table.Header>
             <Table.Body>{section1}</Table.Body>

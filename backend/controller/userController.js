@@ -126,7 +126,7 @@ exports.login = function(req, res, next) {
 };
 
 exports.getUser = function(req, res) {
-  User.findById(req.session.userId).exec(function(err, user) {
+  User.findById(req.params.id).exec(function(err, user) {
     if (err) {
       console.log(err);
       return res.status(400).json({
@@ -135,6 +135,7 @@ exports.getUser = function(req, res) {
       });
     }
     res.send({
+      userId: user._id,
       username: user.username,
       email: user.email,
       permission: user.permission,

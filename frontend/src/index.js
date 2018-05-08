@@ -127,7 +127,7 @@ export default class App extends React.Component {
       withCredentials: true
     })
       .then(res => {
-        this.setState({ authenticated: true });
+        this.setState({ authenticated: true, user: res.data });
       })
       .catch(err => {
         this.setState({ authenticated: false });
@@ -200,7 +200,9 @@ export default class App extends React.Component {
               <RightSection>
                 {this.state.authenticated && (
                   <NavbarLink>
-                    <Link to="/profile">Profile</Link>
+                    <Link to={`/profile/${this.state.user.userId}`}>
+                      Profile
+                    </Link>
                   </NavbarLink>
                 )}
               </RightSection>
@@ -226,7 +228,7 @@ export default class App extends React.Component {
               <Switch>
                 <Route exact path="/bookmarks" component={BookmarkList} />
               </Switch>
-              <Route path="/profile" component={Profile} />
+              <Route path="/profile/:id" component={Profile} />
               <Route path="/welcome" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/about" component={About} />

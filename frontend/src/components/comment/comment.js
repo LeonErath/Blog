@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Moment from "react-moment";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 
 const Image = styled.div`
@@ -84,7 +85,9 @@ export default class CommentObj extends Component {
           </Image>
         </DivImage>
         <DivContent>
-          <Author>{this.props.author}</Author>
+          <Link to={`/profile/${this.props.userId}`}>
+            <Author>{this.props.author}</Author>
+          </Link>
           <Date>
             <Moment fromNow>{this.props.date}</Moment>
           </Date>

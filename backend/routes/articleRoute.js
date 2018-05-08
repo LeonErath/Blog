@@ -14,7 +14,7 @@ module.exports = function(router) {
 
   router.get("/article/featured", article.getRandom);
 
-  router.get("/article/getAll", auth.check, article.getAll);
+  router.get("/article/getAll/:id", article.getAll);
 
   router.get("/article/:id", article.findOne);
 
