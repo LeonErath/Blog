@@ -139,9 +139,8 @@ export default class Profile extends React.Component {
       });
   }
 
-  articleEdit(e) {
-    e.preventDefault();
-    console.log("Edit");
+  articleEdit(id) {
+    this.props.history.push(`../blog/create/${id}`);
   }
 
   componentDidMount() {
@@ -182,7 +181,11 @@ export default class Profile extends React.Component {
                       position="top left"
                     />
 
-                    <Button circular onClick={this.articleEdit} icon="edit" />
+                    <Button
+                      circular
+                      onClick={() => this.articleEdit(article._id)}
+                      icon="edit"
+                    />
                   </DivButton>
                 </Table.Cell>
               )}

@@ -121,7 +121,7 @@ exports.create = function(req, res, next) {
         thumbnail: path
       };
 
-      Article.create(article, function(error) {
+      Article.create(article, { upsert: true }, function(error) {
         if (error) {
           console.log(error);
 
@@ -180,7 +180,24 @@ exports.addLike = function(req, res, next) {
     });
 };
 
-exports.update = function(req, res, next) {};
+exports.update = function(req, res, next) {
+  Article.update(
+    { _id: req.params.id },
+    {
+      headline: req.body.headline,
+      abstract: req.body.abstract,
+      content: req.body.content,
+      date: req.body.date,
+      topic: req.body.topic
+    }
+  ).exec(function(err) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.send("Successfully updated Article");
+  });
+};
 exports.delete = function(req, res, next) {
   Article.remove({ _id: req.params.id, author: req.session.userId }).exec(
     function(err) {

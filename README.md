@@ -3,7 +3,7 @@
 # Todo's
 
 * [x] Profile View
-* [ ] Edit Blog
+* [x] Edit Blog
 * [ ] Fix Likes
 * [x] Delete Bookmarks
 * [ ] Delete Welcome and About

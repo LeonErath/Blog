@@ -221,14 +221,16 @@ export default class App extends React.Component {
             <Div>
               <Switch>
                 <Route exact path="/" component={BlogList} />
-                <Route path="/blog/create" component={BlogForm} />
+                <Route path="/blog/create/:id" component={BlogForm} />
                 <Route path="/blog/:id" component={Blog} />
               </Switch>
 
               <Switch>
                 <Route exact path="/bookmarks" component={BookmarkList} />
               </Switch>
+
               <Route path="/profile/:id" component={Profile} />
+
               <Route path="/welcome" component={Home} />
               <Route path="/login" component={Login} />
               <Route path="/about" component={About} />

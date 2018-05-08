@@ -54,7 +54,7 @@ export default class BlogList extends React.Component {
       <Background>
         <Div>
           {this.state.authenticated && (
-            <Link to={`blog/create`}>
+            <Link to={`blog/create/0`}>
               <ButtonStyled basic color="gray" type="submit">
                 Neuen Artikel schreiben
               </ButtonStyled>

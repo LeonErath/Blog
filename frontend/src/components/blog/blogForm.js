@@ -13,6 +13,7 @@ import axios from "axios";
 import Dropzone from "react-dropzone";
 
 const url = "http://127.0.0.1:3030/api/article/create";
+const urlEdit = "http://127.0.0.1:3030/api/article/";
 const urlCheckAuth = "http://127.0.0.1:3030/api/loggedin";
 
 const FromStyled = styled(Form)`
@@ -43,6 +44,9 @@ export default class CommentForm extends Component {
       message: "",
       header: "",
       file: "",
+      edit: false,
+      data: { author: { username: "" }, likes: 0, views: 0 },
+      loaded: false,
       loadingRequest: false,
       successRequest: false,
       failureRequest: false
@@ -56,6 +60,9 @@ export default class CommentForm extends Component {
     this.handleDropRejected = this.handleDropRejected.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.authenticate = this.authenticate.bind(this);
+    this.loadArticleFromServer = this.loadArticleFromServer.bind(this);
+    this.updateArticle = this.updateArticle.bind(this);
+    this.createArticle = this.createArticle.bind(this);
   }
 
   authenticate = () => {
@@ -109,6 +116,22 @@ export default class CommentForm extends Component {
     formData.append("topic", topic);
     formData.append("date", new Date());
 
+    let article = {
+      headline: headline,
+      abstract: abstract,
+      content: content,
+      topic: topic,
+      date: new Date()
+    };
+
+    if (this.state.edit) {
+      this.updateArticle(article);
+    } else {
+      this.createArticle(formData);
+    }
+  }
+
+  createArticle = formData => {
     axios
       .post(url, formData, {
         headers: {
@@ -142,10 +165,72 @@ export default class CommentForm extends Component {
           failureRequest: true
         });
       });
-  }
+  };
+
+  updateArticle = article => {
+    var urlEdit2 = urlEdit + this.props.match.params.id;
+
+    axios
+      .put(urlEdit2, article)
+      .then(response => {
+        console.log(response);
+
+        this.setState({
+          content: "",
+          headline: "",
+          abstract: "",
+          topic: "",
+          file: "",
+          message: response.data.message,
+          header: "Article successfully added",
+          loadingRequest: false,
+          failureRequest: false,
+          successRequest: true
+        });
+      })
+      .catch(err => {
+        console.log(err.response);
+
+        this.setState({
+          message: err.response.statusText,
+          header: "An Error occurred",
+          loadingRequest: false,
+          successRequest: false,
+          failureRequest: true
+        });
+      });
+  };
+
+  loadArticleFromServer = () => {
+    const id = this.props.match.params.id;
+    console.log("ID", id);
+
+    const url = `http://127.0.0.1:3030/api/article/${id}`;
+
+    axios
+      .get(url)
+      .then(res => {
+        console.log("Data", res.data);
+
+        this.setState({
+          headline: res.data.headline,
+          abstract: res.data.abstract,
+          content: res.data.content,
+          topic: res.data.topic,
+          file: { preview: res.data.thumbnail }
+        });
+      })
+      .catch(err => {});
+  };
 
   componentDidMount() {
     this.authenticate();
+    if (this.props.match.params.id != 0) {
+      this.setState({ edit: true });
+      this.loadArticleFromServer();
+    } else {
+      this.setState({ edit: false });
+    }
   }
   handleDrop(acceptedFiles, rejectedFiles) {
     if (acceptedFiles.length === 1) {
@@ -160,7 +245,9 @@ export default class CommentForm extends Component {
     return (
       <Background>
         <Div>
-          <HeadlineCenter> Neuen Artikel erstellen </HeadlineCenter>
+          <HeadlineCenter>
+            {this.state.edit ? "Artikel bearbeiten" : "Neuen Artikel erstellen"}{" "}
+          </HeadlineCenter>
 
           <FromStyled>
             <Form.Field required label="Thumbnail" placeholder="Thumbnail" />
@@ -194,20 +281,21 @@ export default class CommentForm extends Component {
               )}
             </DivDrop>
           </Dropzone>
-          {this.state.file !== "" && (
-            <center>
-              <Button
-                basic
-                color="grey"
-                style={{ margin: "4px" }}
-                onClick={() => {
-                  this.setState({ file: "" });
-                }}
-              >
-                Delete
-              </Button>
-            </center>
-          )}
+          {this.state.file !== "" &&
+            this.state.edit == false && (
+              <center>
+                <Button
+                  basic
+                  color="grey"
+                  style={{ margin: "4px" }}
+                  onClick={() => {
+                    this.setState({ file: "" });
+                  }}
+                >
+                  Delete
+                </Button>
+              </center>
+            )}
 
           <FromStyled
             loading={this.state.loadingRequest}
@@ -254,10 +342,11 @@ export default class CommentForm extends Component {
             <Form.Field
               required
               control={Checkbox}
+              checked={this.state.edit}
               label="I agree to the Terms and Conditions"
             />
             <Form.Field basic color="grey" control={Button}>
-              Submit
+              {this.state.edit ? "Save" : "Create"}
             </Form.Field>
             {this.state.successRequest ? (
               <Message
