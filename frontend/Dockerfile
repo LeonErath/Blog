@@ -2,9 +2,7 @@ FROM node:9
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN yarn global add npm
-
-RUN npm --version
+RUN npm i -g npm@5.6.0
 COPY package*.json ./
 
 RUN npm cache verify
