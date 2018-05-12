@@ -1,18 +1,16 @@
 FROM node:9
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-RUN npm i -g npm@5.6.0
-COPY package*.json ./
-
-RUN npm cache verify
-RUN npm install
 
 COPY . .
 
+RUN yarn install --ignore-engines
+
+RUN yarn build
+
+RUN yarn global add serve
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+# Set the command to start the node server.
+CMD ["yarn", "serve", "--port", "3000", "--clipless", "-s","build"]
 
 
 
