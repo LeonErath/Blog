@@ -6,12 +6,9 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN yarn install --ignore-engines
-
-RUN npm install -g  nodemon
+RUN yarn build
 
 COPY . .
-
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
