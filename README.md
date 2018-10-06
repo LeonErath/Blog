@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/LeonErath/Blog/tree/master.svg?style=svg)](https://circleci.com/gh/LeonErath/Blog/tree/master)
 # Webengineering Project
 
 ## Setup
