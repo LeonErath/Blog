@@ -14,7 +14,7 @@ var router = express.Router();
 var port = 3030;
 
 mongoose
-  .connect("mongodb://mongodb")
+  .connect("mongodb://mongodb/blog")
   .then(() => {
     console.log("Backend Started");
   })

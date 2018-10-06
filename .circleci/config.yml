@@ -7,14 +7,6 @@ jobs:
     steps:
       - checkout
 
-      - run: docker build -f ./backend/Dockerfile -t backend .
-
-      - run: docker run --name backend -d --rm backend
-
-      - run: docker build -f ./frontend/Dockerfile -t frontend .
-
-      - run: docker run --name frontend -d --rm frontend
-
       - run: docker-compose build
 
       - run: docker-compose up -d

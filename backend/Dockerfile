@@ -4,11 +4,13 @@ RUN mkdir -p /usr/src/app
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
+COPY package.json /usr/src/app/
 
-RUN yarn build
+RUN npm install
 
-COPY . .
+COPY . /usr/src/app
 
-EXPOSE 3000
+RUN npm install bcrypt
+
+EXPOSE 3030
 CMD [ "npm", "start" ]
