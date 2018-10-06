@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "chart.js": "^1.1.1",
+    "chart.js": "^2.7.2",
     "cors": "^2.8.4",
     "draft-js": "^0.10.5",
     "ejs": "^2.5.8",
