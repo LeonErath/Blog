@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/LeonErath/Blog/tree/master.svg?style=svg)](https://circleci.com/gh/LeonErath/Blog/tree/master) [![CodeFactor](https://www.codefactor.io/repository/github/leonerath/blog/badge)](https://www.codefactor.io/repository/github/leonerath/blog)
 # Webengineering Project
 
 ## Setup
