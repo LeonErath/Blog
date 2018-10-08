@@ -29,7 +29,7 @@
     "react-share": "^2.3.1",
     "recharts": "^1.0.0-beta.10",
     "save": "^2.3.2",
-    "semantic-ui-css": "^2.2.14",
+    "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^0.78.2",
     "serve": "^10.0.2",
     "styled-components": "^3.4.9"
