@@ -14,7 +14,7 @@
     "ejs": "^2.6.1",
     "foreman": "^3.0.1",
     "lodash": "^4.17.5",
-    "marked": "^0.3.16",
+    "marked": "^0.5.1",
     "moment": "^2.22.1",
     "nodemon": "^1.18.4",
     "normalize.css": "^8.0.0",
