@@ -19,7 +19,7 @@
     "nodemon": "^1.18.4",
     "normalize.css": "^8.0.0",
     "number-to-words": "^1.2.4",
-    "react": "^16.5.2",
+    "react": "^16.6.0",
     "react-dom": "^16.5.2",
     "react-dropzone": "^6.2.4",
     "react-moment": "^0.8.2",
