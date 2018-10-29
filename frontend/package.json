@@ -16,7 +16,7 @@
     "lodash": "^4.17.11",
     "marked": "^0.5.1",
     "moment": "^2.22.2",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.5",
     "normalize.css": "^8.0.0",
     "number-to-words": "^1.2.4",
     "react": "^16.6.0",
