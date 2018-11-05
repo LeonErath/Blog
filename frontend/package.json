@@ -9,7 +9,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^1.1.1",
-    "cors": "^2.8.4",
+    "cors": "^2.8.5",
     "draft-js": "^0.10.5",
     "ejs": "^2.6.1",
     "foreman": "^3.0.1",
