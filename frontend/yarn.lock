@@ -7886,9 +7886,9 @@ react-scripts@2.1.1:
   optionalDependencies:
     fsevents "1.2.4"
 
-react-share@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/react-share/-/react-share-2.3.1.tgz#e07e9465b4a0a32119841e9676cab841954f27f2"
+react-share@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-share/-/react-share-2.4.0.tgz#e033316760cfe3265bf0cb031373a7564dbf92f5"
   dependencies:
     babel-runtime "^6.6.1"
     classnames "^2.2.5"
