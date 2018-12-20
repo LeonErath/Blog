@@ -20,7 +20,7 @@
     "normalize.css": "^8.0.1",
     "number-to-words": "^1.2.4",
     "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react-dom": "^16.7.0",
     "react-dropzone": "^8.0.2",
     "react-moment": "^0.8.4",
     "react-router": "^4.3.1",
