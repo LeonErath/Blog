@@ -24,7 +24,7 @@
     "react-dropzone": "^10.1.9",
     "react-moment": "^0.9.1",
     "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
+    "react-router-dom": "^5.1.0",
     "react-scripts": "3.1.2",
     "react-share": "^2.4.0",
     "recharts": "^1.7.1",
