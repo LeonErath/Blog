@@ -8695,9 +8695,9 @@ recharts-scale@^0.4.2:
   dependencies:
     decimal.js-light "^2.4.1"
 
-recharts@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/recharts/-/recharts-1.7.1.tgz#bed7c9427fa0049090447070af185557f5569b06"
+recharts@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/recharts/-/recharts-1.8.0.tgz#1ce6e2a252f27461db4b026b44f5f95ecdb9d84e"
   dependencies:
     classnames "^2.2.5"
     core-js "^2.5.1"
